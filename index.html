@@ -3,177 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agen PPOB & Top Up Game Super Lengkap</title>
-    <!-- Font & Icons -->
+    <title>Pro Agen PPOB & Top Up Game</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Header & Saldo Agen -->
+    <!-- Header & Saldo Akun Agen -->
     <header>
         <div class="header-top">
             <div class="brand-logo">
-                <i class="fa-solid fa-bolt-lightning"></i> FastPay PPOB
+                <i class="fa-solid fa-server"></i> PRO-PULSA SERVER
             </div>
-            <button class="btn-qris-setting" onclick="openQrisSettings()">
-                <i class="fa-solid fa-qrcode"></i> QRIS Saya
-            </button>
+            <div class="header-actions">
+                <button class="btn-topbar" onclick="openModal('historyModal')"><i class="fa-solid fa-clock-rotate-left"></i> Riwayat</button>
+                <button class="btn-topbar accent" onclick="openModal('qrisSettingsModal')"><i class="fa-solid fa-qrcode"></i> QRIS Saya</button>
+            </div>
         </div>
-        <div class="agent-bar">
-            <div class="agent-info">
-                <span class="agent-label">Status Toko:</span>
-                <span class="agent-status"><i class="fa-solid fa-circle-check"></i> Kasir Aktif</span>
+        
+        <!-- Saldo Card -->
+        <div class="saldo-card">
+            <div class="saldo-info">
+                <span class="saldo-label">Saldo Deposit Anda</span>
+                <h2 id="agentSaldoText">Rp 250.000</h2>
             </div>
-            <div class="agent-margin-box">
-                <span>Profit Agen: +Rp </span>
-                <input type="number" id="agentMargin" value="2000" onchange="renderProducts()">
-            </div>
+            <button class="btn-deposit" onclick="openModal('depositModal')">
+                <i class="fa-solid fa-wallet"></i> Top Up Saldo
+            </button>
         </div>
     </header>
 
     <div class="container">
-        <!-- Banner Promo/Informasi -->
-        <div class="banner-box">
-            <i class="fa-solid fa-bullhorn"></i>
-            <div class="banner-text">
-                <b>Promo Hari Ini!</b> Top Up Game & E-Money Bebas Biaya Admin Tambahan!
+        <!-- Pengaturan Keuntungan / Margin Kasir -->
+        <div class="card-box margin-setting-box">
+            <div>
+                <h4>Atur Keuntungan Agen / Kasir</h4>
+                <p>Ditambahkan otomatis ke harga modal server</p>
+            </div>
+            <div class="margin-input-wrapper">
+                <span>+Rp</span>
+                <input type="number" id="agentMargin" value="2000" onchange="renderProducts()">
             </div>
         </div>
 
         <!-- Pencarian Produk -->
         <div class="search-box">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="searchInput" placeholder="Cari produk (misal: ML, DANA, Telkomsel)..." oninput="filterProducts()">
+            <input type="text" id="searchInput" placeholder="Cari produk cepat (contoh: ML, DANA, Telkomsel)..." oninput="filterProducts()">
         </div>
 
-        <!-- Menu Kategori Grid -->
-        <div class="category-grid">
-            <button class="cat-card active" onclick="switchCategory('pulsa', this)">
-                <div class="cat-icon bg-blue"><i class="fa-solid fa-mobile-screen-button"></i></div>
-                <span>Pulsa</span>
-            </button>
-            <button class="cat-card" onclick="switchCategory('data', this)">
-                <div class="cat-icon bg-green"><i class="fa-solid fa-wifi"></i></div>
-                <span>Paket Data</span>
-            </button>
-            <button class="cat-card" onclick="switchCategory('game', this)">
-                <div class="cat-icon bg-purple"><i class="fa-solid fa-gamepad"></i></div>
-                <span>Top Up Game</span>
-            </button>
-            <button class="cat-card" onclick="switchCategory('emoney', this)">
-                <div class="cat-icon bg-orange"><i class="fa-solid fa-wallet"></i></div>
-                <span>E-Money</span>
-            </button>
-            <button class="cat-card" onclick="switchCategory('pln', this)">
-                <div class="cat-icon bg-yellow"><i class="fa-solid fa-lightbulb"></i></div>
-                <span>Token PLN</span>
-            </button>
-            <button class="cat-card" onclick="switchCategory('ppob', this)">
-                <div class="cat-icon bg-red"><i class="fa-solid fa-receipt"></i></div>
-                <span>Tagihan PPOB</span>
-            </button>
+        <!-- Menu Kategori Layanan -->
+        <div class="category-scroll">
+            <button class="cat-btn active" onclick="switchCategory('pulsa', this)"><i class="fa-solid fa-mobile-screen"></i> Pulsa</button>
+            <button class="cat-btn" onclick="switchCategory('data', this)"><i class="fa-solid fa-wifi"></i> Paket Data</button>
+            <button class="cat-btn" onclick="switchCategory('game', this)"><i class="fa-solid fa-gamepad"></i> Top Up Game</button>
+            <button class="cat-btn" onclick="switchCategory('emoney', this)"><i class="fa-solid fa-wallet"></i> E-Money</button>
+            <button class="cat-btn" onclick="switchCategory('pln', this)"><i class="fa-solid fa-lightbulb"></i> Token PLN</button>
+            <button class="cat-btn" onclick="switchCategory('tagihan', this)"><i class="fa-solid fa-file-invoice-dollar"></i> Tagihan</button>
         </div>
 
-        <!-- Form Input Nomor / ID Tujuan -->
-        <div class="form-card">
+        <!-- Form Tujuan Transaksi -->
+        <div class="card-box">
             <div class="input-group">
-                <label id="inputLabel">Nomor HP / Tujuan</label>
-                <div class="input-wrapper">
-                    <input type="text" id="targetInput" placeholder="Contoh: 081234567890" oninput="detectOperator()">
-                    <span id="operatorBadge" class="operator-badge">TELKOMSEL</span>
+                <label id="inputLabel">Nomor HP / ID Tujuan Pelanggan</label>
+                <div class="input-field-wrap">
+                    <input type="text" id="targetInput" placeholder="Masukkan Nomor HP / ID Pelanggan" oninput="detectOperator()">
+                    <span id="operatorBadge" class="operator-badge">XL / TSEL</span>
                 </div>
             </div>
         </div>
 
-        <!-- Judul & Grid Daftar Produk -->
-        <div class="section-title">
-            <span>Pilih Nominal / Paket</span>
-            <span class="sub-title">Harga Grosir</span>
+        <!-- Katalog Produk -->
+        <div class="section-header">
+            <h3>Daftar Produk & Harga Grosir</h3>
+            <span id="productCountLabel">Menampilkan produk</span>
         </div>
-        
+
         <div class="products-grid" id="productsGrid">
-            <!-- Item produk dimuat via JS -->
+            <!-- Render via JS -->
         </div>
     </div>
 
-    <!-- Modal Pop-up Transaksi & QRIS -->
+    <!-- Modal Checkout & QRIS Pembayaran -->
     <div class="modal-overlay" id="checkoutModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Resi Pembayaran QRIS</h3>
+                <h3>Konfirmasi & Resi Pembayaran</h3>
                 <button class="modal-close" onclick="closeModal('checkoutModal')">&times;</button>
             </div>
 
-            <div id="qrisWarning" class="qris-setup-box" style="display:none;">
-                <i class="fa-solid fa-triangle-exclamation"></i> <b>QRIS Belum Diatur:</b> Silakan upload gambar QRIS Anda melalui tombol <b>QRIS Saya</b>.
+            <div id="qrisWarning" class="alert-box" style="display:none;">
+                <i class="fa-solid fa-triangle-exclamation"></i> <b>QRIS Belum Diatur!</b> Silakan masukkan QRIS Anda melalui tombol "QRIS Saya" di atas.
             </div>
 
-            <div class="summary-box" id="printableReceipt">
-                <div class="summary-row">
-                    <span class="muted">Tanggal:</span>
-                    <b id="summaryDate">-</b>
-                </div>
-                <div class="summary-row">
-                    <span class="muted">Produk:</span>
-                    <b id="summaryProductName">-</b>
-                </div>
-                <div class="summary-row">
-                    <span class="muted">Tujuan/ID:</span>
-                    <b id="summaryTarget">-</b>
-                </div>
-                <div class="summary-row total-row">
-                    <span>Total Bayar:</span>
-                    <b id="summaryTotalPrice" class="price-highlight">-</b>
-                </div>
+            <div class="receipt-box">
+                <div class="receipt-row"><span class="muted">Waktu:</span> <b id="sumDate">-</b></div>
+                <div class="receipt-row"><span class="muted">Produk:</span> <b id="sumProduct">-</b></div>
+                <div class="receipt-row"><span class="muted">Tujuan:</span> <b id="sumTarget">-</b></div>
+                <div class="receipt-row total"><span class="muted">Total Tagihan:</span> <b id="sumPrice" class="text-primary">-</b></div>
             </div>
 
-            <div class="qris-display-container">
-                <p class="qris-title">Scan QRIS Di Bawah Untuk Membayar:</p>
-                <img id="displayQrisImage" class="qris-image" src="" alt="QRIS Toko">
-                <p class="qris-sub">Mendukung BCA, GoPay, DANA, OVO, ShopeePay & Semua Bank</p>
+            <div class="qris-display-area">
+                <p><b>Scan QRIS Toko Anda untuk Membayar:</b></p>
+                <img id="displayQrisImage" src="" alt="QRIS Toko" style="max-width:180px; border-radius:8px; margin:10px 0;">
+                <p class="muted" style="font-size:0.7rem;">Mendukung All QRIS (BCA, DANA, OVO, GoPay, ShopeePay)</p>
             </div>
 
-            <div class="modal-actions">
-                <button class="btn-action btn-outline" onclick="printReceipt()">
-                    <i class="fa-solid fa-print"></i> Cetak Struk
-                </button>
-                <button class="btn-action btn-success" onclick="shareWhatsApp()">
-                    <i class="fa-brands fa-whatsapp"></i> Konfirmasi WA
-                </button>
+            <div class="modal-buttons">
+                <button class="btn-main btn-secondary" onclick="printReceipt()"><i class="fa-solid fa-print"></i> Cetak Struk</button>
+                <button class="btn-main btn-success" onclick="processTransactionWhatsApp()"><i class="fa-brands fa-whatsapp"></i> Proses & Kirim WA</button>
             </div>
         </div>
     </div>
 
-    <!-- Modal Pop-up Pengaturan QRIS Toko -->
+    <!-- Modal Pengaturan QRIS Pribadi -->
     <div class="modal-overlay" id="qrisSettingsModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Pengaturan QRIS Toko</h3>
+                <h3>Pengaturan QRIS Toko Anda</h3>
                 <button class="modal-close" onclick="closeModal('qrisSettingsModal')">&times;</button>
             </div>
-
-            <div class="form-group">
-                <label>Upload Gambar QRIS (JPG/PNG)</label>
-                <input type="file" id="qrisFileInput" accept="image/*">
+            <div class="input-group mb-3">
+                <label>Upload File Gambar QRIS (JPG/PNG)</label>
+                <input type="file" id="qrisFileInput" accept="image/*" class="file-input">
             </div>
-
-            <div class="divider">— ATAU —</div>
-
-            <div class="form-group">
-                <label>Tempel Link URL QRIS</label>
-                <input type="text" id="qrisUrlInput" placeholder="https://link-gambar-qris-anda.jpg">
+            <div class="text-center muted mb-3">— ATAU GUNAKAN LINK URL —</div>
+            <div class="input-group mb-3">
+                <label>Link Gambar QRIS</label>
+                <input type="text" id="qrisUrlInput" placeholder="https://domain.com/qris-saya.jpg">
             </div>
-
-            <div class="preview-box">
-                <p>Preview QRIS Terpasang:</p>
-                <img id="qrisPreview" src="" alt="Preview">
+            <div class="preview-qris text-center mb-3">
+                <p class="muted">Preview QRIS Saat Ini:</p>
+                <img id="qrisPreviewImg" src="" style="max-width:120px; display:none; border:1px solid #ccc; border-radius:6px; margin:0 auto;">
             </div>
+            <button class="btn-main" onclick="saveQrisSettings()"><i class="fa-solid fa-floppy-disk"></i> Simpan Pengaturan QRIS</button>
+        </div>
+    </div>
 
-            <button class="btn-action" onclick="saveQrisSettings()">
-                <i class="fa-solid fa-floppy-disk"></i> Simpan QRIS Toko
-            </button>
+    <!-- Modal Riwayat Transaksi -->
+    <div class="modal-overlay" id="historyModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Riwayat Transaksi Toko</h3>
+                <button class="modal-close" onclick="closeModal('historyModal')">&times;</button>
+            </div>
+            <div id="historyListContainer" style="max-height: 300px; overflow-y: auto;">
+                <!-- Diisi via JS -->
+            </div>
+            <button class="btn-main btn-danger mt-3" onclick="clearHistory()"><i class="fa-solid fa-trash"></i> Hapus Riwayat</button>
+        </div>
+    </div>
+
+    <!-- Modal Top Up Saldo Deposit -->
+    <div class="modal-overlay" id="depositModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Top Up Saldo Deposit Agen</h3>
+                <button class="modal-close" onclick="closeModal('depositModal')">&times;</button>
+            </div>
+            <div class="input-group mb-3">
+                <label>Nominal Top Up (Rp)</label>
+                <input type="number" id="depositAmountInput" value="50000" placeholder="50000">
+            </div>
+            <button class="btn-main btn-success" onclick="processDeposit()"><i class="fa-solid fa-check"></i> Konfirmasi Top Up Saldo</button>
         </div>
     </div>
 
