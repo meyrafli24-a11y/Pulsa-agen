@@ -4,169 +4,685 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#087bd0">
-  <title>PULSAKULA - Toko Digital</title>
+  <meta name="theme-color" content="#0759b8">
+
+  <title>PULSAKULA | Toko Digital</title>
+
+  <meta name="description" content="PULSAKULA menyediakan katalog pulsa, paket data, token listrik dan voucher digital.">
+
   <link rel="stylesheet" href="style.css">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 10% 10%, rgba(14,165,233,.12), transparent 30%),
+        radial-gradient(circle at 90% 30%, rgba(37,99,235,.10), transparent 30%),
+        linear-gradient(180deg,#eef6ff,#f8fbff 50%,#edf4ff);
+      color: #172554;
+    }
+
+    .top-strip {
+      background: #063b80;
+      color: white;
+      text-align: center;
+      padding: 9px;
+      font-size: 12px;
+      letter-spacing: .3px;
+    }
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 500;
+      box-shadow: 0 5px 20px rgba(0,50,120,.12);
+      padding: 15px 5%;
+    }
+
+    .brand h1 {
+      letter-spacing: 1px;
+      font-size: 24px;
+    }
+
+    .cart-button {
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0,80,180,.12);
+    }
+
+    main {
+      max-width: 1150px;
+      margin: auto;
+      padding: 22px 16px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      min-height: 270px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 85% 20%,rgba(255,255,255,.24),transparent 25%),
+        linear-gradient(120deg,#063b80,#087bd0 55%,#38a9f5);
+      border-radius: 25px;
+      padding: 32px 25px;
+      box-shadow: 0 15px 35px rgba(0,90,190,.2);
+      color: white;
+    }
+
+    .hero::after {
+      content: "📱";
+      position: absolute;
+      right: 7%;
+      top: 50%;
+      transform: translateY(-50%) rotate(-12deg);
+      font-size: clamp(75px,15vw,145px);
+      opacity: .85;
+      filter: drop-shadow(0 15px 15px rgba(0,0,0,.2));
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 600px;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      background: rgba(255,255,255,.18);
+      border: 1px solid rgba(255,255,255,.3);
+      padding: 7px 12px;
+      border-radius: 30px;
+      font-size: 11px;
+      margin-bottom: 14px;
+    }
+
+    .hero h2 {
+      font-size: clamp(25px,5vw,38px);
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      font-size: 14px;
+      line-height: 1.8;
+      max-width: 470px;
+    }
+
+    .hero-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 19px;
+      border-radius: 11px;
+      color: #0759a8;
+      background: white;
+      font-size: 13px;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .section-title {
+      margin: 30px 0 15px;
+    }
+
+    .section-title h2 {
+      font-size: 21px;
+      color: #123d78;
+    }
+
+    .section-title p {
+      font-size: 12px;
+      color: #718096;
+      margin-top: 5px;
+    }
+
+    .promo-banner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      background: linear-gradient(110deg,#0c4a8c,#1676ca);
+      border-radius: 17px;
+      padding: 20px;
+      color: white;
+      margin: 25px 0;
+    }
+
+    .promo-banner h3 {
+      font-size: 18px;
+      margin-bottom: 7px;
+    }
+
+    .promo-banner p {
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .promo-icon {
+      font-size: 48px;
+    }
+
+    .search-section {
+      margin: 22px 0;
+    }
+
+    .search-section input {
+      width: 100%;
+      background: white;
+      border: 1px solid #d9e7f8;
+      box-shadow: 0 5px 18px rgba(0,60,130,.05);
+    }
+
+    .services {
+      grid-template-columns: repeat(3,1fr);
+      gap: 12px;
+    }
+
+    .service-card {
+      border: 1px solid #e1edfa;
+      box-shadow: 0 5px 15px rgba(0,60,130,.05);
+      transition: .2s;
+    }
+
+    .service-card:active {
+      transform: scale(.96);
+    }
+
+    .products {
+      gap: 14px;
+    }
+
+    .product-card {
+      border: 1px solid #e2eaf5;
+      box-shadow: 0 5px 18px rgba(0,50,120,.06);
+      transition: .2s;
+    }
+
+    .product-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 22px rgba(0,80,160,.12);
+    }
+
+    .product-price {
+      font-size: 16px;
+    }
+
+    .choose-btn {
+      transition: .2s;
+    }
+
+    .choose-btn:active,
+    .main-btn:active {
+      transform: scale(.98);
+    }
+
+    .benefits {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 12px;
+      margin: 25px 0;
+    }
+
+    .benefit-card {
+      text-align: center;
+      padding: 17px 10px;
+      background: white;
+      border: 1px solid #e1edfa;
+      border-radius: 15px;
+    }
+
+    .benefit-card span {
+      font-size: 28px;
+    }
+
+    .benefit-card h3 {
+      font-size: 12px;
+      margin: 9px 0 5px;
+    }
+
+    .benefit-card p {
+      color: #718096;
+      font-size: 10px;
+      line-height: 1.5;
+    }
+
+    .steps {
+      background: white;
+      padding: 20px;
+      border-radius: 18px;
+      border: 1px solid #e1edfa;
+    }
+
+    .step {
+      display: flex;
+      gap: 13px;
+      align-items: center;
+      margin: 15px 0;
+    }
+
+    .step-number {
+      min-width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      background: #e3f1ff;
+      color: #087bd0;
+      border-radius: 50%;
+      font-weight: bold;
+    }
+
+    .step h3 {
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .step p {
+      color: #718096;
+      font-size: 11px;
+    }
+
+    .support-box {
+      background: white;
+      border: 1px solid #e1edfa;
+      border-radius: 18px;
+      padding: 20px;
+      text-align: center;
+      margin: 25px 0;
+    }
+
+    .support-box h2 {
+      font-size: 19px;
+      margin-bottom: 8px;
+    }
+
+    .support-box p {
+      color: #718096;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .support-link {
+      display: inline-block;
+      margin-top: 15px;
+      background: #087bd0;
+      color: white;
+      text-decoration: none;
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    footer {
+      background: linear-gradient(120deg,#052d62,#0759a8);
+      margin-top: 35px;
+      padding: 35px 20px;
+    }
+
+    footer h3 {
+      font-size: 23px;
+      margin-bottom: 10px;
+    }
+
+    footer p {
+      color: #dbeafe;
+    }
+
+    .footer-bottom {
+      margin-top: 20px;
+      padding-top: 15px;
+      border-top: 1px solid rgba(255,255,255,.2);
+      font-size: 11px;
+    }
+
+    @media(max-width:600px) {
+      .hero {
+        min-height: 250px;
+        padding: 25px 19px;
+      }
+
+      .hero::after {
+        right: -8px;
+        top: 17px;
+        transform: rotate(-12deg);
+        font-size: 75px;
+        opacity: .25;
+      }
+
+      .hero-content {
+        max-width: 100%;
+      }
+
+      .benefits {
+        grid-template-columns: repeat(3,1fr);
+        gap: 7px;
+      }
+
+      .benefit-card {
+        padding: 13px 5px;
+      }
+
+      .promo-banner {
+        padding: 17px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<header class="header">
-  <div class="brand">
-    <h1>📱 PULSAKULA</h1>
-    <p>Toko Digital Terpercaya</p>
+  <div class="top-strip">
+    ✨ SELAMAT DATANG DI PULSAKULA — LAYANAN KEBUTUHAN DIGITAL
   </div>
-  <button onclick="openCart()" class="cart-button">
-    🛒 Keranjang <span id="cartCount">0</span>
-  </button>
-</header>
 
-<main>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="brand">
+      <h1>⚡ PULSAKULA</h1>
+      <p>Solusi Kebutuhan Digital Kamu</p>
+    </div>
 
-  <section class="hero">
-    <h2>Selamat Datang di PULSAKULA</h2>
-    <p>Isi pulsa, paket data, token listrik dan kebutuhan digital lainnya.</p>
-  </section>
-
-  <section class="search-section">
-    <input
-      type="search"
-      id="search"
-      placeholder="Cari produk..."
-      oninput="renderProducts()">
-  </section>
-
-  <section>
-    <h2>Layanan Digital</h2>
-    <div id="services" class="services"></div>
-  </section>
-
-  <section id="operatorSection" hidden>
-    <h2 id="operatorTitle">Pilih Operator</h2>
-    <div id="operators" class="operators"></div>
-  </section>
-
-  <section id="productSection">
-    <h2>Daftar Produk</h2>
-    <div id="filters" class="filters"></div>
-    <div id="products" class="products"></div>
-  </section>
-
-</main>
-
-<footer>
-  <h3>PULSAKULA</h3>
-  <p>Belanja kebutuhan digital dengan mudah.</p>
-  <p>© 2026 PULSAKULA</p>
-</footer>
-
-<!-- MODAL DETAIL PRODUK -->
-<div class="modal" id="productModal">
-  <div class="modal-box">
-
-    <button class="close" onclick="closeProduct()">×</button>
-
-    <div id="productIcon" class="big-icon">📱</div>
-    <h2 id="productName">Nama Produk</h2>
-    <p id="productCategory"></p>
-    <h3 id="productPrice">Rp 0</h3>
-
-    <label for="target">Nomor HP / ID Pelanggan</label>
-    <input
-      id="target"
-      type="text"
-      placeholder="Masukkan nomor atau ID tujuan">
-
-    <button class="main-btn" onclick="addToCart()">
-      Tambahkan ke Keranjang
+    <button class="cart-button" onclick="openCart()">
+      🛒 Keranjang
+      <span id="cartCount">0</span>
     </button>
+  </header>
 
-  </div>
-</div>
+  <main>
 
-<!-- MODAL KERANJANG -->
-<div class="modal" id="cartModal">
-  <div class="modal-box">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-content">
+        <span class="hero-tag">⚡ TOKO DIGITAL PULSAKULA</span>
 
-    <button class="close" onclick="closeCart()">×</button>
+        <h2>Semua Kebutuhan Digital Dalam Satu Tempat!</h2>
 
-    <h2>🛒 Keranjang Belanja</h2>
+        <p>
+          Temukan berbagai pilihan pulsa, paket data, token listrik,
+          voucher game dan layanan digital lainnya dengan mudah.
+        </p>
 
-    <div id="cartItems"></div>
+        <a href="#productSection" class="hero-button">
+          Lihat Produk Sekarang →
+        </a>
+      </div>
+    </section>
 
-    <div class="cart-total">
-      <h3 id="total">Total: Rp 0</h3>
-    </div>
-
-    <label for="customer">Nama Pemesan</label>
-    <input
-      id="customer"
-      type="text"
-      placeholder="Masukkan nama kamu">
-
-    <button class="main-btn" onclick="checkout()">
-      Lanjut Pembayaran
-    </button>
-
-  </div>
-</div>
-
-<!-- MODAL PEMBAYARAN QRIS -->
-<div class="modal" id="paymentModal">
-  <div class="modal-box payment-box">
-
-    <button class="close" onclick="closePayment()">×</button>
-
-    <div class="payment-header">
-      <div class="payment-icon">💳</div>
-      <h2>Pembayaran PULSAKULA</h2>
-      <p>Silakan lakukan pembayaran melalui QRIS</p>
-    </div>
-
-    <div class="payment-amount">
-      <span>Total Pembayaran</span>
-      <h2 id="paymentTotal">Rp 0</h2>
-    </div>
-
-    <div class="qris-card">
-
-      <h3>SCAN QRIS</h3>
-
-      <div class="qris-image-box">
-        <img
-          id="qrisImage"
-          class="qris"
-          src="https://raw.githubusercontent.com/meyrafli24-a11y/Pulsa-agen/main/qr_ID1025376713323_07.01.26_176777048_1767770502053.jpeg"
-          alt="QRIS PULSAKULA">
-
-        <p id="qrisError" style="display:none;">
-          QRIS gagal dimuat. Silakan hubungi admin.
+    <!-- PROMO -->
+    <section class="promo-banner">
+      <div>
+        <h3>Belanja Digital Lebih Mudah!</h3>
+        <p>
+          Pilih produk favoritmu, masukkan nomor tujuan,
+          lalu lanjutkan ke pembayaran.
         </p>
       </div>
+      <div class="promo-icon">🎁</div>
+    </section>
 
-      <h3>PULSAKULA</h3>
-      <p>Scan kode QR menggunakan aplikasi pembayaran yang mendukung QRIS.</p>
+    <!-- KEUNGGULAN -->
+    <section>
+      <div class="section-title">
+        <h2>Mengapa PULSAKULA?</h2>
+        <p>Kemudahan dalam satu platform digital.</p>
+      </div>
 
-    </div>
+      <div class="benefits">
+        <div class="benefit-card">
+          <span>📱</span>
+          <h3>Mudah Digunakan</h3>
+          <p>Pilih produk dengan praktis.</p>
+        </div>
 
-    <div class="payment-info">
-      <p>🔒 Pembayaran melalui QRIS</p>
-      <p>📱 Pastikan nama merchant benar</p>
-      <p>⚡ Simpan bukti pembayaran</p>
-    </div>
+        <div class="benefit-card">
+          <span>💳</span>
+          <h3>Pembayaran QRIS</h3>
+          <p>Gunakan QRIS yang tersedia.</p>
+        </div>
 
-    <button class="main-btn" onclick="sendOrder()">
-      Konfirmasi Pembayaran via WhatsApp
-    </button>
+        <div class="benefit-card">
+          <span>💬</span>
+          <h3>Kontak Admin</h3>
+          <p>Konfirmasi pesanan melalui WhatsApp.</p>
+        </div>
+      </div>
+    </section>
 
-    <p class="payment-note">
-      Setelah membayar, kirim bukti pembayaran kepada admin.
+    <!-- PENCARIAN -->
+    <section class="search-section">
+      <input
+        type="search"
+        id="search"
+        placeholder="🔍 Cari pulsa, paket data, voucher..."
+        oninput="renderProducts()">
+    </section>
+
+    <!-- LAYANAN -->
+    <section>
+      <div class="section-title">
+        <h2>📲 Pilihan Layanan</h2>
+        <p>Pilih layanan yang kamu butuhkan.</p>
+      </div>
+
+      <div id="services" class="services"></div>
+    </section>
+
+    <!-- OPERATOR -->
+    <section id="operatorSection" hidden>
+      <div class="section-title">
+        <h2 id="operatorTitle">Pilih Operator</h2>
+        <p>Pilih operator sesuai nomor tujuan.</p>
+      </div>
+
+      <div id="operators" class="operators"></div>
+    </section>
+
+    <!-- PRODUK -->
+    <section id="productSection">
+      <div class="section-title">
+        <h2>🔥 Katalog Produk</h2>
+        <p>Pilih produk yang ingin kamu pesan.</p>
+      </div>
+
+      <div id="filters" class="filters"></div>
+
+      <div id="products" class="products">
+        <p>Memuat produk...</p>
+      </div>
+    </section>
+
+    <!-- CARA PEMESANAN -->
+    <section>
+      <div class="section-title">
+        <h2>🛍️ Cara Pemesanan</h2>
+        <p>Ikuti langkah berikut untuk membuat pesanan.</p>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div>
+            <h3>Pilih Produk</h3>
+            <p>Pilih layanan dan produk yang diinginkan.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">2</div>
+          <div>
+            <h3>Masukkan Nomor Tujuan</h3>
+            <p>Pastikan nomor atau ID pelanggan benar.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">3</div>
+          <div>
+            <h3>Lakukan Pembayaran</h3>
+            <p>Periksa total dan scan QRIS yang tersedia.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">4</div>
+          <div>
+            <h3>Konfirmasi Pesanan</h3>
+            <p>Kirim rincian dan bukti pembayaran kepada admin.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BANTUAN -->
+    <section class="support-box">
+      <h2>Butuh Bantuan?</h2>
+      <p>
+        Ada pertanyaan mengenai produk atau pesanan?
+        Hubungi admin PULSAKULA melalui WhatsApp.
+      </p>
+
+      <a
+        class="support-link"
+        href="https://wa.me/6283894053143"
+        target="_blank">
+        💬 Hubungi Admin
+      </a>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <h3>⚡ PULSAKULA</h3>
+    <p>
+      Platform katalog kebutuhan digital untuk memudahkan
+      pemesanan berbagai layanan.
     </p>
 
-  </div>
-</div>
+    <div class="footer-bottom">
+      © 2026 PULSAKULA. Semua Hak Dilindungi.
+    </div>
+  </footer>
 
-<script src="script.js"></script>
+  <!-- MODAL DETAIL PRODUK -->
+  <div class="modal" id="productModal">
+    <div class="modal-box">
+
+      <button class="close" onclick="closeProduct()">×</button>
+
+      <div id="productIcon" class="big-icon">📱</div>
+
+      <h2 id="productName">Nama Produk</h2>
+      <p id="productCategory"></p>
+      <h3 id="productPrice">Rp 0</h3>
+
+      <label for="target">Nomor HP / ID Pelanggan</label>
+
+      <input
+        id="target"
+        type="text"
+        placeholder="Masukkan nomor atau ID tujuan">
+
+      <button class="main-btn" onclick="addToCart()">
+        Tambahkan ke Keranjang
+      </button>
+
+    </div>
+  </div>
+
+  <!-- MODAL KERANJANG -->
+  <div class="modal" id="cartModal">
+    <div class="modal-box">
+
+      <button class="close" onclick="closeCart()">×</button>
+
+      <h2>🛒 Keranjang Belanja</h2>
+
+      <div id="cartItems"></div>
+
+      <div class="cart-total">
+        <h3 id="total">Total: Rp 0</h3>
+      </div>
+
+      <label for="customer">Nama Pemesan</label>
+
+      <input
+        id="customer"
+        type="text"
+        placeholder="Masukkan nama kamu">
+
+      <button class="main-btn" onclick="checkout()">
+        Lanjut Pembayaran
+      </button>
+
+    </div>
+  </div>
+
+  <!-- MODAL QRIS -->
+  <div class="modal" id="paymentModal">
+    <div class="modal-box payment-box">
+
+      <button class="close" onclick="closePayment()">×</button>
+
+      <div class="payment-header">
+        <div class="payment-icon">💳</div>
+        <h2>Pembayaran PULSAKULA</h2>
+        <p>Silakan periksa pembayaran kamu.</p>
+      </div>
+
+      <div class="payment-amount">
+        <span>Total Pembayaran</span>
+        <h2 id="paymentTotal">Rp 0</h2>
+      </div>
+
+      <div class="qris-card">
+
+        <h3>SCAN QRIS</h3>
+
+        <div class="qris-image-box">
+          <img
+            id="qrisImage"
+            class="qris"
+            src="https://raw.githubusercontent.com/meyrafli24-a11y/Pulsa-agen/main/qr_ID1025376713323_07.01.26_176777048_1767770502053.jpeg"
+            alt="QRIS PULSAKULA"
+            onerror="this.style.display='none';document.getElementById('qrisError').style.display='block';">
+
+          <p id="qrisError" style="display:none;color:red;">
+            Gambar QRIS gagal dimuat. Hubungi admin.
+          </p>
+        </div>
+
+        <h3>PULSAKULA</h3>
+
+        <p>
+          Scan kode QR menggunakan aplikasi pembayaran
+          yang mendukung QRIS.
+        </p>
+
+      </div>
+
+      <div class="payment-info">
+        <p>🔒 Pastikan nominal pembayaran sesuai.</p>
+        <p>📱 Periksa nama merchant sebelum membayar.</p>
+        <p>🧾 Simpan bukti pembayaran.</p>
+      </div>
+
+      <button class="main-btn" onclick="sendOrder()">
+        Konfirmasi Pembayaran via WhatsApp
+      </button>
+
+      <p class="payment-note">
+        Setelah membayar, kirim bukti pembayaran kepada admin.
+      </p>
+
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 
 </body>
 </html>
