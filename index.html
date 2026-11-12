@@ -91,6 +91,39 @@
   <a href="#produk" id="navCart">🛒<small>Keranjang</small></a>
 </nav>
 
+<!-- PEMBAYARAN QRIS -->
+<div id="qrisModal" class="overlay" hidden>
+  <div class="modal qris-modal">
+    <button class="close" id="closeQris">×</button>
+
+    <h2>Pembayaran QRIS</h2>
+    <p>Scan QRIS di bawah untuk membayar pesananmu.</p>
+
+    <div class="qris-owner">
+      <b>TOKO RAFZEL</b>
+      <small>QRIS Pembayaran Nasional</small>
+    </div>
+
+    <img src="qris.jpeg" alt="QRIS Toko Rafzel" class="qris-image">
+
+    <div class="qris-total">
+      <small>Total pembayaran</small>
+      <h2 id="qrisTotal">Rp0</h2>
+    </div>
+
+    <p class="qris-instruction">
+      1. Buka aplikasi pembayaran yang mendukung QRIS.<br>
+      2. Scan kode QR di atas.<br>
+      3. Periksa nama penerima sebelum membayar.<br>
+      4. Simpan bukti pembayaran.
+    </p>
+
+    <button id="confirmPayment" class="primary">
+      Saya Sudah Membayar
+    </button>
+  </div>
+</div>
+
 <script src="script.js"></script>
 </body>
 </html>
