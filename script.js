@@ -1,9 +1,5 @@
 
-// ========================================
-// CHECKOUT - BUKA PEMBAYARAN QRIS
-// ========================================
-
-function checkout() {
+function sendOrder() {
   if (cart.length === 0) {
     alert("Keranjang masih kosong!");
     return;
@@ -12,35 +8,31 @@ function checkout() {
   const customer = document.getElementById("customer").value.trim();
 
   if (!customer) {
-    alert("Masukkan nama pemesan!");
+    alert("Nama pemesan belum diisi!");
     return;
   }
 
-  const total = cart.reduce((sum, item) => {
-    return sum + Number(item.price || 0);
-  }, 0);
+  const total = cart.reduce((sum, item) =>
+    sum + Number(item.price), 0
+  );
 
-  // Tampilkan total pembayaran
-  document.getElementById("paymentTotal").textContent =
-    rupiah(total);
+  let message = `KONFIRMASI PEMBAYARAN PULSAKULA\n\n`;
+  message += `Nama Pemesan: ${customer}\n`;
+  message += `Status: SUDAH MELAKUKAN PEMBAYARAN\n\n`;
+  message += `DETAIL PESANAN:\n`;
 
-  // Pastikan gambar QRIS terlihat
-  const qris = document.getElementById("qrisImage");
-  const error = document.getElementById("qrisError");
+  cart.forEach((item, index) => {
+    message += `\n${index + 1}. ${item.name}\n`;
+    message += `Tujuan: ${item.target}\n`;
+    message += `Harga: ${rupiah(item.price)}\n`;
+  });
 
-  if (qris) {
-    qris.src = "https://raw.githubusercontent.com/meyrafli24-a11y/Pulsa-agen/main/qr_ID1025376713323_07.01.26_176777048_1767770502053.jpeg";
+  message += `\nTOTAL PEMBAYARAN: ${rupiah(total)}\n`;
+  message += `\nSaya akan mengirimkan bukti pembayaran berupa gambar setelah pesan ini.`;
+  message += `\nMohon periksa pembayaran dan proses pesanan saya.`;
 
-    qris.style.display = "block";
-  }
+  const url = "https://wa.me/" + ADMIN_WA +
+    "?text=" + encodeURIComponent(message);
 
-  if (error) {
-    error.style.display = "none";
-  }
-
-  // Tutup keranjang
-  closeCart();
-
-  // Buka pembayaran
-  document.getElementById("paymentModal").classList.add("show");
+  window.open(url, "_blank");
 }
