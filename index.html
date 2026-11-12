@@ -3,75 +3,150 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Daftar Kartu Jaringan & Paket Data</title>
+<title>Marketplace Paket Data</title>
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',system-ui,sans-serif; }
   body {
-    background: linear-gradient(135deg,#0f172a,#1e293b);
-    color:#e2e8f0;
-    padding:24px;
+    background:#f5f7fb;
+    color:#1e293b;
+    padding:20px;
     min-height:100vh;
   }
-  h1 { text-align:center; font-size:1.8rem; margin-bottom:6px; }
-  .subtitle { text-align:center; color:#94a3b8; margin-bottom:24px; font-size:.9rem; }
 
-  /* Filter */
-  .filter-bar {
-    display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-bottom:28px;
+  /* Header */
+  .header {
+    max-width:1200px; margin:0 auto 20px;
+    display:flex; flex-wrap:wrap; gap:12px; align-items:center; justify-content:space-between;
   }
-  .filter-bar button {
-    background:#1e293b; color:#cbd5e1; border:1px solid #334155;
-    padding:8px 16px; border-radius:20px; cursor:pointer; font-size:.85rem;
+  .header h1 { font-size:1.5rem; color:#0f172a; }
+  .header h1 span { color:#2563eb; }
+
+  /* Toolbar */
+  .toolbar {
+    max-width:1200px; margin:0 auto 24px;
+    display:flex; flex-wrap:wrap; gap:10px; align-items:center;
+  }
+  .search-box {
+    flex:1; min-width:200px; position:relative;
+  }
+  .search-box input {
+    width:100%; padding:12px 16px 12px 42px;
+    border:1px solid #e2e8f0; border-radius:12px;
+    font-size:.9rem; background:#fff; outline:none;
     transition:.2s;
   }
-  .filter-bar button:hover { background:#334155; }
-  .filter-bar button.active { background:#3b82f6; color:#fff; border-color:#3b82f6; }
+  .search-box input:focus { border-color:#2563eb; box-shadow:0 0 0 3px rgba(37,99,235,.15); }
+  .search-box::before {
+    content:'🔍'; position:absolute; left:14px; top:50%; transform:translateY(-50%);
+    font-size:.9rem;
+  }
+  .toolbar select {
+    padding:12px 14px; border:1px solid #e2e8f0; border-radius:12px;
+    background:#fff; font-size:.85rem; cursor:pointer; outline:none;
+  }
+
+  /* Kategori pills */
+  .pills {
+    max-width:1200px; margin:0 auto 24px;
+    display:flex; flex-wrap:wrap; gap:8px;
+  }
+  .pills button {
+    padding:8px 16px; border-radius:20px; border:1px solid #e2e8f0;
+    background:#fff; color:#475569; font-size:.82rem; cursor:pointer;
+    transition:.2s; font-weight:500;
+  }
+  .pills button:hover { border-color:#2563eb; color:#2563eb; }
+  .pills button.active { background:#2563eb; color:#fff; border-color:#2563eb; }
 
   /* Grid */
   .grid {
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-    gap:18px;
     max-width:1200px; margin:0 auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:16px;
   }
 
-  /* Card */
+  /* Card baru */
   .card {
-    background:#1e293b;
-    border:1px solid #334155;
+    background:#fff;
     border-radius:16px;
-    padding:18px;
-    display:flex; flex-direction:column; gap:10px;
-    transition:transform .2s, box-shadow .2s;
+    padding:20px;
+    box-shadow:0 1px 3px rgba(0,0,0,.06);
+    border:1px solid #f1f5f9;
+    display:flex; flex-direction:column; gap:12px;
+    transition:transform .25s, box-shadow .25s;
     position:relative;
-    overflow:hidden;
   }
-  .card:hover { transform:translateY(-4px); box-shadow:0 10px 30px rgba(0,0,0,.4); }
-  .card::before {
-    content:''; position:absolute; top:0; left:0; right:0; height:4px;
-    background:var(--accent,#3b82f6);
+  .card:hover { transform:translateY(-6px); box-shadow:0 12px 30px rgba(0,0,0,.12); }
+
+  .card-top { display:flex; align-items:center; gap:10px; }
+  .logo {
+    width:42px; height:42px; border-radius:12px;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800; font-size:.95rem; color:#fff;
+    flex-shrink:0;
   }
-  .card .operator { font-size:.75rem; text-transform:uppercase; letter-spacing:1px; color:#94a3b8; }
-  .card h3 { font-size:1.05rem; color:#f1f5f9; }
-  .card .price { font-size:1.5rem; font-weight:700; color:#22c55e; }
-  .card .price span { font-size:.8rem; color:#94a3b8; font-weight:400; }
-  .card .quota { font-size:.85rem; color:#cbd5e1; }
-  .card .desc { font-size:.8rem; color:#94a3b8; line-height:1.4; }
-  .tag {
-    display:inline-block; font-size:.7rem; padding:3px 8px; border-radius:10px;
-    background:#334155; color:#cbd5e1; margin-top:auto; align-self:flex-start;
+  .op-name { font-size:.85rem; font-weight:600; color:#0f172a; }
+  .op-sub { font-size:.72rem; color:#94a3b8; }
+
+  .card h3 { font-size:1rem; color:#1e293b; font-weight:600; line-height:1.3; }
+
+  .quota-box {
+    background:#f8fafc; border-radius:10px; padding:10px 12px;
+    display:flex; align-items:center; gap:8px;
+    font-size:.82rem; color:#475569; font-weight:500;
   }
-  .tag.murah { background:#14532d; color:#86efac; }
-  .tag.menengah { background:#78350f; color:#fcd34d; }
-  .tag.mahal { background:#7f1d1d; color:#fca5a5; }
+  .quota-box .icon { font-size:1rem; }
+
+  .price-row { display:flex; align-items:baseline; gap:6px; margin-top:auto; }
+  .price { font-size:1.4rem; font-weight:800; color:#0f172a; }
+  .price-old { font-size:.8rem; color:#94a3b8; text-decoration:line-through; }
+
+  .desc { font-size:.75rem; color:#94a3b8; line-height:1.4; }
+
+  .btn-beli {
+    display:block; text-align:center; text-decoration:none;
+    background:#2563eb; color:#fff; padding:11px; border-radius:10px;
+    font-size:.85rem; font-weight:600; margin-top:4px;
+    transition:.2s;
+  }
+  .btn-beli:hover { background:#1d4ed8; }
+
+  .badge {
+    position:absolute; top:14px; right:14px;
+    font-size:.65rem; font-weight:700; padding:4px 9px; border-radius:20px;
+    text-transform:uppercase; letter-spacing:.5px;
+  }
+  .badge.murah { background:#dcfce7; color:#15803d; }
+  .badge.menengah { background:#fef3c7; color:#b45309; }
+  .badge.mahal { background:#fee2e2; color:#b91c1c; }
+
+  .empty {
+    text-align:center; padding:60px 20px; color:#94a3b8;
+    grid-column:1/-1; font-size:.95rem;
+  }
 </style>
 </head>
 <body>
 
-<h1>📶 Daftar Kartu Jaringan & Paket Data</h1>
-<p class="subtitle">Dari 5 ribuan sampai paket besar — sesuai kebutuhan masyarakat</p>
+<div class="header">
+  <h1>🛒 Marketplace <span>Paket Data</span></h1>
+  <div style="font-size:.8rem;color:#94a3b8;">Harga transparan, sesuai kebutuhan</div>
+</div>
 
-<div class="filter-bar" id="filterBar">
+<div class="toolbar">
+  <div class="search-box">
+    <input type="text" id="search" placeholder="Cari operator atau paket...">
+  </div>
+  <select id="sort">
+    <option value="default">Urutkan</option>
+    <option value="asc">Harga Termurah</option>
+    <option value="desc">Harga Termahal</option>
+    <option value="az">Nama A-Z</option>
+  </select>
+</div>
+
+<div class="pills" id="pills">
   <button class="active" data-filter="all">Semua</button>
   <button data-filter="murah">💰 5 Ribuan</button>
   <button data-filter="menengah">📱 Menengah</button>
@@ -82,61 +157,89 @@
 
 <script>
 const paketData = [
-  // MURAH (5 ribuan)
-  { operator:"Telkomsel", nama:"Paket Serbu / Serba 5 Ribu", harga:5000, kuota:"3 GB / 1 hari", desc:"Cocok untuk internetan darurat seharian dengan budget minim.", kategori:"murah", accent:"#ef4444" },
-  { operator:"Tri (3)", nama:"Happy", harga:5650, kuota:"1 GB / 1 hari", desc:"Pilihan murah untuk koneksi darurat harian.", kategori:"murah", accent:"#a855f7" },
-  { operator:"Indosat IM3", nama:"IM3 Mini", harga:5000, kuota:"1 GB / 3 hari", desc:"Kombinasi kuota utama dan malam untuk hemat.", kategori:"murah", accent:"#facc15" },
-
-  // MENENGAH (6rb - 25rb)
-  { operator:"XL", nama:"HotRod Mini", harga:6200, kuota:"1 GB / 2 hari", desc:"Paket kilat untuk kebutuhan singkat.", kategori:"menengah", accent:"#3b82f6" },
-  { operator:"Indosat", nama:"Freedom Mini", harga:10000, kuota:"5 GB / 2 hari", desc:"Kuota besar untuk beberapa hari pemakaian.", kategori:"menengah", accent:"#facc15" },
-  { operator:"Axis", nama:"AIGO Bronet Mini", harga:9900, kuota:"2 GB / 3 hari", desc:"Hemat untuk streaming ringan beberapa hari.", kategori:"menengah", accent:"#8b5cf6" },
-  { operator:"Telkomsel", nama:"Data Mini", harga:11750, kuota:"1 GB / 7 hari", desc:"Masa aktif seminggu untuk pemakaian ringan.", kategori:"menengah", accent:"#ef4444" },
-  { operator:"Smartfren", nama:"Smartfren Mingguan", harga:10700, kuota:"2 GB / 7 hari", desc:"Pilihan mingguan dengan harga terjangkau.", kategori:"menengah", accent:"#ec4899" },
-  { operator:"by.U", nama:"by.U Mini", harga:13450, kuota:"2,5 GB / 5 hari", desc:"Fleksibel, cocok untuk anak muda.", kategori:"menengah", accent:"#06b6d4" },
-
-  // BESAR (30rb+)
-  { operator:"Indosat", nama:"Freedom Internet", harga:30000, kuota:"15 GB", desc:"Paket menengah untuk kebutuhan bulanan ringan.", kategori:"mahal", accent:"#facc15" },
-  { operator:"Smartfren", nama:"5G Unlimited", harga:80000, kuota:"Unlimited mulai 40 GB", desc:"Unlimited untuk pemakaian berat sebulan.", kategori:"mahal", accent:"#ec4899" },
-  { operator:"Axis", nama:"5G AF Bronet", harga:100000, kuota:"45 GB / bulan", desc:"Kuota besar untuk kerja & streaming.", kategori:"mahal", accent:"#8b5cf6" },
-  { operator:"XL", nama:"Prabayar Ultra 5G+", harga:150000, kuota:"150 GB – 500 GB", desc:"Kuota jumbo untuk kebutuhan sangat tinggi.", kategori:"mahal", accent:"#3b82f6" },
-  { operator:"Indosat", nama:"Freedom Jumbo", harga:150000, kuota:"150 GB / 28 hari", desc:"Paket besar untuk pemakaian intensif.", kategori:"mahal", accent:"#facc15" }
+  { operator:"Telkomsel", nama:"Paket Serbu 5 Ribu", harga:5000, hargaAsli:8000, kuota:"3 GB / 1 hari", desc:"Internetan darurat seharian, budget minim.", kategori:"murah", warna:"#e11d48" },
+  { operator:"Tri (3)", nama:"Happy Harian", harga:5650, hargaAsli:null, kuota:"1 GB / 1 hari", desc:"Koneksi darurat harian yang murah.", kategori:"murah", warna:"#9333ea" },
+  { operator:"Indosat IM3", nama:"IM3 Mini", harga:5000, hargaAsli:7000, kuota:"1 GB / 3 hari", desc:"Kuota utama + malam, hemat.", kategori:"murah", warna:"#eab308" },
+  { operator:"XL", nama:"HotRod Mini", harga:6200, hargaAsli:null, kuota:"1 GB / 2 hari", desc:"Paket kilat untuk kebutuhan singkat.", kategori:"menengah", warna:"#2563eb" },
+  { operator:"Indosat", nama:"Freedom Mini", harga:10000, hargaAsli:15000, kuota:"5 GB / 2 hari", desc:"Kuota besar beberapa hari pemakaian.", kategori:"menengah", warna:"#eab308" },
+  { operator:"Axis", nama:"AIGO Bronet Mini", harga:9900, hargaAsli:null, kuota:"2 GB / 3 hari", desc:"Hemat untuk streaming ringan.", kategori:"menengah", warna:"#7c3aed" },
+  { operator:"Telkomsel", nama:"Data Mini", harga:11750, hargaAsli:null, kuota:"1 GB / 7 hari", desc:"Masa aktif seminggu, pemakaian ringan.", kategori:"menengah", warna:"#e11d48" },
+  { operator:"Smartfren", nama:"Smart Mingguan", harga:10700, hargaAsli:13000, kuota:"2 GB / 7 hari", desc:"Mingguan harga terjangkau.", kategori:"menengah", warna:"#db2777" },
+  { operator:"by.U", nama:"by.U Mini", harga:13450, hargaAsli:null, kuota:"2,5 GB / 5 hari", desc:"Fleksibel, cocok anak muda.", kategori:"menengah", warna:"#0891b2" },
+  { operator:"Indosat", nama:"Freedom Internet", harga:30000, hargaAsli:40000, kuota:"15 GB / 30 hari", desc:"Bulanan ringan untuk kerja & sosmed.", kategori:"mahal", warna:"#eab308" },
+  { operator:"Smartfren", nama:"5G Unlimited", harga:80000, hargaAsli:100000, kuota:"Unlimited 40 GB", desc:"Unlimited untuk pemakaian berat.", kategori:"mahal", warna:"#db2777" },
+  { operator:"Axis", nama:"5G AF Bronet", harga:100000, hargaAsli:null, kuota:"45 GB / bulan", desc:"Kuota besar kerja & streaming.", kategori:"mahal", warna:"#7c3aed" },
+  { operator:"XL", nama:"Ultra 5G+", harga:150000, hargaAsli:180000, kuota:"150 GB – 500 GB", desc:"Kuota jumbo kebutuhan tinggi.", kategori:"mahal", warna:"#2563eb" },
+  { operator:"Indosat", nama:"Freedom Jumbo", harga:150000, hargaAsli:null, kuota:"150 GB / 28 hari", desc:"Paket besar pemakaian intensif.", kategori:"mahal", warna:"#eab308" }
 ];
 
 const grid = document.getElementById("grid");
-const filterBar = document.getElementById("filterBar");
+const pills = document.getElementById("pills");
+const search = document.getElementById("search");
+const sortSel = document.getElementById("sort");
 
-function rupiah(n) {
-  return "Rp" + n.toLocaleString("id-ID");
-}
+let state = { filter:"all", q:"", sort:"default" };
 
-function render(filter = "all") {
+const rupiah = n => "Rp" + n.toLocaleString("id-ID");
+const inisial = op => op.replace(/[^A-Za-z]/g,"").slice(0,2).toUpperCase();
+
+function render() {
+  let data = [...paketData];
+
+  if (state.filter !== "all") data = data.filter(p => p.kategori === state.filter);
+  if (state.q) {
+    const q = state.q.toLowerCase();
+    data = data.filter(p =>
+      p.operator.toLowerCase().includes(q) ||
+      p.nama.toLowerCase().includes(q)
+    );
+  }
+  if (state.sort === "asc") data.sort((a,b) => a.harga - b.harga);
+  if (state.sort === "desc") data.sort((a,b) => b.harga - a.harga);
+  if (state.sort === "az") data.sort((a,b) => a.nama.localeCompare(b.nama));
+
   grid.innerHTML = "";
-  const data = filter === "all" ? paketData : paketData.filter(p => p.kategori === filter);
+  if (!data.length) {
+    grid.innerHTML = `<div class="empty">😕 Paket tidak ditemukan. Coba kata kunci lain.</div>`;
+    return;
+  }
+
   data.forEach(p => {
     const card = document.createElement("div");
     card.className = "card";
-    card.style.setProperty("--accent", p.accent);
+    const badgeLabel = p.kategori === "murah" ? "Hemat" : p.kategori === "menengah" ? "Populer" : "Jumbo";
     card.innerHTML = `
-      <div class="operator">${p.operator}</div>
+      <span class="badge ${p.kategori}">${badgeLabel}</span>
+      <div class="card-top">
+        <div class="logo" style="background:${p.warna}">${inisial(p.operator)}</div>
+        <div>
+          <div class="op-name">${p.operator}</div>
+          <div class="op-sub">Paket Data</div>
+        </div>
+      </div>
       <h3>${p.nama}</h3>
-      <div class="price">${rupiah(p.harga)} <span>/ paket</span></div>
-      <div class="quota">📦 ${p.kuota}</div>
+      <div class="quota-box"><span class="icon">📦</span> ${p.kuota}</div>
       <div class="desc">${p.desc}</div>
-      <span class="tag ${p.kategori}">${
-        p.kategori === "murah" ? "Hemat" : p.kategori === "menengah" ? "Menengah" : "Besar"
-      }</span>
+      <div class="price-row">
+        <span class="price">${rupiah(p.harga)}</span>
+        ${p.hargaAsli ? `<span class="price-old">${rupiah(p.hargaAsli)}</span>` : ""}
+      </div>
+      <a class="btn-beli" href="https://wa.me/6281234567890?text=${encodeURIComponent('Halo, saya mau beli ' + p.nama + ' (' + p.operator + ') ' + rupiah(p.harga))}" target="_blank">Beli Sekarang</a>
     `;
     grid.appendChild(card);
   });
 }
 
-filterBar.addEventListener("click", e => {
+pills.addEventListener("click", e => {
   if (e.target.tagName !== "BUTTON") return;
-  document.querySelectorAll("#filterBar button").forEach(b => b.classList.remove("active"));
+  pills.querySelectorAll("button").forEach(b => b.classList.remove("active"));
   e.target.classList.add("active");
-  render(e.target.dataset.filter);
+  state.filter = e.target.dataset.filter;
+  render();
 });
+
+search.addEventListener("input", e => { state.q = e.target.value; render(); });
+sortSel.addEventListener("change", e => { state.sort = e.target.value; render(); });
 
 render();
 </script>
