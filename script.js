@@ -1,52 +1,17 @@
 
 // ========================================
-// PULSAKULA - SISTEM TOKO DIGITAL
+// PULSAKULA - JAVASCRIPT
 // ========================================
 
 const ADMIN_WA = "6283894053143";
+
 const QRIS_URL = "https://raw.githubusercontent.com/meyrafli24-a11y/Pulsa-agen/main/qr_ID1025376713323_07.01.26_176777048_1767770502053.jpeg";
 
-const EWALLET_PROFIT = 2000;
-const TRANSFER_PROFIT = 2000;
-
 let products = [];
-let selectedProduct = null;
 let cart = [];
+let selectedProduct = null;
 let activeCategory = "Semua";
 let activeOperator = "";
-
-// ========================================
-// LAYANAN
-// ========================================
-
-const serviceList = [
-  ["Pulsa","📱","Isi ulang pulsa"],
-  ["Paket Data","🌐","Paket internet"],
-  ["Masa Aktif","⏳","Perpanjang masa aktif"],
-  ["Token PLN","⚡","Token listrik"],
-  ["E-Wallet","💳","Isi saldo e-wallet"],
-  ["Transfer","🏦","Layanan transfer"],
-  ["Voucher Game","🎮","Top up permainan"],
-  ["Telepon & SMS","☎️","Paket komunikasi"],
-  ["TV & Hiburan","📺","Voucher hiburan"],
-  ["Tagihan","🧾","Bayar tagihan"],
-  ["PDAM","💧","Tagihan air"],
-  ["BPJS","🏥","Iuran BPJS"],
-  ["Internet & WiFi","📡","Pembayaran internet"]
-];
-
-const operators = [
-  ["Telkomsel","🔴"],
-  ["Indosat","🟡"],
-  ["XL","🔵"],
-  ["Tri","⚫"],
-  ["Smartfren","🔴"],
-  ["Axis","🟣"]
-];
-
-// ========================================
-// PRODUK DEMO
-// ========================================
 
 const demoProducts = [
   {name:"Telkomsel 5.000",category:"Pulsa",price:6500,operator:"Telkomsel",icon:"📱"},
@@ -74,34 +39,66 @@ const demoProducts = [
   {name:"Free Fire 355 Diamond",category:"Voucher Game",price:50000,icon:"🎮"}
 ];
 
+const services = [
+  ["Pulsa","📱"],
+  ["Paket Data","🌐"],
+  ["Token PLN","⚡"],
+  ["Voucher Game","🎮"],
+  ["E-Wallet","💳"],
+  ["Transfer","🏦"]
+];
+
+const operators = [
+  ["Telkomsel","🔴"],
+  ["Indosat","🟡"],
+  ["XL","🔵"],
+  ["Tri","⚫"],
+  ["Smartfren","🔴"],
+  ["Axis","🟣"]
+];
+
 // ========================================
-// FORMAT RUPIAH
+// FORMAT HARGA
 // ========================================
 
-function rupiah(number) {
-  return "Rp " + Number(number || 0).toLocaleString("id-ID");
+function rupiah(value) {
+  return "Rp " + Number(value || 0).toLocaleString("id-ID");
 }
 
-function getTotal() {
-  return cart.reduce((sum,item) =>
-    sum + Number(item.price || 0),0
-  );
+function totalHarga() {
+  return cart.reduce((sum,item) => sum + item.price,0);
 }
 
 // ========================================
-// MEMUAT PRODUK
+// TAMPILKAN LAYANAN
+// ========================================
+
+function renderServices() {
+  const area = document.getElementById("services");
+  if (!area) return;
+
+  area.innerHTML = services.map(item => `
+    <button class="service-card" onclick="selectCategory('${item[0]}')">
+      <div class="service-icon">${item[1]}</div>
+      <b>${item[0]}</b>
+    </button>
+  `).join("");
+}
+
+// ========================================
+// AMBIL PRODUK BACKEND
 // ========================================
 
 async function loadProducts() {
   try {
     const response = await fetch("/api/products");
-    if (!response.ok) throw new Error("API gagal");
+    if (!response.ok) throw new Error("Produk API tidak tersedia");
 
     const data = await response.json();
 
-    if (data.success && Array.isArray(data.products) && data.products.length) {
+    if (Array.isArray(data.products) && data.products.length > 0) {
       products = data.products.map(item => ({
-        name: item.name || item.product_name || "Produk",
+        name: item.name || item.product_name,
         category: item.category || "Lainnya",
         price: Number(item.price || item.selling_price || 0),
         operator: item.operator || "",
@@ -111,32 +108,12 @@ async function loadProducts() {
       products = [...demoProducts];
     }
   } catch (error) {
-    console.log("Menggunakan katalog demo:",error);
+    console.log(error);
     products = [...demoProducts];
   }
 
-  products.sort((a,b) => a.price - b.price);
-
   renderFilters();
   renderProducts();
-}
-
-// ========================================
-// LAYANAN
-// ========================================
-
-function renderServices() {
-  const container = document.getElementById("services");
-  if (!container) return;
-
-  container.innerHTML = serviceList.map(item => `
-    <button class="service-card"
-      onclick="selectCategory('${item[0]}')">
-      <div class="service-icon">${item[1]}</div>
-      <b>${item[0]}</b>
-      <small>${item[2]}</small>
-    </button>
-  `).join("");
 }
 
 // ========================================
@@ -148,46 +125,33 @@ function selectCategory(category) {
   activeOperator = "";
 
   const operatorSection = document.getElementById("operatorSection");
-  const productSection = document.getElementById("productSection");
 
   if (category === "E-Wallet" || category === "Transfer") {
-    openCustomWallet(category);
+    openCustomProduct(category);
     return;
   }
 
   if (category === "Pulsa" || category === "Paket Data") {
-    operatorSection.hidden = false;
+    if (operatorSection) operatorSection.hidden = false;
 
-    document.getElementById("operatorTitle").textContent =
-      "Pilih Operator " + category;
+    const title = document.getElementById("operatorTitle");
+    if (title) title.textContent = "Pilih Operator";
 
     renderOperators();
-    renderFilters();
-    renderProducts();
-
-    operatorSection.scrollIntoView({behavior:"smooth"});
-    return;
+  } else {
+    if (operatorSection) operatorSection.hidden = true;
   }
-
-  operatorSection.hidden = true;
 
   renderFilters();
   renderProducts();
-
-  productSection.scrollIntoView({behavior:"smooth"});
 }
 
-// ========================================
-// OPERATOR
-// ========================================
-
 function renderOperators() {
-  const container = document.getElementById("operators");
-  if (!container) return;
+  const area = document.getElementById("operators");
+  if (!area) return;
 
-  container.innerHTML = operators.map(item => `
-    <button class="operator-card"
-      onclick="selectOperator('${item[0]}')">
+  area.innerHTML = operators.map(item => `
+    <button class="operator-card" onclick="selectOperator('${item[0]}')">
       <div>${item[1]}</div>
       <b>${item[0]}</b>
     </button>
@@ -197,28 +161,21 @@ function renderOperators() {
 function selectOperator(operator) {
   activeOperator = operator;
   renderProducts();
-
-  document.getElementById("productSection")
-    .scrollIntoView({behavior:"smooth"});
 }
 
 // ========================================
-// FILTER
+// FILTER PRODUK
 // ========================================
 
 function renderFilters() {
-  const container = document.getElementById("filters");
-  if (!container) return;
+  const area = document.getElementById("filters");
+  if (!area) return;
 
-  const categories = [
-    "Semua",
-    ...new Set(products.map(item => item.category))
-  ];
+  const categories = ["Semua", ...new Set(products.map(p => p.category))];
 
-  container.innerHTML = categories.map(category => `
-    <button class="filter-btn ${
-      activeCategory === category ? "active" : ""
-    }" onclick="filterCategory('${category}')">
+  area.innerHTML = categories.map(category => `
+    <button class="filter-btn ${activeCategory === category ? "active" : ""}"
+      onclick="filterCategory('${category}')">
       ${category}
     </button>
   `).join("");
@@ -227,56 +184,45 @@ function renderFilters() {
 function filterCategory(category) {
   activeCategory = category;
   activeOperator = "";
-
   renderFilters();
   renderProducts();
 }
 
 // ========================================
-// DAFTAR PRODUK
+// TAMPILKAN PRODUK
 // ========================================
 
 function renderProducts() {
-  const container = document.getElementById("products");
-  if (!container) return;
+  const area = document.getElementById("products");
+  if (!area) return;
 
   const search = document.getElementById("search");
   const keyword = search ? search.value.toLowerCase() : "";
 
-  let filtered = [...products].sort((a,b) => a.price - b.price);
+  let result = products.filter(item => {
+    const categoryMatch = activeCategory === "Semua" ||
+      item.category === activeCategory;
 
-  if (activeCategory !== "Semua") {
-    filtered = filtered.filter(item =>
-      item.category === activeCategory
-    );
-  }
+    const operatorMatch = !activeOperator ||
+      item.operator === activeOperator;
 
-  if (activeOperator) {
-    filtered = filtered.filter(item =>
-      item.operator === activeOperator
-    );
-  }
+    const searchMatch = item.name.toLowerCase().includes(keyword);
 
-  if (keyword) {
-    filtered = filtered.filter(item =>
-      item.name.toLowerCase().includes(keyword)
-    );
-  }
+    return categoryMatch && operatorMatch && searchMatch;
+  });
 
-  if (!filtered.length) {
-    container.innerHTML = "<p>Produk belum tersedia.</p>";
+  if (result.length === 0) {
+    area.innerHTML = "<p>Produk tidak ditemukan.</p>";
     return;
   }
 
-  container.innerHTML = filtered.map(item => `
+  area.innerHTML = result.map((item,index) => `
     <div class="product-card">
-      <div class="product-symbol">${item.icon || "📦"}</div>
+      <div class="product-symbol">${item.icon}</div>
       <h3>${item.name}</h3>
       <p>${item.category}</p>
       <div class="product-price">${rupiah(item.price)}</div>
-
-      <button class="choose-btn"
-        onclick="openProductByName('${encodeURIComponent(item.name)}')">
+      <button class="choose-btn" onclick="openProduct(${products.indexOf(item)})">
         Pilih Produk
       </button>
     </div>
@@ -287,32 +233,14 @@ function renderProducts() {
 // DETAIL PRODUK
 // ========================================
 
-function openProductByName(encodedName) {
-  const name = decodeURIComponent(encodedName);
-  const product = products.find(item => item.name === name);
+function openProduct(index) {
+  selectedProduct = products[index];
 
-  if (product) openProduct(product);
-}
-
-function openProduct(product) {
-  selectedProduct = {...product};
-
-  document.getElementById("productIcon").textContent =
-    product.icon || "📦";
-
-  document.getElementById("productName").textContent =
-    product.name;
-
-  document.getElementById("productCategory").textContent =
-    product.category;
-
-  document.getElementById("productPrice").textContent =
-    rupiah(product.price);
-
+  document.getElementById("productIcon").textContent = selectedProduct.icon;
+  document.getElementById("productName").textContent = selectedProduct.name;
+  document.getElementById("productCategory").textContent = selectedProduct.category;
+  document.getElementById("productPrice").textContent = rupiah(selectedProduct.price);
   document.getElementById("target").value = "";
-
-  const oldAmount = document.getElementById("customAmountWrap");
-  if (oldAmount) oldAmount.remove();
 
   document.getElementById("productModal").classList.add("show");
 }
@@ -322,62 +250,41 @@ function closeProduct() {
 }
 
 // ========================================
-// E-WALLET DAN TRANSFER
+// PRODUK NOMINAL BEBAS
 // ========================================
 
-function openCustomWallet(type) {
-  const isWallet = type === "E-Wallet";
-
+function openCustomProduct(category) {
   selectedProduct = {
-    name: isWallet ? "Isi Saldo E-Wallet" : "Transfer",
-    category: type,
+    name: category,
+    category: category,
     price: 0,
-    icon: isWallet ? "💳" : "🏦",
-    customWallet: true
+    icon: category === "E-Wallet" ? "💳" : "🏦",
+    custom: true
   };
 
-  document.getElementById("productIcon").textContent =
-    selectedProduct.icon;
-
-  document.getElementById("productName").textContent =
-    selectedProduct.name;
-
-  document.getElementById("productCategory").textContent =
-    "Masukkan nominal yang diinginkan";
-
-  document.getElementById("productPrice").textContent =
-    "Nominal bebas";
-
+  document.getElementById("productIcon").textContent = selectedProduct.icon;
+  document.getElementById("productName").textContent = category;
+  document.getElementById("productCategory").textContent = "Masukkan nominal";
+  document.getElementById("productPrice").textContent = "Nominal bebas";
   document.getElementById("target").value = "";
 
-  const oldAmount = document.getElementById("customAmountWrap");
-  if (oldAmount) oldAmount.remove();
+  let old = document.getElementById("customAmount");
+  if (old) old.remove();
 
-  const targetLabel = document.querySelector(
-    "#productModal label[for='target']"
-  );
+  const input = document.createElement("input");
+  input.id = "customAmount";
+  input.type = "number";
+  input.placeholder = "Masukkan nominal";
+  input.min = "1000";
 
-  const amountWrap = document.createElement("div");
-  amountWrap.id = "customAmountWrap";
-
-  amountWrap.innerHTML = `
-    <label for="walletAmount">Nominal transaksi</label>
-    <input id="walletAmount" type="number"
-      min="1000" step="1000"
-      placeholder="Contoh: 50000">
-  `;
-
-  targetLabel.parentNode.insertBefore(amountWrap,targetLabel);
-
-  targetLabel.textContent = isWallet
-    ? "Nomor E-Wallet tujuan"
-    : "Nomor rekening tujuan";
+  const target = document.getElementById("target");
+  target.parentNode.insertBefore(input,target);
 
   document.getElementById("productModal").classList.add("show");
 }
 
 // ========================================
-// TAMBAH KERANJANG
+// TAMBAH KE KERANJANG
 // ========================================
 
 function addToCart() {
@@ -390,38 +297,32 @@ function addToCart() {
     return;
   }
 
-  let price = Number(selectedProduct.price || 0);
+  let price = selectedProduct.price;
   let name = selectedProduct.name;
 
-  if (selectedProduct.customWallet) {
-    const amount = Number(
-      document.getElementById("walletAmount").value
-    );
+  if (selectedProduct.custom) {
+    const amount = Number(document.getElementById("customAmount").value);
 
     if (!amount || amount < 1000) {
       alert("Minimal nominal Rp 1.000!");
       return;
     }
 
-    const fee = selectedProduct.category === "E-Wallet"
-      ? EWALLET_PROFIT
-      : TRANSFER_PROFIT;
-
-    price = amount + fee;
+    price = amount + 2000;
     name += " " + rupiah(amount);
   }
 
   cart.push({
-    name,
+    name: name,
+    target: target,
     category: selectedProduct.category,
-    target,
-    price
+    price: price
   });
 
   closeProduct();
   renderCart();
 
-  alert("Produk berhasil ditambahkan ke keranjang!");
+  alert("Berhasil ditambahkan ke keranjang!");
 }
 
 // ========================================
@@ -429,17 +330,16 @@ function addToCart() {
 // ========================================
 
 function renderCart() {
-  const container = document.getElementById("cartItems");
+  const area = document.getElementById("cartItems");
   const count = document.getElementById("cartCount");
 
-  if (!container) return;
-
   if (count) count.textContent = cart.length;
+  if (!area) return;
 
-  if (!cart.length) {
-    container.innerHTML = "<p>Keranjang masih kosong.</p>";
+  if (cart.length === 0) {
+    area.innerHTML = "<p>Keranjang masih kosong.</p>";
   } else {
-    container.innerHTML = cart.map((item,index) => `
+    area.innerHTML = cart.map((item,index) => `
       <div class="cart-item">
         <div>
           <b>${item.name}</b>
@@ -452,7 +352,7 @@ function renderCart() {
   }
 
   const total = document.getElementById("total");
-  if (total) total.textContent = "Total: " + rupiah(getTotal());
+  if (total) total.textContent = "Total: " + rupiah(totalHarga());
 }
 
 function removeCart(index) {
@@ -470,11 +370,11 @@ function closeCart() {
 }
 
 // ========================================
-// CHECKOUT - TAMPILKAN QRIS
+// CHECKOUT QRIS
 // ========================================
 
 function checkout() {
-  if (!cart.length) {
+  if (cart.length === 0) {
     alert("Keranjang masih kosong!");
     return;
   }
@@ -486,50 +386,41 @@ function checkout() {
     return;
   }
 
-  const total = getTotal();
+  document.getElementById("paymentTotal").textContent = rupiah(totalHarga());
 
-  document.getElementById("paymentTotal").textContent =
-    rupiah(total);
-
-  const qris = document.getElementById("qrisImage");
+  const image = document.getElementById("qrisImage");
   const error = document.getElementById("qrisError");
 
-  if (qris) {
-    qris.src = QRIS_URL;
-    qris.style.display = "block";
+  if (image) {
+    image.style.display = "block";
+    image.onerror = function() {
+      image.style.display = "none";
+      if (error) error.style.display = "block";
+    };
+    image.onload = function() {
+      if (error) error.style.display = "none";
+      image.style.display = "block";
+    };
+    image.src = QRIS_URL;
   }
 
-  if (error) {
-    error.style.display = "none";
-  }
+  if (error) error.style.display = "none";
 
   closeCart();
-
-  const paymentModal = document.getElementById("paymentModal");
-
-  if (!paymentModal) {
-    alert("Modal pembayaran tidak ditemukan di HTML!");
-    return;
-  }
-
-  paymentModal.classList.add("show");
+  document.getElementById("paymentModal").classList.add("show");
 }
-
-// ========================================
-// TUTUP PEMBAYARAN
-// ========================================
 
 function closePayment() {
   document.getElementById("paymentModal").classList.remove("show");
 }
 
 // ========================================
-// KONFIRMASI WHATSAPP
+// KIRIM PESANAN KE WHATSAPP
 // ========================================
 
 function sendOrder() {
-  if (!cart.length) {
-    alert("Keranjang masih kosong!");
+  if (cart.length === 0) {
+    alert("Keranjang kosong!");
     return;
   }
 
@@ -540,25 +431,23 @@ function sendOrder() {
     return;
   }
 
-  const total = getTotal();
-
-  let message = "KONFIRMASI PESANAN PULSAKULA\n\n";
-  message += "Nama: " + customer + "\n";
-  message += "DETAIL PESANAN:\n";
+  let message = "PESANAN PULSAKULA\n\n";
+  message += "Nama: " + customer + "\n\n";
+  message += "Daftar Pesanan:\n";
 
   cart.forEach((item,index) => {
-    message += `\n${index + 1}. ${item.name}\n`;
-    message += `Tujuan: ${item.target}\n`;
-    message += `Harga: ${rupiah(item.price)}\n`;
+    message += "\n" + (index + 1) + ". " + item.name;
+    message += "\nTujuan: " + item.target;
+    message += "\nHarga: " + rupiah(item.price) + "\n";
   });
 
-  message += "\nTOTAL: " + rupiah(total);
-  message += "\n\nSaya akan mengirimkan bukti pembayaran berupa foto secara manual setelah pesan ini.";
+  message += "\nTOTAL: " + rupiah(totalHarga());
+  message += "\n\nSaya sudah melakukan pembayaran QRIS. Saya akan mengirim bukti pembayaran.";
 
-  const url = "https://wa.me/" + ADMIN_WA +
+  const whatsappURL = "https://wa.me/" + ADMIN_WA +
     "?text=" + encodeURIComponent(message);
 
-  window.open(url,"_blank");
+  window.open(whatsappURL,"_blank");
 }
 
 // ========================================
