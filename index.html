@@ -3,276 +3,143 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PULSAKULA - Digital Store</title>
-<link rel="stylesheet" href="style.css">
+<title>Daftar Kartu Jaringan & Paket Data</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
+  body {
+    background: linear-gradient(135deg,#0f172a,#1e293b);
+    color:#e2e8f0;
+    padding:24px;
+    min-height:100vh;
+  }
+  h1 { text-align:center; font-size:1.8rem; margin-bottom:6px; }
+  .subtitle { text-align:center; color:#94a3b8; margin-bottom:24px; font-size:.9rem; }
+
+  /* Filter */
+  .filter-bar {
+    display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-bottom:28px;
+  }
+  .filter-bar button {
+    background:#1e293b; color:#cbd5e1; border:1px solid #334155;
+    padding:8px 16px; border-radius:20px; cursor:pointer; font-size:.85rem;
+    transition:.2s;
+  }
+  .filter-bar button:hover { background:#334155; }
+  .filter-bar button.active { background:#3b82f6; color:#fff; border-color:#3b82f6; }
+
+  /* Grid */
+  .grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+    gap:18px;
+    max-width:1200px; margin:0 auto;
+  }
+
+  /* Card */
+  .card {
+    background:#1e293b;
+    border:1px solid #334155;
+    border-radius:16px;
+    padding:18px;
+    display:flex; flex-direction:column; gap:10px;
+    transition:transform .2s, box-shadow .2s;
+    position:relative;
+    overflow:hidden;
+  }
+  .card:hover { transform:translateY(-4px); box-shadow:0 10px 30px rgba(0,0,0,.4); }
+  .card::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:4px;
+    background:var(--accent,#3b82f6);
+  }
+  .card .operator { font-size:.75rem; text-transform:uppercase; letter-spacing:1px; color:#94a3b8; }
+  .card h3 { font-size:1.05rem; color:#f1f5f9; }
+  .card .price { font-size:1.5rem; font-weight:700; color:#22c55e; }
+  .card .price span { font-size:.8rem; color:#94a3b8; font-weight:400; }
+  .card .quota { font-size:.85rem; color:#cbd5e1; }
+  .card .desc { font-size:.8rem; color:#94a3b8; line-height:1.4; }
+  .tag {
+    display:inline-block; font-size:.7rem; padding:3px 8px; border-radius:10px;
+    background:#334155; color:#cbd5e1; margin-top:auto; align-self:flex-start;
+  }
+  .tag.murah { background:#14532d; color:#86efac; }
+  .tag.menengah { background:#78350f; color:#fcd34d; }
+  .tag.mahal { background:#7f1d1d; color:#fca5a5; }
+</style>
 </head>
 <body>
 
-<header class="navbar">
-  <div class="logo">⚡ PULSA<span>KULA</span></div>
-  <button class="cart-btn" onclick="openCart()">🛒 <b id="cartCount">0</b></button>
-</header>
+<h1>📶 Daftar Kartu Jaringan & Paket Data</h1>
+<p class="subtitle">Dari 5 ribuan sampai paket besar — sesuai kebutuhan masyarakat</p>
 
-<section class="hero">
-  <div class="hero-content">
-    <span class="badge">TOKO DIGITAL TERPERCAYA</span>
-    <h1>Semua Kebutuhan Digitalmu Ada di Sini!</h1>
-    <p>Isi pulsa, beli paket data, top up game, token listrik dan berbagai pembayaran dengan mudah.</p>
-    <a href="#layanan" class="hero-button">Jelajahi Sekarang →</a>
-  </div>
-  <div class="hero-art">
-    <div class="art-circle">📱</div>
-    <div class="art-card">⚡ Cepat & Praktis</div>
-  </div>
-</section>
-
-<section class="features">
-  <div>🔒<b>Aman</b><small>Pemesanan terarah</small></div>
-  <div>⚡<b>Praktis</b><small>Mudah digunakan</small></div>
-  <div>💬<b>Admin</b><small>Bantuan pesanan</small></div>
-</section>
-
-<main>
-<section class="section" id="layanan">
-  <div class="heading">
-    <span>JELAJAHI</span>
-    <h2>Pilih Layanan</h2>
-    <p>Berbagai kebutuhan digital tersedia.</p>
-  </div>
-  <div class="service-grid" id="services"></div>
-</section>
-
-<section class="section" id="produk-section">
-  <div class="heading">
-    <span>KATALOG PRODUK</span>
-    <h2>Produk Pilihan</h2>
-    <p>Pilih produk sesuai kebutuhanmu.</p>
-  </div>
-
-  <!-- WADAH PRODUK -->
-  <div id="products" class="product-grid" style="margin-top: 20px;"></div>
-  
-  <p class="notice">Harga yang ditampilkan merupakan harga contoh dan dapat berubah setelah konfirmasi admin.</p>
-</section>
-
-<section class="promo">
-  <div>
-    <span>PULSAKULA DIGITAL STORE</span>
-    <h2>Belanja digital lebih mudah!</h2>
-    <p>Pilih produk favoritmu dan pesan langsung melalui admin.</p>
-  </div>
-  <a href="#produk-section">Lihat Produk →</a>
-</section>
-
-<section class="section">
-  <div class="heading">
-    <span>MUDAH DAN PRAKTIS</span>
-    <h2>Bagaimana Cara Memesan?</h2>
-  </div>
-  <div class="steps">
-    <div><b>01</b><h3>Pilih Produk</h3><p>Tentukan layanan dan nominal.</p></div>
-    <div><b>02</b><h3>Isi Data</h3><p>Masukkan nomor tujuan dengan benar.</p></div>
-    <div><b>03</b><h3>Konfirmasi</h3><p>Kirim pesanan kepada admin.</p></div>
-  </div>
-</section>
-</main>
-
-<footer>
-  <h2>⚡ PULSAKULA</h2>
-  <p>Solusi kebutuhan digitalmu.</p>
-  <small>© 2026 PULSAKULA</small>
-</footer>
-
-<!-- MODAL KERANJANG -->
-<div class="modal" id="cartModal">
-  <div class="modal-box">
-    <button class="close" onclick="closeCart()">✕</button>
-    <h2>🛒 Keranjang Pesanan</h2>
-    <div id="cartItems"></div>
-    <h3 id="total">Total: Rp0</h3>
-    <label>Nama Pemesan</label>
-    <input id="customer" placeholder="Masukkan nama">
-    <button class="main-btn" onclick="checkout()">Lanjutkan Pesanan</button>
-  </div>
+<div class="filter-bar" id="filterBar">
+  <button class="active" data-filter="all">Semua</button>
+  <button data-filter="murah">💰 5 Ribuan</button>
+  <button data-filter="menengah">📱 Menengah</button>
+  <button data-filter="mahal">📊 Besar</button>
 </div>
 
-<!-- MODAL PEMBAYARAN (QRIS KAMU AMAN DI SINI) -->
-<div class="modal" id="paymentModal">
-  <div class="modal-box">
-    <button class="close" onclick="closePayment()">✕</button>
+<div class="grid" id="grid"></div>
 
-    <h2 style="text-align:center;">💳 Lakukan Pembayaran</h2>
-    <p style="text-align:center;">Silakan scan QRIS berikut untuk membayar pesanan.</p>
-
-    <img src="https://raw.githubusercontent.com/meyrafli24-a11y/Pulsa-agen/main/qr_ID1025376713323_07.01.26_176777048_1767770502053.jpeg" class="qris" alt="QRIS PULSAKULA">
-
-    <h3 style="text-align:center;">Total Pembayaran</h3>
-    <h2 id="paymentTotal" style="text-align:center;color:#16a34a;"></h2>
-
-    <div class="notice">
-      1. Buka aplikasi pembayaran.<br>
-      2. Scan QRIS di atas.<br>
-      3. Bayar sesuai nominal.<br>
-      4. Simpan bukti pembayaran.
-    </div>
-
-    <button class="main-btn" onclick="sendOrder()">Konfirmasi ke WhatsApp</button>
-  </div>
-</div>
-
-<nav class="bottom-nav">
-  <a href="#">⌂<small>Beranda</small></a>
-  <a href="#layanan">▦<small>Layanan</small></a>
-  <a href="#produk-section">◈<small>Produk</small></a>
-</nav>
-
-<!-- SISTEM JAVASCRIPT -->
 <script>
-// DATA PRODUK LENGKAP (DARI MURAH SAMPAI MAHAL)
-const dataProduk = [
-  // --- PULSA ---
-  { category: "Pulsa", name: "Telkomsel 5.000", price: 6500 },
-  { category: "Pulsa", name: "Telkomsel 10.000", price: 11500 },
-  { category: "Pulsa", name: "Telkomsel 25.000", price: 26000 },
-  { category: "Pulsa", name: "Telkomsel 50.000", price: 49500 },
-  { category: "Pulsa", name: "Indosat 10.000", price: 11000 },
-  { category: "Pulsa", name: "Indosat 25.000", price: 25500 },
-  { category: "Pulsa", name: "XL 10.000", price: 11000 },
-  { category: "Pulsa", name: "XL 50.000", price: 49000 },
-  { category: "Pulsa", name: "Tri 10.000", price: 10500 },
-  { category: "Pulsa", name: "Tri 50.000", price: 48500 },
+const paketData = [
+  // MURAH (5 ribuan)
+  { operator:"Telkomsel", nama:"Paket Serbu / Serba 5 Ribu", harga:5000, kuota:"3 GB / 1 hari", desc:"Cocok untuk internetan darurat seharian dengan budget minim.", kategori:"murah", accent:"#ef4444" },
+  { operator:"Tri (3)", nama:"Happy", harga:5650, kuota:"1 GB / 1 hari", desc:"Pilihan murah untuk koneksi darurat harian.", kategori:"murah", accent:"#a855f7" },
+  { operator:"Indosat IM3", nama:"IM3 Mini", harga:5000, kuota:"1 GB / 3 hari", desc:"Kombinasi kuota utama dan malam untuk hemat.", kategori:"murah", accent:"#facc15" },
 
-  // --- PAKET DATA (LENGKAP) ---
-  { category: "Paket Data", name: "Tri Data 1GB", price: 9000 },
-  { category: "Paket Data", name: "Indosat Data 1GB", price: 10000 },
-  { category: "Paket Data", name: "XL Data 1GB", price: 11000 },
-  { category: "Paket Data", name: "Telkomsel Data 1GB", price: 12000 },
-  
-  { category: "Paket Data", name: "Tri Data 3GB", price: 18000 },
-  { category: "Paket Data", name: "Telkomsel Data 2GB", price: 20000 },
-  { category: "Paket Data", name: "Indosat Data 3GB", price: 22000 },
-  { category: "Paket Data", name: "XL Data 4GB", price: 28000 },
-  
-  { category: "Paket Data", name: "Tri Data 10GB", price: 45000 },
-  { category: "Paket Data", name: "Telkomsel Data 5GB", price: 45000 },
-  { category: "Paket Data", name: "Indosat Data 8GB", price: 50000 },
-  { category: "Paket Data", name: "XL Data 10GB", price: 60000 },
-  
-  { category: "Paket Data", name: "Telkomsel Data 10GB", price: 80000 },
-  { category: "Paket Data", name: "Indosat Data 15GB", price: 85000 },
-  { category: "Paket Data", name: "Tri Data 25GB", price: 95000 },
-  { category: "Paket Data", name: "XL Data 20GB", price: 110000 },
-  
-  { category: "Paket Data", name: "Indosat Data 30GB", price: 140000 },
-  { category: "Paket Data", name: "Telkomsel Data 25GB", price: 150000 },
-  { category: "Paket Data", name: "Tri Data 50GB", price: 180000 },
-  { category: "Paket Data", name: "XL Data 50GB", price: 220000 },
-  { category: "Paket Data", name: "Telkomsel Data 50GB", price: 250000 },
+  // MENENGAH (6rb - 25rb)
+  { operator:"XL", nama:"HotRod Mini", harga:6200, kuota:"1 GB / 2 hari", desc:"Paket kilat untuk kebutuhan singkat.", kategori:"menengah", accent:"#3b82f6" },
+  { operator:"Indosat", nama:"Freedom Mini", harga:10000, kuota:"5 GB / 2 hari", desc:"Kuota besar untuk beberapa hari pemakaian.", kategori:"menengah", accent:"#facc15" },
+  { operator:"Axis", nama:"AIGO Bronet Mini", harga:9900, kuota:"2 GB / 3 hari", desc:"Hemat untuk streaming ringan beberapa hari.", kategori:"menengah", accent:"#8b5cf6" },
+  { operator:"Telkomsel", nama:"Data Mini", harga:11750, kuota:"1 GB / 7 hari", desc:"Masa aktif seminggu untuk pemakaian ringan.", kategori:"menengah", accent:"#ef4444" },
+  { operator:"Smartfren", nama:"Smartfren Mingguan", harga:10700, kuota:"2 GB / 7 hari", desc:"Pilihan mingguan dengan harga terjangkau.", kategori:"menengah", accent:"#ec4899" },
+  { operator:"by.U", nama:"by.U Mini", harga:13450, kuota:"2,5 GB / 5 hari", desc:"Fleksibel, cocok untuk anak muda.", kategori:"menengah", accent:"#06b6d4" },
 
-  // --- TOKEN PLN ---
-  { category: "Token PLN", name: "Token Listrik 20.000", price: 21500 },
-  { category: "Token PLN", name: "Token Listrik 50.000", price: 51500 },
-  { category: "Token PLN", name: "Token Listrik 100.000", price: 101500 },
-  { category: "Token PLN", name: "Token Listrik 200.000", price: 201500 },
-
-  // --- VOUCHER GAME ---
-  { category: "Voucher Game", name: "Free Fire 70 Diamond", price: 10000 },
-  { category: "Voucher Game", name: "Mobile Legends 86 Diamond", price: 22000 },
-  { category: "Voucher Game", name: "Mobile Legends 172 Diamond", price: 43000 },
-  { category: "Voucher Game", name: "Free Fire 355 Diamond", price: 50000 },
-
-  // --- E-WALLET ---
-  { category: "E-Wallet", name: "GoPay 10.000", price: 11000 },
-  { category: "E-Wallet", name: "OVO 20.000", price: 21000 },
-  { category: "E-Wallet", name: "DANA 50.000", price: 51000 },
-  { category: "E-Wallet", name: "GoPay 100.000", price: 101000 }
+  // BESAR (30rb+)
+  { operator:"Indosat", nama:"Freedom Internet", harga:30000, kuota:"15 GB", desc:"Paket menengah untuk kebutuhan bulanan ringan.", kategori:"mahal", accent:"#facc15" },
+  { operator:"Smartfren", nama:"5G Unlimited", harga:80000, kuota:"Unlimited mulai 40 GB", desc:"Unlimited untuk pemakaian berat sebulan.", kategori:"mahal", accent:"#ec4899" },
+  { operator:"Axis", nama:"5G AF Bronet", harga:100000, kuota:"45 GB / bulan", desc:"Kuota besar untuk kerja & streaming.", kategori:"mahal", accent:"#8b5cf6" },
+  { operator:"XL", nama:"Prabayar Ultra 5G+", harga:150000, kuota:"150 GB – 500 GB", desc:"Kuota jumbo untuk kebutuhan sangat tinggi.", kategori:"mahal", accent:"#3b82f6" },
+  { operator:"Indosat", nama:"Freedom Jumbo", harga:150000, kuota:"150 GB / 28 hari", desc:"Paket besar untuk pemakaian intensif.", kategori:"mahal", accent:"#facc15" }
 ];
 
-let cart = [];
-const rupiah = (val) => new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(val);
+const grid = document.getElementById("grid");
+const filterBar = document.getElementById("filterBar");
 
-// TAMPILKAN PRODUK
-function renderProducts() {
-  const container = document.getElementById("products");
-  if (!container) return;
-  container.innerHTML = "";
-  
-  dataProduk.forEach((item) => {
+function rupiah(n) {
+  return "Rp" + n.toLocaleString("id-ID");
+}
+
+function render(filter = "all") {
+  grid.innerHTML = "";
+  const data = filter === "all" ? paketData : paketData.filter(p => p.kategori === filter);
+  data.forEach(p => {
     const card = document.createElement("div");
-    card.className = "product-card";
+    card.className = "card";
+    card.style.setProperty("--accent", p.accent);
     card.innerHTML = `
-      <div class="product-symbol">📦</div>
-      <h3>${item.name}</h3>
-      <p>${item.category}</p>
-      <div class="product-bottom">
-        <b class="product-price" style="color: #16a34a; font-size: 14px; display: block;">${rupiah(item.price)}</b>
-        <button class="choose-btn" onclick="bukaProduk('${item.name}', ${item.price})">Pilih</button>
-      </div>
+      <div class="operator">${p.operator}</div>
+      <h3>${p.nama}</h3>
+      <div class="price">${rupiah(p.harga)} <span>/ paket</span></div>
+      <div class="quota">📦 ${p.kuota}</div>
+      <div class="desc">${p.desc}</div>
+      <span class="tag ${p.kategori}">${
+        p.kategori === "murah" ? "Hemat" : p.kategori === "menengah" ? "Menengah" : "Besar"
+      }</span>
     `;
-    container.appendChild(card);
+    grid.appendChild(card);
   });
 }
 
-// TOMBOL PILIH
-function bukaProduk(nama, harga) {
-  const target = prompt("Masukkan Nomor HP / ID Pelanggan untuk " + nama + ":");
-  if (!target) return;
-  cart.push({ name: nama, price: harga, target: target });
-  document.getElementById("cartCount").innerText = cart.length;
-  alert("Berhasil masuk keranjang!\nKlik ikon 🛒 di atas untuk lanjut bayar.");
-}
+filterBar.addEventListener("click", e => {
+  if (e.target.tagName !== "BUTTON") return;
+  document.querySelectorAll("#filterBar button").forEach(b => b.classList.remove("active"));
+  e.target.classList.add("active");
+  render(e.target.dataset.filter);
+});
 
-// KERANJANG
-function openCart() {
-  const cartModal = document.getElementById("cartModal");
-  const cartItems = document.getElementById("cartItems");
-  if (!cartModal) return;
-  
-  cartItems.innerHTML = "";
-  let total = 0;
-  
-  if (cart.length === 0) {
-    cartItems.innerHTML = "<p>Keranjang masih kosong.</p>";
-  } else {
-    cart.forEach((item) => {
-      cartItems.innerHTML += `<div style="border-bottom:1px solid #ddd; padding:10px 0; font-size:12px;"><b>${item.name}</b><br>Tujuan: ${item.target}<br><span style="color:green;">${rupiah(item.price)}</span></div>`;
-      total += item.price;
-    });
-  }
-  document.getElementById("total").innerText = "Total: " + rupiah(total);
-  cartModal.classList.add("show");
-}
-function closeCart() { document.getElementById("cartModal").classList.remove("show"); }
-
-// CHECKOUT
-function checkout() {
-  if (cart.length === 0) return alert("Keranjang masih kosong!");
-  if (!document.getElementById("customer").value) return alert("Masukkan nama pemesan!");
-
-  let total = cart.reduce((sum, item) => sum + item.price, 0);
-  document.getElementById("paymentTotal").innerText = rupiah(total);
-  
-  closeCart();
-  document.getElementById("paymentModal").classList.add("show");
-}
-function closePayment() { document.getElementById("paymentModal").classList.remove("show"); }
-
-// KIRIM WA
-function sendOrder() {
-  const customer = document.getElementById("customer").value;
-  let total = cart.reduce((sum, item) => sum + item.price, 0);
-  
-  let pesan = `Halo Admin, saya *${customer}* mau pesan:\n\n`;
-  cart.forEach((item, i) => {
-    pesan += `${i+1}. ${item.name}\n   Tujuan: ${item.target}\n\n`;
-  });
-  pesan += `Total: ${rupiah(total)}\n\nMohon konfirmasi.`;
-  
-  window.open(`https://wa.me/6283894053143?text=${encodeURIComponent(pesan)}`, "_blank");
-}
-
-// JALANKAN SAAT DIBUKA
-document.addEventListener("DOMContentLoaded", renderProducts);
+render();
 </script>
+
 </body>
 </html>
