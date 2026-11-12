@@ -49,11 +49,8 @@
     <p>Pilih produk sesuai kebutuhanmu.</p>
   </div>
 
-  <input id="search" class="search" placeholder="🔍 Cari pulsa, game, e-wallet..." oninput="renderProducts()">
-  <div id="filters" class="filters"></div>
-  
-  <!-- Wadah Produk -->
-  <div id="products" class="product-grid"></div>
+  <!-- WADAH PRODUK -->
+  <div id="products" class="product-grid" style="margin-top: 20px;"></div>
   
   <p class="notice">Harga yang ditampilkan merupakan harga contoh dan dapat berubah setelah konfirmasi admin.</p>
 </section>
@@ -64,7 +61,7 @@
     <h2>Belanja digital lebih mudah!</h2>
     <p>Pilih produk favoritmu dan pesan langsung melalui admin.</p>
   </div>
-  <a href="#produk-section" onclick="document.getElementById('search').focus()">Lihat Produk →</a>
+  <a href="#produk-section">Lihat Produk →</a>
 </section>
 
 <section class="section">
@@ -86,20 +83,6 @@
   <small>© 2026 PULSAKULA</small>
 </footer>
 
-<!-- MODAL PRODUK -->
-<div class="modal" id="productModal">
-  <div class="modal-box">
-    <button class="close" onclick="closeProduct()">✕</button>
-    <div id="productIcon" class="big-icon">📱</div>
-    <h2 id="productName">Nama Produk</h2>
-    <p id="productCategory"></p>
-    <label>Nomor HP / ID Pelanggan</label>
-    <input id="target" placeholder="Masukkan nomor tujuan">
-    <h3 id="productPrice"></h3>
-    <button class="main-btn" onclick="addToCart()">Tambah Keranjang</button>
-  </div>
-</div>
-
 <!-- MODAL KERANJANG -->
 <div class="modal" id="cartModal">
   <div class="modal-box">
@@ -118,27 +101,13 @@
   <div class="modal-box">
     <button class="close" onclick="closePayment()">✕</button>
 
-    <h2 style="text-align:center;">
-      💳 Lakukan Pembayaran
-    </h2>
+    <h2 style="text-align:center;">💳 Lakukan Pembayaran</h2>
+    <p style="text-align:center;">Silakan scan QRIS berikut untuk membayar pesanan.</p>
 
-    <p style="text-align:center;">
-      Silakan scan QRIS berikut untuk membayar pesanan.
-    </p>
+    <img src="https://raw.githubusercontent.com/meyrafli24-a11y/Pulsa-agen/main/qr_ID1025376713323_07.01.26_176777048_1767770502053.jpeg" class="qris" alt="QRIS PULSAKULA">
 
-    <img
-      src="https://raw.githubusercontent.com/meyrafli24-a11y/Pulsa-agen/main/qr_ID1025376713323_07.01.26_176777048_1767770502053.jpeg"
-      class="qris"
-      alt="QRIS PULSAKULA"
-    >
-
-    <h3 style="text-align:center;">
-      Total Pembayaran
-    </h3>
-
-    <h2 id="paymentTotal"
-      style="text-align:center;color:#16a34a;">
-    </h2>
+    <h3 style="text-align:center;">Total Pembayaran</h3>
+    <h2 id="paymentTotal" style="text-align:center;color:#16a34a;"></h2>
 
     <div class="notice">
       1. Buka aplikasi pembayaran.<br>
@@ -147,10 +116,7 @@
       4. Simpan bukti pembayaran.
     </div>
 
-    <button class="main-btn" onclick="sendOrder()">
-      Konfirmasi ke WhatsApp
-    </button>
-
+    <button class="main-btn" onclick="sendOrder()">Konfirmasi ke WhatsApp</button>
   </div>
 </div>
 
@@ -160,7 +126,153 @@
   <a href="#produk-section">◈<small>Produk</small></a>
 </nav>
 
-<!-- INI YANG BIKIN TOMBOL JALAN (ADA TITIKNYA) -->
-<script src="./script.js"></script>
+<!-- SISTEM JAVASCRIPT -->
+<script>
+// DATA PRODUK LENGKAP (DARI MURAH SAMPAI MAHAL)
+const dataProduk = [
+  // --- PULSA ---
+  { category: "Pulsa", name: "Telkomsel 5.000", price: 6500 },
+  { category: "Pulsa", name: "Telkomsel 10.000", price: 11500 },
+  { category: "Pulsa", name: "Telkomsel 25.000", price: 26000 },
+  { category: "Pulsa", name: "Telkomsel 50.000", price: 49500 },
+  { category: "Pulsa", name: "Indosat 10.000", price: 11000 },
+  { category: "Pulsa", name: "Indosat 25.000", price: 25500 },
+  { category: "Pulsa", name: "XL 10.000", price: 11000 },
+  { category: "Pulsa", name: "XL 50.000", price: 49000 },
+  { category: "Pulsa", name: "Tri 10.000", price: 10500 },
+  { category: "Pulsa", name: "Tri 50.000", price: 48500 },
+
+  // --- PAKET DATA (LENGKAP) ---
+  { category: "Paket Data", name: "Tri Data 1GB", price: 9000 },
+  { category: "Paket Data", name: "Indosat Data 1GB", price: 10000 },
+  { category: "Paket Data", name: "XL Data 1GB", price: 11000 },
+  { category: "Paket Data", name: "Telkomsel Data 1GB", price: 12000 },
+  
+  { category: "Paket Data", name: "Tri Data 3GB", price: 18000 },
+  { category: "Paket Data", name: "Telkomsel Data 2GB", price: 20000 },
+  { category: "Paket Data", name: "Indosat Data 3GB", price: 22000 },
+  { category: "Paket Data", name: "XL Data 4GB", price: 28000 },
+  
+  { category: "Paket Data", name: "Tri Data 10GB", price: 45000 },
+  { category: "Paket Data", name: "Telkomsel Data 5GB", price: 45000 },
+  { category: "Paket Data", name: "Indosat Data 8GB", price: 50000 },
+  { category: "Paket Data", name: "XL Data 10GB", price: 60000 },
+  
+  { category: "Paket Data", name: "Telkomsel Data 10GB", price: 80000 },
+  { category: "Paket Data", name: "Indosat Data 15GB", price: 85000 },
+  { category: "Paket Data", name: "Tri Data 25GB", price: 95000 },
+  { category: "Paket Data", name: "XL Data 20GB", price: 110000 },
+  
+  { category: "Paket Data", name: "Indosat Data 30GB", price: 140000 },
+  { category: "Paket Data", name: "Telkomsel Data 25GB", price: 150000 },
+  { category: "Paket Data", name: "Tri Data 50GB", price: 180000 },
+  { category: "Paket Data", name: "XL Data 50GB", price: 220000 },
+  { category: "Paket Data", name: "Telkomsel Data 50GB", price: 250000 },
+
+  // --- TOKEN PLN ---
+  { category: "Token PLN", name: "Token Listrik 20.000", price: 21500 },
+  { category: "Token PLN", name: "Token Listrik 50.000", price: 51500 },
+  { category: "Token PLN", name: "Token Listrik 100.000", price: 101500 },
+  { category: "Token PLN", name: "Token Listrik 200.000", price: 201500 },
+
+  // --- VOUCHER GAME ---
+  { category: "Voucher Game", name: "Free Fire 70 Diamond", price: 10000 },
+  { category: "Voucher Game", name: "Mobile Legends 86 Diamond", price: 22000 },
+  { category: "Voucher Game", name: "Mobile Legends 172 Diamond", price: 43000 },
+  { category: "Voucher Game", name: "Free Fire 355 Diamond", price: 50000 },
+
+  // --- E-WALLET ---
+  { category: "E-Wallet", name: "GoPay 10.000", price: 11000 },
+  { category: "E-Wallet", name: "OVO 20.000", price: 21000 },
+  { category: "E-Wallet", name: "DANA 50.000", price: 51000 },
+  { category: "E-Wallet", name: "GoPay 100.000", price: 101000 }
+];
+
+let cart = [];
+const rupiah = (val) => new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(val);
+
+// TAMPILKAN PRODUK
+function renderProducts() {
+  const container = document.getElementById("products");
+  if (!container) return;
+  container.innerHTML = "";
+  
+  dataProduk.forEach((item) => {
+    const card = document.createElement("div");
+    card.className = "product-card";
+    card.innerHTML = `
+      <div class="product-symbol">📦</div>
+      <h3>${item.name}</h3>
+      <p>${item.category}</p>
+      <div class="product-bottom">
+        <b class="product-price" style="color: #16a34a; font-size: 14px; display: block;">${rupiah(item.price)}</b>
+        <button class="choose-btn" onclick="bukaProduk('${item.name}', ${item.price})">Pilih</button>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+// TOMBOL PILIH
+function bukaProduk(nama, harga) {
+  const target = prompt("Masukkan Nomor HP / ID Pelanggan untuk " + nama + ":");
+  if (!target) return;
+  cart.push({ name: nama, price: harga, target: target });
+  document.getElementById("cartCount").innerText = cart.length;
+  alert("Berhasil masuk keranjang!\nKlik ikon 🛒 di atas untuk lanjut bayar.");
+}
+
+// KERANJANG
+function openCart() {
+  const cartModal = document.getElementById("cartModal");
+  const cartItems = document.getElementById("cartItems");
+  if (!cartModal) return;
+  
+  cartItems.innerHTML = "";
+  let total = 0;
+  
+  if (cart.length === 0) {
+    cartItems.innerHTML = "<p>Keranjang masih kosong.</p>";
+  } else {
+    cart.forEach((item) => {
+      cartItems.innerHTML += `<div style="border-bottom:1px solid #ddd; padding:10px 0; font-size:12px;"><b>${item.name}</b><br>Tujuan: ${item.target}<br><span style="color:green;">${rupiah(item.price)}</span></div>`;
+      total += item.price;
+    });
+  }
+  document.getElementById("total").innerText = "Total: " + rupiah(total);
+  cartModal.classList.add("show");
+}
+function closeCart() { document.getElementById("cartModal").classList.remove("show"); }
+
+// CHECKOUT
+function checkout() {
+  if (cart.length === 0) return alert("Keranjang masih kosong!");
+  if (!document.getElementById("customer").value) return alert("Masukkan nama pemesan!");
+
+  let total = cart.reduce((sum, item) => sum + item.price, 0);
+  document.getElementById("paymentTotal").innerText = rupiah(total);
+  
+  closeCart();
+  document.getElementById("paymentModal").classList.add("show");
+}
+function closePayment() { document.getElementById("paymentModal").classList.remove("show"); }
+
+// KIRIM WA
+function sendOrder() {
+  const customer = document.getElementById("customer").value;
+  let total = cart.reduce((sum, item) => sum + item.price, 0);
+  
+  let pesan = `Halo Admin, saya *${customer}* mau pesan:\n\n`;
+  cart.forEach((item, i) => {
+    pesan += `${i+1}. ${item.name}\n   Tujuan: ${item.target}\n\n`;
+  });
+  pesan += `Total: ${rupiah(total)}\n\nMohon konfirmasi.`;
+  
+  window.open(`https://wa.me/6283894053143?text=${encodeURIComponent(pesan)}`, "_blank");
+}
+
+// JALANKAN SAAT DIBUKA
+document.addEventListener("DOMContentLoaded", renderProducts);
+</script>
 </body>
 </html>
