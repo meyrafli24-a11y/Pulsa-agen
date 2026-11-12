@@ -11,10 +11,8 @@
 
 <body>
 
-<!-- HEADER -->
 <header class="navbar">
   <a href="#" class="logo">PULSA<span>KULA</span></a>
-
   <button class="cart-btn" onclick="openCart()">
     🛒 <span id="cartCount">0</span>
   </button>
@@ -22,24 +20,12 @@
 
 <main>
 
-<!-- BERANDA -->
 <section class="hero">
   <div class="hero-content">
     <span class="badge">SELAMAT DATANG DI PULSAKULA</span>
-
-    <h1>
-      Kebutuhan Digital
-      <span>Lebih Mudah!</span>
-    </h1>
-
-    <p>
-      Isi pulsa, paket internet, token listrik,
-      E-Wallet, transfer dan berbagai layanan digital.
-    </p>
-
-    <a href="#layanan" class="hero-button">
-      Mulai Belanja →
-    </a>
+    <h1>Kebutuhan Digital <span>Lebih Mudah!</span></h1>
+    <p>Isi pulsa, paket internet, token listrik, E-Wallet, transfer dan berbagai layanan digital.</p>
+    <a href="#layanan" class="hero-button">Mulai Belanja →</a>
   </div>
 
   <div class="hero-art">
@@ -48,36 +34,30 @@
   </div>
 </section>
 
-<!-- KEUNGGULAN -->
 <section class="features">
   <div>⚡<b>Praktis</b><small>Mudah digunakan</small></div>
   <div>🔒<b>Aman</b><small>Periksa pesanan</small></div>
   <div>💬<b>Admin</b><small>Bantuan WhatsApp</small></div>
 </section>
 
-<!-- LAYANAN -->
 <section class="section" id="layanan">
   <div class="heading">
     <span>PILIH KEBUTUHANMU</span>
     <h2>Layanan <span>Digital</span></h2>
     <p>Pilih layanan yang kamu inginkan.</p>
   </div>
-
   <div class="service-grid" id="services"></div>
 </section>
 
-<!-- OPERATOR -->
 <section class="section" id="operatorSection" hidden>
   <div class="heading">
     <span>PILIH OPERATOR</span>
     <h2 id="operatorTitle">Pilih Operator</h2>
     <p>Pilih operator untuk melihat produk.</p>
   </div>
-
   <div class="service-grid" id="operators"></div>
 </section>
 
-<!-- PRODUK -->
 <section class="section" id="productSection">
   <div class="heading">
     <span>KATALOG PULSAKULA</span>
@@ -85,33 +65,22 @@
     <p>Produk ditampilkan dari harga termurah.</p>
   </div>
 
-  <input
-    class="search"
-    id="search"
-    type="search"
-    placeholder="Cari produk..."
-    oninput="renderProducts()"
-  >
+  <input class="search" id="search" type="search"
+    placeholder="Cari produk..." oninput="renderProducts()">
 
   <div class="filters" id="filters"></div>
-
   <div class="product-grid" id="products"></div>
 </section>
 
-<!-- PROMO -->
 <section class="promo">
   <div>
     <span>BUTUH BANTUAN?</span>
     <h2>Admin PULSAKULA</h2>
     <p>Hubungi admin untuk bantuan pemesanan.</p>
   </div>
-
-  <a href="https://wa.me/6283894053143" target="_blank">
-    Chat Admin
-  </a>
+  <a href="https://wa.me/6283894053143" target="_blank">Chat Admin</a>
 </section>
 
-<!-- CARA PEMESANAN -->
 <section class="section">
   <div class="heading">
     <span>MUDAH DAN PRAKTIS</span>
@@ -124,13 +93,11 @@
       <h3>Pilih Produk</h3>
       <p>Pilih layanan yang kamu butuhkan.</p>
     </div>
-
     <div>
       <b>02</b>
       <h3>Isi Data</h3>
       <p>Masukkan nomor atau ID tujuan.</p>
     </div>
-
     <div>
       <b>03</b>
       <h3>Pembayaran</h3>
@@ -141,76 +108,46 @@
 
 </main>
 
-<!-- NAVIGASI BAWAH -->
 <nav class="bottom-nav">
-  <a href="#">
-    <span>⌂</span>
-    <small>Beranda</small>
-  </a>
-
-  <a href="#layanan">
-    <span>▦</span>
-    <small>Layanan</small>
-  </a>
-
+  <a href="#"><span>⌂</span><small>Beranda</small></a>
+  <a href="#layanan"><span>▦</span><small>Layanan</small></a>
   <a href="#" onclick="openCart();return false;">
-    <span>🛒</span>
-    <small>Keranjang</small>
+    <span>🛒</span><small>Keranjang</small>
   </a>
 </nav>
 
 <!-- MODAL PRODUK -->
 <div class="modal" id="productModal">
   <div class="modal-box">
-
     <button class="close" onclick="closeProduct()">×</button>
-
     <div class="big-icon" id="productIcon">📱</div>
-
     <h2 id="productName">Nama Produk</h2>
     <p id="productCategory">Kategori</p>
-
     <h3 id="productPrice">Rp 0</h3>
 
     <label for="target">Nomor HP / ID / Rekening Tujuan</label>
-
-    <input
-      id="target"
-      type="text"
-      placeholder="Masukkan data tujuan"
-    >
+    <input id="target" type="text" placeholder="Masukkan data tujuan">
 
     <button class="main-btn" onclick="addToCart()">
       Tambahkan ke Keranjang
     </button>
-
   </div>
 </div>
 
 <!-- MODAL KERANJANG -->
 <div class="modal" id="cartModal">
   <div class="modal-box">
-
     <button class="close" onclick="closeCart()">×</button>
-
     <h2>Keranjang Belanja 🛒</h2>
-
     <div id="cartItems"></div>
-
     <h3 id="total">Total: Rp 0</h3>
 
     <label for="customer">Nama Pemesan</label>
-
-    <input
-      id="customer"
-      type="text"
-      placeholder="Masukkan nama kamu"
-    >
+    <input id="customer" type="text" placeholder="Masukkan nama kamu">
 
     <button class="main-btn" onclick="checkout()">
       Lanjut Pembayaran
     </button>
-
   </div>
 </div>
 
@@ -221,11 +158,8 @@
     <button class="close" onclick="closePayment()">×</button>
 
     <div class="big-icon">💳</div>
-
     <h2>Pembayaran PULSAKULA</h2>
-
     <p>Silakan periksa total pembayaran:</p>
-
     <h2 id="paymentTotal">Rp 0</h2>
 
     <div style="background:white;padding:12px;border-radius:12px;margin:15px auto;text-align:center;max-width:320px;">
@@ -234,21 +168,21 @@
 
       <img
         class="qris"
-        src="https://raw.githubusercontent.com/meyrafli24-a11y/Pulsa-agen/main/qr_ID1025376713323_07.01.26_176777048_1767770502053.jpeg"
+        id="qrisImage"
+        src="https://github.com/meyrafli24-a11y/Pulsa-agen/blob/main/qr_ID1025376713323_07.01.26_176777048_1767770502053.jpeg?raw=true"
         alt="QRIS PULSAKULA"
-        style="width:100%;max-width:280px;height:auto;display:block;margin:auto;"
+        style="width:100%;max-width:280px;height:auto;display:block;margin:12px auto;"
+        onerror="this.style.display='none';document.getElementById('qrisError').style.display='block';"
       >
 
-      <p style="color:#111;font-weight:bold;">
-        PULSAKULA
+      <p id="qrisError" style="display:none;color:#c62828;font-weight:bold;">
+        Gambar QRIS belum dapat dimuat. Periksa file QRIS di GitHub.
       </p>
 
+      <p style="color:#111;font-weight:bold;">PULSAKULA</p>
     </div>
 
-    <p>
-      Scan QRIS menggunakan aplikasi pembayaran.
-      Pastikan nama merchant dan nominal benar.
-    </p>
+    <p>Scan QRIS menggunakan aplikasi pembayaran. Pastikan nama merchant dan nominal benar.</p>
 
     <button class="main-btn" onclick="sendOrder()">
       Konfirmasi Pembayaran via WhatsApp
@@ -257,7 +191,6 @@
   </div>
 </div>
 
-<!-- FOOTER -->
 <footer>
   <h2>PULSAKULA</h2>
   <p>Layanan digital dalam satu tempat.</p>
