@@ -48,20 +48,18 @@
     </div>
   </div>
 
-  <input
-    type="search"
-    id="searchInput"
+  <input type="search" id="searchInput"
     class="search-input"
-    placeholder="Cari pulsa, paket data, token..."
-  >
+    placeholder="Cari pulsa, token, diamond...">
 
   <div class="categories" id="categories">
     <button class="category active" onclick="selectCategory('Semua',this)">Semua</button>
     <button class="category" onclick="selectCategory('Pulsa',this)">📱 Pulsa</button>
     <button class="category" onclick="selectCategory('Paket Data',this)">🌐 Paket Data</button>
-    <button class="category" onclick="selectCategory('Token Listrik',this)">⚡ Token</button>
+    <button class="category" onclick="selectCategory('Token Listrik',this)">⚡ Token PLN</button>
     <button class="category" onclick="selectCategory('E-Wallet',this)">💳 E-Wallet</button>
     <button class="category" onclick="selectCategory('Game',this)">🎮 Game</button>
+    <button class="category" onclick="selectCategory('Diamond FF',this)">💎 Diamond FF</button>
   </div>
 
   <div class="product-grid" id="productList">
@@ -69,7 +67,7 @@
   </div>
 
   <p class="catalog-note">
-    Harga jual ditampilkan pada setiap produk.
+    Harga transparan dan pemesanan mudah.
   </p>
 </section>
 
@@ -85,7 +83,7 @@
     <div class="step-card">
       <b>02</b>
       <h3>Masukkan tujuan</h3>
-      <p>Isi nomor HP atau ID pelanggan dengan benar.</p>
+      <p>Isi nomor HP atau ID pelanggan.</p>
     </div>
     <div class="step-card">
       <b>03</b>
@@ -101,7 +99,7 @@
     <h2>Ada pertanyaan tentang pesanan?</h2>
     <p>Hubungi admin PULSAKULA melalui WhatsApp.</p>
   </div>
-  <a href="https://wa.me/6283894053143" target="_blank" rel="noopener">
+  <a href="https://wa.me/6283894053143" target="_blank">
     Hubungi Admin ↗
   </a>
 </section>
@@ -113,7 +111,6 @@
   <p>© 2026 PULSAKULA. Toko digital.</p>
 </footer>
 
-<!-- MODAL PRODUK -->
 <div class="modal" id="productModal">
   <div class="modal-box">
     <button class="close-button" onclick="closeProduct()">✕</button>
@@ -122,12 +119,14 @@
     <p id="modalCategory" class="muted"></p>
     <p class="modal-price" id="modalPrice"></p>
     <label for="targetInput">Nomor HP / ID pelanggan</label>
-    <input id="targetInput" type="text" placeholder="Masukkan nomor atau ID tujuan">
-    <button class="primary-button" onclick="addToCart()">Tambah ke Keranjang</button>
+    <input id="targetInput" type="text"
+      placeholder="Masukkan nomor atau ID tujuan">
+    <button class="primary-button" onclick="addToCart()">
+      Tambah ke Keranjang
+    </button>
   </div>
 </div>
 
-<!-- MODAL KERANJANG -->
 <div class="modal" id="cartModal">
   <div class="modal-box wide">
     <button class="close-button" onclick="closeCart()">✕</button>
@@ -137,11 +136,12 @@
       <span>Total</span>
       <strong id="cartTotal">Rp0</strong>
     </div>
-    <button class="primary-button" onclick="checkout()">Lanjutkan Pesanan</button>
+    <button class="primary-button" onclick="checkout()">
+      Lanjutkan Pesanan
+    </button>
   </div>
 </div>
 
-<!-- MODAL PEMBAYARAN -->
 <div class="modal" id="paymentModal">
   <div class="modal-box">
     <button class="close-button" onclick="closePayment()">✕</button>
@@ -153,8 +153,7 @@
       id="qrisImage"
       class="qris-image"
       src="https://raw.githubusercontent.com/meyrafli24-a11y/Pulsa-agen/main/qr_ID1025376713323_07.01.26_176777048_1767770502053.jpeg"
-      alt="QRIS PULSAKULA"
-    >
+      alt="QRIS PULSAKULA">
 
     <p class="payment-warning">
       Pastikan nama merchant dan nominal pembayaran benar.
@@ -171,12 +170,8 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-  if (typeof renderProducts === "function") {
-    renderProducts();
-  }
-  if (typeof updateCartCount === "function") {
-    updateCartCount();
-  }
+  if (typeof renderProducts === "function") renderProducts();
+  if (typeof updateCartCount === "function") updateCartCount();
 });
 </script>
 
