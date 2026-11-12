@@ -94,32 +94,33 @@
   .modal-overlay {
     position:fixed; top:0; left:0; width:100%; height:100%;
     background:rgba(0,0,0,.5); display:none; align-items:center; justify-content:center; z-index:1000;
+    backdrop-filter: blur(2px);
   }
   .modal-overlay.active { display:flex; }
   .modal-content {
     background:#fff; width:90%; max-width:450px; border-radius:20px; padding:24px;
     max-height:85vh; display:flex; flex-direction:column;
-    animation: fadeIn .2s ease-out;
+    animation: slideUp .3s ease-out;
   }
-  @keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes slideUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
   
   .modal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
   .modal-header h2 { font-size:1.2rem; }
-  .close-btn { background:none; border:none; font-size:1.5rem; cursor:pointer; color:#94a3b8; }
+  .close-btn { background:none; border:none; font-size:1.5rem; cursor:pointer; color:#94a3b8; padding:0 5px; }
   
-  /* Form Input (Modal Input Data) */
+  /* Form Input */
   .form-group { margin-bottom:16px; }
   .form-group label { display:block; font-size:.85rem; font-weight:600; color:#475569; margin-bottom:6px; }
   .form-group input {
-    width:100%; padding:12px; border:1px solid #cbd5e1; border-radius:10px;
-    font-size:.9rem; outline:none; transition:.2s;
+    width:100%; padding:14px; border:1px solid #cbd5e1; border-radius:10px;
+    font-size:.95rem; outline:none; transition:.2s; background:#f8fafc;
   }
-  .form-group input:focus { border-color:#0ea5e9; box-shadow:0 0 0 3px rgba(14,165,233,.15); }
+  .form-group input:focus { border-color:#0ea5e9; box-shadow:0 0 0 3px rgba(14,165,233,.15); background:#fff; }
   
   .btn-simpan {
     width:100%; background:#0ea5e9; color:#fff; border:none; padding:14px;
     border-radius:12px; font-size:1rem; font-weight:700; cursor:pointer;
-    margin-top:10px;
+    margin-top:10px; transition:.2s;
   }
   .btn-simpan:hover { background:#0284c7; }
 
@@ -128,14 +129,14 @@
   .cart-item { display:flex; justify-content:space-between; align-items:flex-start; padding:12px 0; border-bottom:1px dashed #e2e8f0; }
   .cart-item-info h4 { font-size:.9rem; color:#1e293b; margin-bottom:2px; }
   .cart-item-info p { font-size:.8rem; color:#16a34a; font-weight:600; }
-  .cart-item-info .tujuan { font-size:.75rem; color:#64748b; background:#f1f5f9; padding:2px 6px; border-radius:4px; display:inline-block; margin-top:4px; }
-  .btn-hapus { background:#fee2e2; color:#ef4444; border:none; padding:6px 10px; border-radius:6px; font-size:.75rem; cursor:pointer; }
+  .cart-item-info .tujuan { font-size:.75rem; color:#64748b; background:#f1f5f9; padding:3px 8px; border-radius:6px; display:inline-block; margin-top:6px; font-weight:600; }
+  .btn-hapus { background:#fee2e2; color:#ef4444; border:none; padding:6px 10px; border-radius:6px; font-size:.75rem; cursor:pointer; font-weight:600; }
   
   .cart-total { display:flex; justify-content:space-between; font-weight:800; font-size:1.1rem; margin-bottom:16px; padding-top:16px; border-top:2px dashed #e2e8f0; }
   .btn-checkout {
     width:100%; background:#25d366; color:#fff; border:none; padding:14px;
     border-radius:12px; font-size:1rem; font-weight:700; cursor:pointer;
-    display:flex; justify-content:center; align-items:center; gap:8px;
+    display:flex; justify-content:center; align-items:center; gap:8px; transition:.2s;
   }
   .btn-checkout:hover { background:#1da851; }
   .cart-empty { text-align:center; color:#94a3b8; padding:40px 0; font-size:.9rem; }
@@ -149,7 +150,7 @@
     <span class="logo-icon">⚡</span>
     <h1>PULSA<span>KULA</span></h1>
   </div>
-  <button class="cart-btn" onclick="openCart()">🛒 <span id="cartCount">0</span></button>
+  <button class="cart-btn" onclick="bukaKeranjang()">🛒 <span id="cartCount">0</span></button>
 </div>
 
 <!-- Kategori -->
@@ -176,36 +177,32 @@
   </div>
 </div>
 
-<!-- ========================================== -->
-<!-- MODAL 1: INPUT NOMOR TUJUAN / ID GAME -->
-<!-- ========================================== -->
-<div class="modal-overlay" id="inputModal">
+<!-- MODAL 1: INPUT TUJUAN -->
+<div class="modal-overlay" id="modalInput">
   <div class="modal-content">
     <div class="modal-header">
-      <h2 id="modalTitle">Masukkan Data</h2>
-      <button class="close-btn" onclick="closeInputModal()">&times;</button>
+      <h2 id="judulModal">Masukkan Data</h2>
+      <button class="close-btn" onclick="tutupModalInput()">&times;</button>
     </div>
     <div class="form-group">
       <label id="labelTujuan">Nomor HP</label>
-      <input type="number" id="inputTujuan" placeholder="Contoh: 08123456789">
+      <input type="text" id="inputTujuan" placeholder="Contoh: 08123456789">
     </div>
-    <button class="btn-simpan" onclick="simpanKeKeranjang()">Tambahkan ke Keranjang</button>
+    <button class="btn-simpan" onclick="prosesTambah()">Tambahkan ke Keranjang</button>
   </div>
 </div>
 
-<!-- ========================================== -->
-<!-- MODAL 2: KERANJANG PESANAN -->
-<!-- ========================================== -->
-<div class="modal-overlay" id="cartModal">
+<!-- MODAL 2: KERANJANG -->
+<div class="modal-overlay" id="modalKeranjang">
   <div class="modal-content">
     <div class="modal-header">
       <h2>Keranjang Pesanan</h2>
-      <button class="close-btn" onclick="closeCart()">&times;</button>
+      <button class="close-btn" onclick="tutupModalKeranjang()">&times;</button>
     </div>
-    <div class="cart-list" id="cartList"></div>
+    <div class="cart-list" id="listKeranjang"></div>
     <div class="cart-total">
       <span>Total:</span>
-      <span id="cartTotal" style="color:#16a34a;">Rp 0</span>
+      <span id="totalHarga" style="color:#16a34a;">Rp 0</span>
     </div>
     <button class="btn-checkout" onclick="checkoutWA()">
       💬 Checkout via WhatsApp
@@ -214,139 +211,151 @@
 </div>
 
 <script>
-// --- DATA PRODUK ---
-const dataPaket = [
-  // PULSA (Input: Nomor HP)
-  { id: 1, operator:"Telkomsel", nama:"Telkomsel 5.000", harga:6500, tipe:"Pulsa", icon:"📱", labelInput:"Nomor HP Telkomsel", placeholder:"0812xxxx" },
-  { id: 2, operator:"Indosat", nama:"Indosat 5.000", harga:6000, tipe:"Pulsa", icon:"📱", labelInput:"Nomor HP Indosat", placeholder:"0857xxxx" },
-  { id: 3, operator:"Tri", nama:"Tri 5.000", harga:5500, tipe:"Pulsa", icon:"📱", labelInput:"Nomor HP Tri", placeholder:"0895xxxx" },
-  { id: 4, operator:"XL", nama:"XL 5.000", harga:6000, tipe:"Pulsa", icon:"📱", labelInput:"Nomor HP XL", placeholder:"0817xxxx" },
+// ==========================================
+// DATA PRODUK (Bisa kamu tambah/edit sendiri)
+// ==========================================
+const dataProduk = [
+  // PULSA
+  { id: 1, nama:"Telkomsel 5.000", harga:6500, tipe:"Pulsa", icon:"📱", labelInput:"Nomor HP Telkomsel", placeholder:"0812xxxx" },
+  { id: 2, nama:"Indosat 5.000", harga:6000, tipe:"Pulsa", icon:"📱", labelInput:"Nomor HP Indosat", placeholder:"0857xxxx" },
+  { id: 3, nama:"Tri 5.000", harga:5500, tipe:"Pulsa", icon:"📱", labelInput:"Nomor HP Tri", placeholder:"0895xxxx" },
+  { id: 4, nama:"XL 5.000", harga:6000, tipe:"Pulsa", icon:"📱", labelInput:"Nomor HP XL", placeholder:"0817xxxx" },
   
-  // PAKET DATA (Input: Nomor HP)
-  { id: 5, operator:"Telkomsel", nama:"Data Telkomsel 3 GB", harga:25000, tipe:"Paket Data", icon:"🌐", labelInput:"Nomor HP Telkomsel", placeholder:"0812xxxx" },
-  { id: 6, operator:"Indosat", nama:"Data Indosat 5 GB", harga:26000, tipe:"Paket Data", icon:"🌐", labelInput:"Nomor HP Indosat", placeholder:"0857xxxx" },
+  // PAKET DATA
+  { id: 5, nama:"Data Telkomsel 3 GB", harga:25000, tipe:"Paket Data", icon:"🌐", labelInput:"Nomor HP Telkomsel", placeholder:"0812xxxx" },
+  { id: 6, nama:"Data Indosat 5 GB", harga:26000, tipe:"Paket Data", icon:"🌐", labelInput:"Nomor HP Indosat", placeholder:"0857xxxx" },
   
-  // TOKEN PLN (Input: ID Meteran)
-  { id: 7, operator:"PLN", nama:"Token Listrik 20.000", harga:21500, tipe:"Token PLN", icon:"⚡", labelInput:"ID Meteran / Nomor Pelanggan PLN", placeholder:"Contoh: 140xxxxxxx" },
-  { id: 8, operator:"PLN", nama:"Token Listrik 50.000", harga:51500, tipe:"Token PLN", icon:"⚡", labelInput:"ID Meteran / Nomor Pelanggan PLN", placeholder:"Contoh: 140xxxxxxx" },
+  // TOKEN PLN
+  { id: 7, nama:"Token Listrik 20.000", harga:21500, tipe:"Token PLN", icon:"⚡", labelInput:"ID Meteran / No Pelanggan", placeholder:"Contoh: 140xxxxxxx" },
+  { id: 8, nama:"Token Listrik 50.000", harga:51500, tipe:"Token PLN", icon:"⚡", labelInput:"ID Meteran / No Pelanggan", placeholder:"Contoh: 140xxxxxxx" },
 
-  // E-WALLET (Input: Nomor HP)
-  { id: 9, operator:"DANA", nama:"Saldo DANA 10.000", harga:11000, tipe:"E-Wallet", icon:"💳", labelInput:"Nomor HP Terdaftar DANA", placeholder:"08xxxx" },
-  { id: 10, operator:"GoPay", nama:"Saldo GoPay 20.000", harga:22000, tipe:"E-Wallet", icon:"💳", labelInput:"Nomor HP Terdaftar GoPay", placeholder:"08xxxx" },
+  // E-WALLET
+  { id: 9, nama:"Saldo DANA 10.000", harga:11000, tipe:"E-Wallet", icon:"💳", labelInput:"Nomor HP DANA", placeholder:"08xxxx" },
+  { id: 10, nama:"Saldo GoPay 20.000", harga:22000, tipe:"E-Wallet", icon:"💳", labelInput:"Nomor HP GoPay", placeholder:"08xxxx" },
 
-  // VOUCHER GAME (Input: User ID)
-  { id: 11, operator:"Mobile Legends", nama:"ML 86 Diamond", harga:23000, tipe:"Voucher Game", icon:"🎮", labelInput:"User ID (Nickname)", placeholder:"Contoh: 12345678 (Nama)" },
-  { id: 12, operator:"Free Fire", nama:"FF 70 Diamond", harga:10000, tipe:"Voucher Game", icon:"🎮", labelInput:"User ID Free Fire", placeholder:"Contoh: 987654321" }
+  // VOUCHER GAME
+  { id: 11, nama:"ML 86 Diamond", harga:23000, tipe:"Voucher Game", icon:"🎮", labelInput:"User ID Mobile Legends", placeholder:"Contoh: 12345678 (1234)" },
+  { id: 12, nama:"FF 70 Diamond", harga:10000, tipe:"Voucher Game", icon:"🎮", labelInput:"User ID Free Fire", placeholder:"Contoh: 987654321" }
 ];
 
 const NOMOR_WA_ADMIN = "6281234567890"; // <-- GANTI NOMOR WA KAMU DI SINI
-
 let keranjang = [];
-let produkSementara = null; // Menyimpan produk yg sedang diinput
+let produkDipilih = null;
 
-const grid = document.getElementById("grid");
-const rupiah = n => "Rp " + n.toLocaleString("id-ID");
-
-// --- RENDER PRODUK ---
-function render() {
+// ==========================================
+// 1. FUNGSI RENDER PRODUK KE LAYAR
+// ==========================================
+function renderProduk() {
+  const grid = document.getElementById("grid");
   grid.innerHTML = "";
-  dataPaket.forEach(p => {
+
+  dataProduk.forEach(produk => {
     const card = document.createElement("div");
     card.className = "card";
+    
+    // Format Rupiah
+    const hargaFormat = "Rp " + produk.harga.toLocaleString("id-ID");
+
     card.innerHTML = `
       <div class="card-top">
-        <div class="icon-box">${p.icon}</div>
+        <div class="icon-box">${produk.icon}</div>
         <div>
-          <h3>${p.nama}</h3>
-          <div class="type">${p.tipe}</div>
+          <h3>${produk.nama}</h3>
+          <div class="type">${produk.tipe}</div>
         </div>
       </div>
       <div class="card-bottom">
-        <div class="price">${rupiah(p.harga)}</div>
-        <button class="btn-pilih" onclick="bukaInput(${p.id})">Pilih</button>
+        <div class="price">${hargaFormat}</div>
+        <button class="btn-pilih" onclick="bukaModalInput(${produk.id})">Pilih</button>
       </div>
     `;
     grid.appendChild(card);
   });
 }
 
-// --- LOGIKA INPUT DATA TUJUAN ---
-function bukaInput(id) {
-  produkSementara = dataPaket.find(p => p.id === id);
-  if(!produkSementara) return;
+// ==========================================
+// 2. FUNGSI MODAL INPUT
+// ==========================================
+function bukaModalInput(id) {
+  // Cari produk berdasarkan ID
+  produkDipilih = dataProduk.find(p => p.id === id);
+  if (!produkDipilih) return;
 
-  // Sesuaikan label dan placeholder di form
-  document.getElementById("modalTitle").innerText = produkSementara.nama;
-  document.getElementById("labelTujuan").innerText = produkSementara.labelInput;
-  document.getElementById("inputTujuan").placeholder = produkSementara.placeholder;
-  document.getElementById("inputTujuan").value = ""; // Reset input
+  // Ubah teks di dalam modal
+  document.getElementById("judulModal").innerText = produkDipilih.nama;
+  document.getElementById("labelTujuan").innerText = produkDipilih.labelInput;
+  document.getElementById("inputTujuan").placeholder = produkDipilih.placeholder;
+  document.getElementById("inputTujuan").value = ""; // Kosongkan input
 
-  document.getElementById("inputModal").classList.add("active");
-  document.getElementById("inputTujuan").focus();
-}
-
-function closeInputModal() {
-  document.getElementById("inputModal").classList.remove("active");
-  produkSementara = null;
-}
-
-function simpanKeKeranjang() {
-  const tujuan = document.getElementById("inputTujuan").value.trim();
+  // Tampilkan modal
+  document.getElementById("modalInput").classList.add("active");
   
+  // Fokus ke input
+  setTimeout(() => {
+    document.getElementById("inputTujuan").focus();
+  }, 100);
+}
+
+function tutupModalInput() {
+  document.getElementById("modalInput").classList.remove("active");
+  produkDipilih = null;
+}
+
+// ==========================================
+// 3. FUNGSI TAMBAH KE KERANJANG
+// ==========================================
+function prosesTambah() {
+  const tujuan = document.getElementById("inputTujuan").value.trim();
+
   if (!tujuan) {
-    alert(`Mohon isi ${produkSementara.labelInput} terlebih dahulu!`);
+    alert(`Ups! Mohon isi ${produkDipilih.labelInput} terlebih dahulu.`);
     return;
   }
 
-  // Cek jika produk yang persis sama & nomor tujuan sama sudah ada di keranjang
-  const isExist = keranjang.some(item => item.id === produkSementara.id && item.tujuan === tujuan);
-  if (isExist) {
-    alert("Produk dengan nomor/ID tujuan ini sudah ada di keranjang.");
-    closeInputModal();
-    return;
-  }
-
-  // Masukkan ke keranjang
+  // Masukkan ke array keranjang
   keranjang.push({
-    ...produkSementara,
+    id: produkDipilih.id,
+    nama: produkDipilih.nama,
+    harga: produkDipilih.harga,
     tujuan: tujuan
   });
 
-  closeInputModal();
-  updateUI();
-  openCart(); // Langsung buka keranjang biar user tahu berhasil
+  // Tutup modal input & bersihkan
+  tutupModalInput();
+  
+  // Update angka keranjang
+  updateKeranjangUI();
+  
+  // Buka keranjang otomatis
+  bukaKeranjang();
 }
 
-// --- LOGIKA KERANJANG ---
-function hapusDariKeranjang(index) {
-  keranjang.splice(index, 1); // Hapus berdasarkan index array
-  updateUI();
-  renderCartModal();
-}
-
-function updateUI() {
+// ==========================================
+// 4. FUNGSI KERANJANG
+// ==========================================
+function updateKeranjangUI() {
   document.getElementById("cartCount").innerText = keranjang.length;
 }
 
-function openCart() {
-  renderCartModal();
-  document.getElementById("cartModal").classList.add("active");
+function bukaKeranjang() {
+  renderKeranjang();
+  document.getElementById("modalKeranjang").classList.add("active");
 }
 
-function closeCart() {
-  document.getElementById("cartModal").classList.remove("active");
+function tutupModalKeranjang() {
+  document.getElementById("modalKeranjang").classList.remove("active");
 }
 
-function renderCartModal() {
-  const list = document.getElementById("cartList");
-  const totalEl = document.getElementById("cartTotal");
+function renderKeranjang() {
+  const list = document.getElementById("listKeranjang");
+  const elTotal = document.getElementById("totalHarga");
   
   list.innerHTML = "";
   let total = 0;
 
   if (keranjang.length === 0) {
-    list.innerHTML = `<div class="cart-empty">Keranjang kamu masih kosong nih. Yuk pilih paket dulu!</div>`;
-    totalEl.innerText = "Rp 0";
+    list.innerHTML = `<div class="cart-empty">Keranjang masih kosong. Yuk pilih produk dulu!</div>`;
+    elTotal.innerText = "Rp 0";
     return;
   }
 
@@ -357,43 +366,53 @@ function renderCartModal() {
     div.innerHTML = `
       <div class="cart-item-info">
         <h4>${item.nama}</h4>
-        <p>${rupiah(item.harga)}</p>
+        <p>Rp ${item.harga.toLocaleString("id-ID")}</p>
         <span class="tujuan">🎯 ${item.tujuan}</span>
       </div>
-      <button class="btn-hapus" onclick="hapusDariKeranjang(${index})">Hapus</button>
+      <button class="btn-hapus" onclick="hapusItem(${index})">Hapus</button>
     `;
     list.appendChild(div);
   });
 
-  totalEl.innerText = rupiah(total);
+  elTotal.innerText = "Rp " + total.toLocaleString("id-ID");
 }
 
-// --- CHECKOUT WHATSAPP ---
+function hapusItem(index) {
+  keranjang.splice(index, 1); // Hapus 1 data dari array
+  updateKeranjangUI();
+  renderKeranjang();
+}
+
+// ==========================================
+// 5. FUNGSI CHECKOUT WHATSAPP
+// ==========================================
 function checkoutWA() {
   if (keranjang.length === 0) {
     alert("Keranjang masih kosong, pilih produk dulu ya!");
     return;
   }
 
-  let pesan = "Halo Admin PulsaKula, saya mau pesan:%0A%0A";
+  let pesan = "Halo Admin, saya mau pesan:%0A%0A";
   let total = 0;
 
   keranjang.forEach((item, index) => {
     pesan += `${index + 1}. *${item.nama}*%0A`;
     pesan += `   Tujuan: ${item.tujuan}%0A`;
-    pesan += `   Harga: ${rupiah(item.harga)}%0A%0A`;
+    pesan += `   Harga: Rp ${item.harga.toLocaleString("id-ID")}%0A%0A`;
     total += item.harga;
   });
 
-  pesan += `*TOTAL BAYAR: ${rupiah(total)}*%0A%0A`;
-  pesan += "Mohon info nomor rekening/metode pembayarannya ya. Terima kasih!";
+  pesan += `*TOTAL BAYAR: Rp ${total.toLocaleString("id-ID")}*%0A%0A`;
+  pesan += "Mohon info metode pembayarannya ya. Terima kasih!";
 
-  // Buka WhatsApp
+  // Buka tab WhatsApp baru
   window.open(`https://wa.me/${NOMOR_WA_ADMIN}?text=${pesan}`, '_blank');
 }
 
-// Inisialisasi
-render();
+// ==========================================
+// JALANKAN SAAT HALAMAN DIBUKA
+// ==========================================
+renderProduk();
 </script>
 
 </body>
