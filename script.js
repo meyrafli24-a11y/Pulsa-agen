@@ -3,7 +3,7 @@
 // ==================================
 
 // GANTI dengan nomor WhatsApp admin kamu
-const ADMIN_WA = "6281234567890";
+const ADMIN_WA = "6283894053143";
 
 // KATALOG PRODUK DEMO
 const products = [
