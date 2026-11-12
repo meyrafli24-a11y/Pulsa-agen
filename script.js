@@ -1,272 +1,401 @@
+// ==================================
+// PULSAKULA - SISTEM PELANGGAN
+// ==================================
 
-const ADMIN_WA = ""; 
-// Masukkan nomor WhatsApp admin, contoh: 6281234567890
+// GANTI dengan nomor WhatsApp admin kamu
+const ADMIN_WA = "6281234567890";
 
+// KATALOG PRODUK DEMO
 const products = [
-["Pulsa","Telkomsel 5.000",6000,"📱"],
-["Pulsa","Telkomsel 10.000",10500,"📱"],
-["Pulsa","Telkomsel 20.000",20500,"📱"],
-["Pulsa","Telkomsel 50.000",50500,"📱"],
-["Pulsa","Indosat 5.000",6500,"📱"],
-["Pulsa","Indosat 10.000",11500,"📱"],
-["Pulsa","XL 10.000",12500,"📱"],
-["Pulsa","AXIS 10.000",11000,"📱"],
-["Pulsa","Tri 10.000",12000,"📱"],
-["Pulsa","Smartfren 10.000",10500,"📱"],
+  // PULSA
+  ["Pulsa","Telkomsel 5.000",6000,"📱"],
+  ["Pulsa","Telkomsel 10.000",11000,"📱"],
+  ["Pulsa","Telkomsel 20.000",21000,"📱"],
+  ["Pulsa","Telkomsel 50.000",51000,"📱"],
+  ["Pulsa","Indosat 5.000",6500,"📱"],
+  ["Pulsa","Indosat 10.000",11000,"📱"],
+  ["Pulsa","Indosat 20.000",21000,"📱"],
+  ["Pulsa","Indosat 50.000",51000,"📱"],
+  ["Pulsa","XL 5.000",6500,"📱"],
+  ["Pulsa","XL 10.000",11000,"📱"],
+  ["Pulsa","XL 25.000",26000,"📱"],
+  ["Pulsa","AXIS 10.000",11000,"📱"],
+  ["Pulsa","Tri 10.000",11000,"📱"],
+  ["Pulsa","Smartfren 10.000",11000,"📱"],
 
-["Paket Data","Telkomsel 3 GB",18000,"🌐"],
-["Paket Data","Telkomsel 8 GB",35000,"🌐"],
-["Paket Data","Indosat 5 GB",22000,"🌐"],
-["Paket Data","XL 5 GB",23000,"🌐"],
-["Paket Data","AXIS 5 GB",21000,"🌐"],
-["Paket Data","Tri 6 GB",24000,"🌐"],
+  // PAKET DATA
+  ["Paket Data","Telkomsel 3 GB",18000,"🌐"],
+  ["Paket Data","Telkomsel 8 GB",35000,"🌐"],
+  ["Paket Data","Indosat 5 GB",22000,"🌐"],
+  ["Paket Data","Indosat 10 GB",39000,"🌐"],
+  ["Paket Data","XL 5 GB",23000,"🌐"],
+  ["Paket Data","AXIS 5 GB",21000,"🌐"],
+  ["Paket Data","Tri 6 GB",24000,"🌐"],
+  ["Paket Data","Smartfren 6 GB",25000,"🌐"],
 
-["Token PLN","Token 20.000",22000,"⚡"],
-["Token PLN","Token 50.000",52000,"⚡"],
-["Token PLN","Token 100.000",102000,"⚡"],
+  // MASA AKTIF
+  ["Masa Aktif","Telkomsel Masa Aktif",8000,"⏳"],
+  ["Masa Aktif","XL Masa Aktif",7000,"⏳"],
 
-["E-Wallet","DANA 10.000",11200,"💳"],
-["E-Wallet","DANA 20.000",21200,"💳"],
-["E-Wallet","OVO 20.000",21500,"💳"],
-["E-Wallet","GoPay 20.000",21500,"💳"],
-["E-Wallet","ShopeePay 20.000",21500,"💳"],
+  // TOKEN LISTRIK
+  ["Token PLN","Token PLN 20.000",22000,"⚡"],
+  ["Token PLN","Token PLN 50.000",52000,"⚡"],
+  ["Token PLN","Token PLN 100.000",102000,"⚡"],
+  ["Token PLN","Token PLN 200.000",202000,"⚡"],
 
-["Voucher Game","ML 86 Diamonds",22000,"🎮"],
-["Voucher Game","FF 70 Diamonds",11000,"🎮"],
-["Voucher Game","PUBG 60 UC",16000,"🎮"],
+  // E-WALLET
+  ["E-Wallet","DANA 10.000",11200,"💳"],
+  ["E-Wallet","DANA 20.000",21200,"💳"],
+  ["E-Wallet","DANA 50.000",51200,"💳"],
+  ["E-Wallet","OVO 20.000",21500,"💳"],
+  ["E-Wallet","GoPay 20.000",21500,"💳"],
+  ["E-Wallet","ShopeePay 20.000",21500,"💳"],
 
-["Masa Aktif","Telkomsel Masa Aktif",8000,"⏳"],
-["Telepon & SMS","Paket Telepon",12000,"☎️"],
-["TV & Hiburan","Voucher TV",25000,"📺"],
+  // GAME
+  ["Voucher Game","Mobile Legends 86 Diamonds",22000,"🎮"],
+  ["Voucher Game","Mobile Legends 172 Diamonds",43000,"🎮"],
+  ["Voucher Game","Free Fire 70 Diamonds",11000,"🎮"],
+  ["Voucher Game","Free Fire 140 Diamonds",21000,"🎮"],
+  ["Voucher Game","PUBG Mobile 60 UC",16000,"🎮"],
+  ["Voucher Game","PUBG Mobile 325 UC",75000,"🎮"],
 
-["Tagihan","Biaya layanan listrik",2500,"🧾"],
-["PDAM","Biaya layanan PDAM",3000,"💧"],
-["BPJS","Biaya layanan BPJS",3000,"🏥"],
-["Internet & WiFi","Biaya layanan internet",3000,"📡"]
+  // LAYANAN LAIN
+  ["Telepon & SMS","Paket Telepon",12000,"☎️"],
+  ["TV & Hiburan","Voucher TV",25000,"📺"],
+  ["Tagihan","Biaya layanan tagihan",2500,"🧾"],
+  ["PDAM","Biaya layanan PDAM",3000,"💧"],
+  ["BPJS","Biaya layanan BPJS",3000,"🏥"],
+  ["Internet & WiFi","Biaya layanan internet",3000,"📡"]
 ];
 
-const rupiah = n =>
-  "Rp" + n.toLocaleString("id-ID");
+const serviceList = [
+  ["Pulsa","📱","Isi ulang pulsa"],
+  ["Paket Data","🌐","Paket internet"],
+  ["Masa Aktif","⏳","Perpanjang masa aktif"],
+  ["Token PLN","⚡","Token listrik"],
+  ["E-Wallet","💳","Isi saldo e-wallet"],
+  ["Voucher Game","🎮","Top up permainan"],
+  ["Telepon & SMS","☎️","Paket komunikasi"],
+  ["TV & Hiburan","📺","Voucher hiburan"],
+  ["Tagihan","🧾","Bayar tagihan"],
+  ["PDAM","💧","Tagihan air"],
+  ["BPJS","🏥","Iuran BPJS"],
+  ["Internet & WiFi","📡","Pembayaran internet"]
+];
 
+// ==================================
+// VARIABEL
+// ==================================
+
+let selectedProduct = null;
 let cart = [];
-let selected = null;
-let category = "Semua";
+let activeCategory = "Semua";
 
-const grid = document.getElementById("productGrid");
-const filters = document.getElementById("filterRow");
-const search = document.getElementById("searchInput");
+const rupiah = value =>
+  new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    maximumFractionDigits: 0
+  }).format(value);
 
-const services = [
-["Pulsa","📱"],
-["Paket Data","🌐"],
-["Masa Aktif","⏳"],
-["Token PLN","⚡"],
-["E-Wallet","💳"],
-["Voucher Game","🎮"],
-["Telepon & SMS","☎️"],
-["TV & Hiburan","📺"],
-["Tagihan","🧾"],
-["PDAM","💧"],
-["BPJS","🏥"],
-["Internet & WiFi","📡"]
-];
+function el(id) {
+  return document.getElementById(id);
+}
 
-services.forEach(s => {
-  const btn = document.createElement("button");
-  btn.className = "service-card";
-  btn.innerHTML = `<span>${s[1]}</span><b>${s[0]}</b>`;
+// ==================================
+// TAMPILKAN LAYANAN
+// ==================================
 
-  btn.onclick = () => selectCategory(s[0]);
-  document.getElementById("serviceGrid").appendChild(btn);
-});
+function renderServices() {
+  const container = el("services");
+  container.innerHTML = "";
 
-const categories = ["Semua", ...services.map(s => s[0])];
+  serviceList.forEach(service => {
+    const [name, icon, description] = service;
 
-categories.forEach(c => {
-  const btn = document.createElement("button");
-  btn.className = "filter-btn";
-  if (c === "Semua") btn.classList.add("active");
-  btn.textContent = c;
+    const button = document.createElement("button");
+    button.className = "service-card";
 
-  btn.onclick = () => selectCategory(c);
-  filters.appendChild(btn);
-});
+    button.innerHTML = `
+      <div class="service-icon">${icon}</div>
+      <b>${name}</b>
+      <small>${description}</small>
+    `;
 
-function selectCategory(c) {
-  category = c;
+    button.addEventListener("click", () => {
+      selectCategory(name);
+    });
 
-  document.querySelectorAll(".filter-btn").forEach(btn => {
-    btn.classList.toggle("active", btn.textContent === c);
+    container.appendChild(button);
   });
+}
 
+// ==================================
+// FILTER PRODUK
+// ==================================
+
+function renderFilters() {
+  const container = el("filters");
+  container.innerHTML = "";
+
+  const categories = ["Semua", ...serviceList.map(s => s[0])];
+
+  categories.forEach(name => {
+    const button = document.createElement("button");
+    button.className = "filter-btn";
+    button.textContent = name;
+
+    if (name === activeCategory) {
+      button.classList.add("active");
+    }
+
+    button.addEventListener("click", () => {
+      selectCategory(name);
+    });
+
+    container.appendChild(button);
+  });
+}
+
+function selectCategory(name) {
+  activeCategory = name;
+  renderFilters();
   renderProducts();
-  document.getElementById("produk").scrollIntoView({
+
+  document.getElementById("produk")?.scrollIntoView({
     behavior: "smooth"
   });
 }
 
+// ==================================
+// TAMPILKAN PRODUK
+// ==================================
+
 function renderProducts() {
-  grid.innerHTML = "";
+  const container = el("products");
+  const search = el("search").value.toLowerCase().trim();
 
-  const q = search.value.toLowerCase();
+  container.innerHTML = "";
 
-  const result = products.filter(p =>
-    (category === "Semua" || p[0] === category) &&
-    p[1].toLowerCase().includes(q)
-  );
+  const filtered = products
+    .map((product, index) => ({
+      category: product[0],
+      name: product[1],
+      price: product[2],
+      icon: product[3],
+      index
+    }))
+    .filter(product => {
+      const matchCategory =
+        activeCategory === "Semua" ||
+        product.category === activeCategory;
 
-  result.forEach(p => {
+      const matchSearch =
+        product.name.toLowerCase().includes(search) ||
+        product.category.toLowerCase().includes(search);
+
+      return matchCategory && matchSearch;
+    });
+
+  filtered.forEach(product => {
     const card = document.createElement("div");
     card.className = "product-card";
 
     card.innerHTML = `
-      <div class="product-symbol">${p[3]}</div>
-      <h3>${p[1]}</h3>
-      <p>${p[0]}</p>
-      <span class="product-price">${rupiah(p[2])}</span>
-      <button class="choose-btn">Pilih Produk</button>
+      <div class="product-symbol">${product.icon}</div>
+      <h3>${product.name}</h3>
+      <p>${product.category}</p>
+      <div class="product-bottom">
+        <b class="product-price">${rupiah(product.price)}</b>
+        <button class="choose-btn">Pilih</button>
+      </div>
     `;
 
-    card.querySelector("button").onclick = () => openProduct(p);
-    grid.appendChild(card);
+    card.querySelector(".choose-btn")
+      .addEventListener("click", () => {
+        openProduct(product);
+      });
+
+    container.appendChild(card);
   });
 
-  document.getElementById("emptyState").hidden =
-    result.length > 0;
+  if (filtered.length === 0) {
+    container.innerHTML =
+      "<p>Produk tidak ditemukan.</p>";
+  }
 }
 
-function openProduct(p) {
-  selected = p;
+// ==================================
+// MODAL PRODUK
+// ==================================
 
-  document.getElementById("modalIcon").textContent = p[3];
-  document.getElementById("modalName").textContent = p[1];
-  document.getElementById("modalInfo").textContent = p[0];
-  document.getElementById("modalPrice").textContent = rupiah(p[2]);
-  document.getElementById("targetInput").value = "";
+function openProduct(product) {
+  selectedProduct = product;
 
-  document.getElementById("productModal").hidden = false;
+  el("productIcon").textContent = product.icon;
+  el("productName").textContent = product.name;
+  el("productCategory").textContent = product.category;
+  el("productPrice").textContent = rupiah(product.price);
+  el("target").value = "";
+
+  el("productModal").classList.add("show");
 }
 
-document.querySelectorAll("[data-close]").forEach(btn => {
-  btn.onclick = () => {
-    document.getElementById(btn.dataset.close).hidden = true;
-  };
-});
+function closeProduct() {
+  el("productModal").classList.remove("show");
+}
 
-document.getElementById("addToCart").onclick = () => {
-  const target = document.getElementById("targetInput").value.trim();
+// ==================================
+// KERANJANG
+// ==================================
+
+function addToCart() {
+  const target = el("target").value.trim();
 
   if (!target) {
-    alert("Masukkan nomor tujuan!");
+    alert("Masukkan nomor tujuan terlebih dahulu!");
     return;
   }
 
-  cart.push({ product: selected, target });
-  document.getElementById("productModal").hidden = true;
+  if (!selectedProduct) {
+    alert("Silakan pilih produk terlebih dahulu.");
+    return;
+  }
+
+  cart.push({
+    ...selectedProduct,
+    target: target,
+    id: Date.now() + Math.random()
+  });
+
+  closeProduct();
   renderCart();
-  document.getElementById("cartDrawer").hidden = false;
-};
+
+  alert("Produk berhasil ditambahkan!");
+}
 
 function renderCart() {
-  const box = document.getElementById("cartItems");
-  box.innerHTML = "";
+  const container = el("cartItems");
+  container.innerHTML = "";
 
-  let total = 0;
+  if (cart.length === 0) {
+    container.innerHTML = "<p>Keranjang masih kosong.</p>";
+  }
 
-  cart.forEach((item, index) => {
-    total += item.product[2];
-
+  cart.forEach(item => {
     const row = document.createElement("div");
-    row.className = "cart-row";
+    row.className = "cart-item";
 
     row.innerHTML = `
       <div>
-        <b>${item.product[1]}</b>
-        <small>${item.target}</small>
-        <button class="remove-btn">Hapus</button>
+        <b>${item.name}</b>
+        <p>${item.target}</p>
+        <button>Hapus</button>
       </div>
-      <b>${rupiah(item.product[2])}</b>
+      <strong>${rupiah(item.price)}</strong>
     `;
 
-    row.querySelector("button").onclick = () => {
-      cart.splice(index, 1);
+    row.querySelector("button").addEventListener("click", () => {
+      cart = cart.filter(p => p.id !== item.id);
       renderCart();
-    };
+    });
 
-    box.appendChild(row);
+    container.appendChild(row);
   });
 
-  document.getElementById("cartCount").textContent = cart.length;
-  document.getElementById("cartTotal").textContent = rupiah(total);
+  const total = cart.reduce(
+    (sum, item) => sum + item.price, 0
+  );
+
+  el("total").textContent = "Total: " + rupiah(total);
+  el("cartCount").textContent = cart.length;
 }
 
-document.getElementById("cartOpen").onclick = () => {
-  document.getElementById("cartDrawer").hidden = false;
-};
+function openCart() {
+  el("cartModal").classList.add("show");
+  renderCart();
+}
 
-document.getElementById("cartClose").onclick = () => {
-  document.getElementById("cartDrawer").hidden = true;
-};
+function closeCart() {
+  el("cartModal").classList.remove("show");
+}
 
-document.getElementById("navCart").onclick = e => {
-  e.preventDefault();
-  document.getElementById("cartDrawer").hidden = false;
-};
+// ==================================
+// CHECKOUT
+// ==================================
 
-
-document.getElementById("checkoutBtn").onclick = () => {
+function checkout() {
   if (cart.length === 0) {
     alert("Keranjang masih kosong!");
     return;
   }
 
-  const name = document.getElementById("customerName").value.trim();
+  const customer = el("customer").value.trim();
 
-  if (!name) {
+  if (!customer) {
     alert("Masukkan nama pemesan!");
     return;
   }
 
   const total = cart.reduce(
-    (sum, item) => sum + item.product[2], 0
+    (sum, item) => sum + item.price, 0
   );
 
-  document.getElementById("qrisTotal").textContent = rupiah(total);
-  document.getElementById("cartDrawer").hidden = true;
-  document.getElementById("qrisModal").hidden = false;
-};
+  el("paymentTotal").textContent = rupiah(total);
 
-document.getElementById("closeQris").onclick = () => {
-  document.getElementById("qrisModal").hidden = true;
-};
+  closeCart();
+  el("paymentModal").classList.add("show");
+}
 
-document.getElementById("confirmPayment").onclick = () => {
-  const name = document.getElementById("customerName").value.trim();
+function closePayment() {
+  el("paymentModal").classList.remove("show");
+}
 
-  if (!ADMIN_WA) {
-    alert("Isi nomor WhatsApp admin di ADMIN_WA!");
+// ==================================
+// KIRIM PESANAN WHATSAPP
+// ==================================
+
+function sendOrder() {
+  if (!ADMIN_WA || ADMIN_WA === "6281234567890") {
+    alert("Ganti nomor ADMIN_WA di script.js dengan nomor WhatsApp admin kamu.");
     return;
   }
 
-  let message = `KONFIRMASI PEMBAYARAN PULSAKULA\nNama: ${name}\n\n`;
+  const customer = el("customer").value.trim();
 
-  cart.forEach((item, i) => {
-    message += `${i + 1}. ${item.product[1]}\n`;
-    message += `Tujuan: ${item.target}\n`;
-    message += `Harga: ${rupiah(item.product[2])}\n\n`;
-  });
+  const detail = cart.map((item, index) => {
+    return (
+      `${index + 1}. ${item.name}\n` +
+      `Tujuan: ${item.target}\n` +
+      `Harga contoh: ${rupiah(item.price)}`
+    );
+  }).join("\n\n");
 
   const total = cart.reduce(
-    (sum, item) => sum + item.product[2], 0
+    (sum, item) => sum + item.price, 0
   );
 
-  message += `Total: ${rupiah(total)}\n`;
-  message += "Pembayaran: QRIS TOKO RAFZEL\n";
-  message += "Mohon cek pembayaran saya.";
+  const message =
+    `PESANAN PULSAKULA\n\n` +
+    `Nama: ${customer}\n\n` +
+    `${detail}\n\n` +
+    `Total harga contoh: ${rupiah(total)}\n\n` +
+    `Mohon konfirmasi harga akhir dan instruksi pembayaran.`;
 
-  window.open(
+  const url =
     "https://wa.me/" + ADMIN_WA +
-    "?text=" + encodeURIComponent(message),
-    "_blank"
-  );
-};
+    "?text=" + encodeURIComponent(message);
+
+  window.open(url, "_blank");
+}
+
+// ==================================
+// MULAI WEBSITE
+// ==================================
+
+document.addEventListener("DOMContentLoaded", () => {
+  renderServices();
+  renderFilters();
+  renderProducts();
+  renderCart();
+});
