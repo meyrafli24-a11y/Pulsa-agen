@@ -1,345 +1,237 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PulsaKula - Top Up & Paket Data</title>
-<style>
-  /* === RESET & BASE === */
-  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', system-ui, sans-serif; }
-  body { background:#f8f9fc; color:#1e293b; padding-bottom:40px; overflow-x:hidden; }
-  
-  /* === HEADER === */
-  .header {
-    background:#fff; padding:16px 20px;
-    display:flex; justify-content:space-between; align-items:center;
-    box-shadow:0 2px 10px rgba(0,0,0,.02);
-    position:sticky; top:0; z-index:100;
-  }
-  .logo-area h1 { font-size:1.4rem; font-weight:800; color:#0ea5e9; letter-spacing:-.5px; }
-  .logo-area h1 span { color:#0284c7; }
-  .cart-btn { background:#f0f9ff; color:#0284c7; border:none; padding:8px 16px; border-radius:12px; font-weight:600; font-size:.9rem; cursor:pointer; }
-  
-  /* === HALAMAN AWAL (HERO SECTION) === */
-  #halamanAwal {
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    min-height: 75vh; text-align: center; padding: 20px;
-    background: radial-gradient(circle at top right, #e0f2fe, #f8f9fc);
-  }
-  .hero-title { font-size: 2.2rem; font-weight: 800; color:#0f172a; margin-bottom: 10px; line-height:1.2; }
-  .hero-title span { color:#0ea5e9; }
-  .hero-sub { font-size: 1rem; color:#64748b; margin-bottom: 24px; max-width: 400px; }
-  
-  /* Gambar Ilustrasi Animasi */
-  .hero-img {
-    width: 100%; max-width: 320px; height: 200px;
-    background: linear-gradient(135deg, #0ea5e9, #2563eb);
-    border-radius: 24px; margin-bottom: 30px;
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 10px 30px rgba(14,165,233,.3);
-    animation: float 3s ease-in-out infinite;
-  }
-  .hero-img span { font-size: 5rem; }
-  @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0); } }
-
-  .btn-mulai {
-    background: #0ea5e9; color: #fff; border: none;
-    padding: 16px 40px; border-radius: 30px; font-size: 1.1rem; font-weight: 700;
-    cursor: pointer; transition: .3s; box-shadow: 0 4px 15px rgba(14,165,233,.4);
-    display: flex; align-items: center; gap: 10px;
-  }
-  .btn-mulai:hover { background: #0284c7; transform: scale(1.05); }
-
-  /* === HALAMAN PRODUK (SEMBUNYI AWALNYA) === */
-  #halamanProduk {
-    display: none; /* Sembunyikan dulu */
-    padding: 20px; max-width: 1200px; margin: 0 auto;
-    animation: fadeIn .5s ease-out;
-  }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-  .section-title { font-size: 1.3rem; font-weight: 800; margin-bottom: 20px; color:#0f172a; }
-  .section-title span { color:#0ea5e9; }
-
-  .product-grid {
-    display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
-    gap:16px;
-  }
-  .card {
-    background:#fff; border-radius:16px; padding:20px;
-    box-shadow:0 1px 4px rgba(0,0,0,.04); border:1px solid #f1f5f9;
-    display:flex; flex-direction:column; transition:.2s;
-  }
-  .card:hover { box-shadow:0 4px 12px rgba(0,0,0,.08); transform:translateY(-2px); }
-  .card-top { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
-  .icon-box { width:44px; height:44px; background:#f0f9ff; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.2rem; }
-  .card h3 { font-size:1rem; font-weight:700; color:#0f172a; }
-  .card .type { font-size:.8rem; color:#94a3b8; }
-  .card-bottom { display:flex; justify-content:space-between; align-items:center; margin-top:auto; }
-  .price { font-size:1.3rem; font-weight:800; color:#16a34a; }
-  .btn-pilih {
-    background:#e0f2fe; color:#0284c7; border:none; padding:8px 18px;
-    border-radius:8px; font-weight:600; font-size:.85rem; cursor:pointer; transition:.2s;
-  }
-  .btn-pilih:hover { background:#bae6fd; }
-
-  /* Tombol Kembali ke Awal */
-  .btn-kembali {
-    display: inline-block; margin-bottom: 20px; background: #fff; border: 1px solid #cbd5e1;
-    padding: 8px 16px; border-radius: 20px; font-size: .85rem; font-weight: 600;
-    color: #64748b; cursor: pointer;
-  }
-
-  /* === MODAL / POP-UP === */
-  .modal {
-    position:fixed; top:0; left:0; width:100%; height:100%;
-    background:rgba(15,23,42,.6); backdrop-filter:blur(2px);
-    display:none; align-items:center; justify-content:center; z-index:1000;
-    padding:20px;
-  }
-  .modal.active { display:flex; }
-  .modal-box {
-    background:#fff; width:100%; max-width:450px; border-radius:20px;
-    padding:24px; max-height:90vh; overflow-y:auto;
-  }
-  .modal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
-  .close-btn { background:none; border:none; font-size:1.5rem; color:#94a3b8; cursor:pointer; }
-  
-  .form-group { margin-bottom:16px; }
-  .form-group label { display:block; font-size:.85rem; font-weight:600; color:#475569; margin-bottom:6px; }
-  .form-group input { width:100%; padding:14px; border:1px solid #cbd5e1; border-radius:10px; font-size:.95rem; outline:none; }
-  .btn-primary { width:100%; background:#0ea5e9; color:#fff; border:none; padding:14px; border-radius:12px; font-size:1rem; font-weight:700; cursor:pointer; margin-top:10px; }
-
-  .cart-item { display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px dashed #e2e8f0; }
-  .cart-item-info h4 { font-size:.9rem; }
-  .cart-item-info .tujuan { font-size:.75rem; color:#0ea5e9; font-weight:600; }
-  .cart-item-info p { font-size:.85rem; color:#16a34a; font-weight:700; }
-  .btn-hapus { background:#fee2e2; color:#ef4444; border:none; padding:6px 10px; border-radius:6px; cursor:pointer; }
-  .cart-total { display:flex; justify-content:space-between; font-weight:800; font-size:1.2rem; margin:16px 0; padding-top:16px; border-top:2px dashed #e2e8f0; }
-
-  .pay-option { display:flex; align-items:center; gap:10px; padding:12px; border:1px solid #e2e8f0; border-radius:10px; margin-bottom:8px; cursor:pointer; }
-  .pay-option.active { border-color:#0ea5e9; background:#f0f9ff; }
-
-  .qris-box { text-align:center; margin:16px 0; padding:16px; border:1px dashed #cbd5e1; border-radius:12px; background:#f8fafc; }
-  .qris-box img { width:100%; max-width:250px; border-radius:8px; margin-bottom:10px; display:block; margin-left:auto; margin-right:auto; }
-  .qris-box p { font-size:.8rem; color:#64748b; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#087bd0">
+  <title>PULSAKULA - Top Up Digital</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- HEADER -->
-<div class="header">
-  <div class="logo-area"><h1>PULSA<span>KULA</span></h1></div>
-  <button class="cart-btn" onclick="bukaKeranjang()">🛒 <span id="cartCount">0</span></button>
-</div>
-
-<!-- ========================================== -->
-<!-- HALAMAN 1: TAMPILAN AWAL (LANDING PAGE) -->
-<!-- ========================================== -->
-<div id="halamanAwal">
-  <div class="hero-img"><span>🚀</span></div>
-  <h1 class="hero-title">Top Up & Bayar Tagihan <br><span>Lebih Cepat</span></h1>
-  <p class="hero-sub">Pulsa, Kuota Internet, Token PLN, hingga Voucher Game. Semua ada di PulsaKula!</p>
-  
-  <button class="btn-mulai" onclick="bukaHalamanProduk()">
-    Mulai Belanja <span>→</span>
+<header class="navbar">
+  <a href="#" class="logo">PULSA<span>KULA</span></a>
+  <button class="cart-btn" onclick="openCart()">
+    🛒 <span id="cartCount">0</span>
   </button>
-</div>
+</header>
 
-<!-- ========================================== -->
-<!-- HALAMAN 2: DAFTAR PRODUK (MUNCUL SETELAH DIKLIK) -->
-<!-- ========================================== -->
-<div id="halamanProduk">
-  <button class="btn-kembali" onclick="kembaliKeAwal()">← Kembali ke Awal</button>
-  
-  <h2 class="section-title">Pilih Produk <span>Favoritmu</span></h2>
-  <div class="product-grid" id="grid"></div>
-</div>
+<main>
 
-<!-- MODAL INPUT TUJUAN -->
-<div class="modal" id="modalInput">
-  <div class="modal-box">
-    <div class="modal-header">
-      <h2 id="judulInput">Masukkan Data</h2>
-      <button class="close-btn" onclick="tutupInput()">&times;</button>
-    </div>
-    <div class="form-group">
-      <label id="labelInput">Nomor HP</label>
-      <input type="text" id="inputTujuan" placeholder="Contoh: 08123456789">
-    </div>
-    <button class="btn-primary" onclick="simpanKeKeranjang()">Tambahkan ke Keranjang</button>
-  </div>
-</div>
-
-<!-- MODAL KERANJANG -->
-<div class="modal" id="modalKeranjang">
-  <div class="modal-box">
-    <div class="modal-header">
-      <h2>Keranjang</h2>
-      <button class="close-btn" onclick="tutupKeranjang()">&times;</button>
-    </div>
-    <div id="listKeranjang"></div>
-    <div class="cart-total">
-      <span>Total:</span>
-      <span id="totalHarga" style="color:#16a34a;">Rp 0</span>
+  <!-- HALAMAN UTAMA -->
+  <section class="hero">
+    <div class="hero-content">
+      <span class="badge">SELAMAT DATANG DI PULSAKULA</span>
+      <h1>Semua Kebutuhan Digital <span>Dalam Satu Tempat!</span></h1>
+      <p>
+        Isi pulsa, beli paket internet, token listrik,
+        top up game dan bayar tagihan dengan mudah.
+      </p>
+      <a href="#layanan" class="hero-button">Mulai Belanja →</a>
     </div>
 
-    <div style="font-size:.85rem; font-weight:600; margin-bottom:10px;">Pilih Pembayaran:</div>
-    <div class="pay-option active" onclick="pilihPembayaran('qris')">
-      <input type="radio" checked> <label>QRIS</label>
+    <div class="hero-art">
+      <div class="art-circle">📱</div>
+      <div class="art-card">⚡ Cepat & Praktis</div>
     </div>
-    <div class="pay-option" onclick="pilihPembayaran('transfer')">
-      <input type="radio"> <label>Transfer Bank</label>
+  </section>
+
+  <!-- KEUNGGULAN -->
+  <section class="features">
+    <div>⚡<b>Praktis</b><small>Mudah digunakan</small></div>
+    <div>🔒<b>Aman</b><small>Pemesanan mudah</small></div>
+    <div>💬<b>Bantuan</b><small>Admin WhatsApp</small></div>
+  </section>
+
+  <!-- SEMUA LAYANAN -->
+  <section class="section" id="layanan">
+    <div class="heading">
+      <span>PILIH KEBUTUHANMU</span>
+      <h2>Layanan <span>Digital</span></h2>
+      <p>Pilih layanan untuk melihat produk yang tersedia.</p>
     </div>
 
-    <div id="boxQris" class="qris-box">
-      <!-- GANTI NAMA FILE "gambar-qris.jpg" DENGAN FOTO QRIS KAMU -->
-      <img src="gambar-qris.jpg" alt="QRIS" onerror="this.style.display='none'; document.getElementById('qris-fallback').style.display='block';">
-      <div id="qris-fallback" style="display:none; padding:30px; background:#e2e8f0; border-radius:8px; margin-bottom:10px;">
-        <p style="font-weight:bold; color:#ef4444;">⚠️ Gambar QRIS Belum Dimasukkan</p>
+    <div class="service-grid" id="services"></div>
+  </section>
+
+  <!-- PILIH OPERATOR -->
+  <section class="section" id="operatorSection" hidden>
+    <div class="heading">
+      <span>PILIH OPERATOR</span>
+      <h2 id="operatorTitle">Pilih Operator</h2>
+      <p>Pilih operator untuk melihat produk.</p>
+    </div>
+
+    <div class="service-grid" id="operators"></div>
+  </section>
+
+  <!-- DAFTAR PRODUK -->
+  <section class="section" id="productSection">
+    <div class="heading">
+      <span>PRODUK PULSAKULA</span>
+      <h2>Produk <span>Tersedia</span></h2>
+      <p>Pilih produk yang ingin kamu beli.</p>
+    </div>
+
+    <input
+      class="search"
+      id="search"
+      type="search"
+      placeholder="Cari nama produk..."
+      oninput="renderProducts()"
+    >
+
+    <div class="filters" id="filters"></div>
+    <div class="product-grid" id="products"></div>
+
+    <p class="notice">
+      Pastikan nomor tujuan atau ID pelanggan sudah benar
+      sebelum melakukan pemesanan.
+    </p>
+  </section>
+
+  <!-- PROMO -->
+  <section class="promo">
+    <div>
+      <span>BUTUH BANTUAN?</span>
+      <h2>Admin PULSAKULA</h2>
+      <p>Hubungi admin jika membutuhkan bantuan pemesanan.</p>
+    </div>
+    <a href="https://wa.me/6283894053143" target="_blank">
+      Chat Admin
+    </a>
+  </section>
+
+  <!-- CARA PEMESANAN -->
+  <section class="section">
+    <div class="heading">
+      <span>CARA PEMESANAN</span>
+      <h2>Mudah Dalam <span>3 Langkah</span></h2>
+    </div>
+
+    <div class="steps">
+      <div>
+        <b>01</b>
+        <h3>Pilih Produk</h3>
+        <p>Pilih layanan dan produk yang kamu butuhkan.</p>
       </div>
-      <p>Scan QRIS di atas menggunakan M-Banking / E-Wallet.</p>
-    </div>
 
-    <div id="boxTransfer" class="qris-box" style="display:none;">
-      <p style="font-weight:700; font-size:1rem;">Bank BCA</p>
-      <p style="font-size:1.1rem; font-weight:800; color:#0ea5e9;">1234567890</p>
-      <p>a.n. Nama Kamu</p>
-    </div>
+      <div>
+        <b>02</b>
+        <h3>Masukkan Data</h3>
+        <p>Masukkan nomor HP atau ID tujuan dengan benar.</p>
+      </div>
 
-    <button class="btn-primary" style="background:#25d366;" onclick="konfirmasiWA()">
-      💬 Konfirmasi via WA
+      <div>
+        <b>03</b>
+        <h3>Konfirmasi</h3>
+        <p>Periksa pesanan dan konfirmasi kepada admin.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- NAVIGASI BAWAH -->
+<nav class="bottom-nav">
+  <a href="#">
+    <span>⌂</span>
+    <small>Beranda</small>
+  </a>
+
+  <a href="#layanan">
+    <span>▦</span>
+    <small>Layanan</small>
+  </a>
+
+  <a href="#" onclick="openCart(); return false;">
+    <span>🛒</span>
+    <small>Keranjang</small>
+  </a>
+</nav>
+
+<!-- POPUP PRODUK -->
+<div class="modal" id="productModal">
+  <div class="modal-box">
+    <button class="close" onclick="closeProduct()">×</button>
+
+    <div class="big-icon" id="productIcon">📱</div>
+    <h2 id="productName">Nama Produk</h2>
+    <p id="productCategory">Kategori</p>
+    <h3 id="productPrice">Rp 0</h3>
+
+    <label for="target">Nomor HP / ID Tujuan</label>
+    <input
+      id="target"
+      type="text"
+      placeholder="Masukkan nomor atau ID tujuan"
+    >
+
+    <button class="main-btn" onclick="addToCart()">
+      Tambahkan ke Keranjang
     </button>
   </div>
 </div>
 
-<script>
-// ==========================================
-// LOGIKA PINDAH HALAMAN
-// ==========================================
-function bukaHalamanProduk() {
-  document.getElementById("halamanAwal").style.display = "none";
-  document.getElementById("halamanProduk").style.display = "block";
-  window.scrollTo(0, 0); // Gulir ke atas
-}
+<!-- KERANJANG -->
+<div class="modal" id="cartModal">
+  <div class="modal-box">
+    <button class="close" onclick="closeCart()">×</button>
 
-function kembaliKeAwal() {
-  document.getElementById("halamanProduk").style.display = "none";
-  document.getElementById("halamanAwal").style.display = "flex";
-  window.scrollTo(0, 0);
-}
+    <h2>Keranjang Belanja</h2>
 
-// ==========================================
-// DATA PRODUK & LOGIKA UTAMA
-// ==========================================
-const dataProduk = [
-  { id: 1, nama:"Telkomsel 5.000", harga:6500, tipe:"Pulsa", icon:"📱", label:"Nomor HP" },
-  { id: 2, nama:"Data Telkomsel 3 GB", harga:25000, tipe:"Paket Data", icon:"🌐", label:"Nomor HP" },
-  { id: 3, nama:"Token Listrik 20.000", harga:21500, tipe:"Token PLN", icon:"⚡", label:"ID Meteran" },
-  { id: 4, nama:"ML 86 Diamond", harga:23000, tipe:"Voucher Game", icon:"🎮", label:"User ID" }
-];
+    <div id="cartItems"></div>
 
-const NOMOR_WA = "6281234567890"; // Ganti nomor WA kamu
-let keranjang = [];
-let produkAktif = null;
-let metodeBayar = "qris";
+    <h3 id="total">Total: Rp 0</h3>
 
-function renderProduk() {
-  const grid = document.getElementById("grid");
-  grid.innerHTML = "";
-  dataProduk.forEach(p => {
-    grid.innerHTML += `
-      <div class="card">
-        <div class="card-top">
-          <div class="icon-box">${p.icon}</div>
-          <div><h3>${p.nama}</h3><div class="type">${p.tipe}</div></div>
-        </div>
-        <div class="card-bottom">
-          <div class="price">Rp ${p.harga.toLocaleString("id-ID")}</div>
-          <button class="btn-pilih" onclick="bukaInput(${p.id})">Pilih</button>
-        </div>
-      </div>
-    `;
-  });
-}
+    <label for="customer">Nama Pemesan</label>
+    <input
+      id="customer"
+      type="text"
+      placeholder="Masukkan nama kamu"
+    >
 
-function bukaInput(id) {
-  produkAktif = dataProduk.find(p => p.id === id);
-  document.getElementById("judulInput").innerText = produkAktif.nama;
-  document.getElementById("labelInput").innerText = produkAktif.label;
-  document.getElementById("inputTujuan").value = "";
-  document.getElementById("modalInput").classList.add("active");
-}
+    <button class="main-btn" onclick="checkout()">
+      Lanjut Pembayaran
+    </button>
+  </div>
+</div>
 
-function tutupInput() { document.getElementById("modalInput").classList.remove("active"); }
+<!-- PEMBAYARAN -->
+<div class="modal" id="paymentModal">
+  <div class="modal-box">
+    <button class="close" onclick="closePayment()">×</button>
 
-function simpanKeKeranjang() {
-  const tujuan = document.getElementById("inputTujuan").value.trim();
-  if (!tujuan) { alert("Mohon isi data!"); return; }
-  keranjang.push({ nama: produkAktif.nama, harga: produkAktif.harga, tujuan: tujuan });
-  tutupInput();
-  document.getElementById("cartCount").innerText = keranjang.length;
-  bukaKeranjang();
-}
+    <h2>Konfirmasi Pesanan</h2>
+    <p>Total pembayaran:</p>
+    <h3 id="paymentTotal">Rp 0</h3>
 
-function bukaKeranjang() { renderKeranjang(); document.getElementById("modalKeranjang").classList.add("active"); }
-function tutupKeranjang() { document.getElementById("modalKeranjang").classList.remove("active"); }
+    <img
+      class="qris"
+      src="https://raw.githubusercontent.com/meyrafli24-a11y/Pulsa-agen/main/qr_ID1025376713323_07.01.26_176777048_1767770502053.jpeg"
+      alt="QRIS PULSAKULA"
+    >
 
-function renderKeranjang() {
-  const list = document.getElementById("listKeranjang");
-  let total = 0;
-  list.innerHTML = "";
-  if (keranjang.length === 0) {
-    list.innerHTML = `<p style="text-align:center; color:#94a3b8;">Keranjang kosong.</p>`;
-  } else {
-    keranjang.forEach((item, index) => {
-      total += item.harga;
-      list.innerHTML += `
-        <div class="cart-item">
-          <div class="cart-item-info">
-            <h4>${item.nama}</h4>
-            <span class="tujuan">Tujuan: ${item.tujuan}</span>
-            <p>Rp ${item.harga.toLocaleString("id-ID")}</p>
-          </div>
-          <button class="btn-hapus" onclick="hapusItem(${index})">Hapus</button>
-        </div>
-      `;
-    });
-  }
-  document.getElementById("totalHarga").innerText = "Rp " + total.toLocaleString("id-ID");
-}
+    <p>
+      Periksa nama merchant dan nominal pembayaran.
+      Konfirmasi pembayaran kepada admin.
+    </p>
 
-function hapusItem(index) {
-  keranjang.splice(index, 1);
-  document.getElementById("cartCount").innerText = keranjang.length;
-  renderKeranjang();
-}
+    <button class="main-btn" onclick="sendOrder()">
+      💬 Konfirmasi via WhatsApp
+    </button>
+  </div>
+</div>
 
-function pilihPembayaran(metode) {
-  metodeBayar = metode;
-  document.querySelectorAll(".pay-option").forEach(el => el.classList.remove("active"));
-  if (metode === "qris") {
-    document.querySelectorAll(".pay-option")[0].classList.add("active");
-    document.getElementById("boxQris").style.display = "block";
-    document.getElementById("boxTransfer").style.display = "none";
-  } else {
-    document.querySelectorAll(".pay-option")[1].classList.add("active");
-    document.getElementById("boxQris").style.display = "none";
-    document.getElementById("boxTransfer").style.display = "block";
-  }
-}
+<!-- FOOTER -->
+<footer>
+  <h2>PULSAKULA</h2>
+  <p>Layanan digital dalam satu tempat.</p>
+  <small>© 2026 PULSAKULA</small>
+</footer>
 
-function konfirmasiWA() {
-  if (keranjang.length === 0) { alert("Keranjang kosong!"); return; }
-  let total = keranjang.reduce((sum, item) => sum + item.harga, 0);
-  let pesan = `Halo Admin, saya mau konfirmasi pembayaran via *${metodeBayar.toUpperCase()}*.%0A%0A`;
-  keranjang.forEach((item, i) => { pesan += `${i+1}. ${item.nama} (${item.tujuan}) - Rp ${item.harga}%0A`; });
-  pesan += `%0A*Total: Rp ${total}*%0A%0AMohon diproses ya.`;
-  window.open(`https://wa.me/${NOMOR_WA}?text=${pesan}`, '_blank');
-}
+<script src="script.js"></script>
 
-// Jalankan saat web dibuka
-renderProduk();
-</script>
 </body>
 </html>
