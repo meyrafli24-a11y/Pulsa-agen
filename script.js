@@ -345,3 +345,8 @@ document.getElementById("searchInput")?.addEventListener(
 
 renderProducts();
 updateCartCount();
+
+document.addEventListener("DOMContentLoaded", function () {
+  renderProducts();
+  updateCartCount();
+});
