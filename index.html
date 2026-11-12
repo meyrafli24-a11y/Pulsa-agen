@@ -3,29 +3,105 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PulsaKula - Top Up & QRIS</title>
+<title>PulsaKula - Top Up & Paket Data</title>
 <style>
+  /* === RESET & BASE === */
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', system-ui, sans-serif; }
-  body { background:#f8f9fc; color:#1e293b; padding-bottom:40px; }
+  body { background:#f8f9fc; color:#1e293b; padding-bottom:40px; overflow-x:hidden; }
   
-  .header { background:#fff; padding:16px 20px; display:flex; justify-content:space-between; align-items:center; box-shadow:0 2px 10px rgba(0,0,0,.02); position:sticky; top:0; z-index:100; }
-  .logo-area h1 { font-size:1.4rem; font-weight:800; color:#0ea5e9; }
+  /* === HEADER === */
+  .header {
+    background:#fff; padding:16px 20px;
+    display:flex; justify-content:space-between; align-items:center;
+    box-shadow:0 2px 10px rgba(0,0,0,.02);
+    position:sticky; top:0; z-index:100;
+  }
+  .logo-area h1 { font-size:1.4rem; font-weight:800; color:#0ea5e9; letter-spacing:-.5px; }
   .logo-area h1 span { color:#0284c7; }
   .cart-btn { background:#f0f9ff; color:#0284c7; border:none; padding:8px 16px; border-radius:12px; font-weight:600; font-size:.9rem; cursor:pointer; }
   
-  .product-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:16px; padding:20px; max-width:1200px; margin:0 auto; }
-  .card { background:#fff; border-radius:16px; padding:20px; box-shadow:0 1px 4px rgba(0,0,0,.04); border:1px solid #f1f5f9; display:flex; flex-direction:column; }
+  /* === HALAMAN AWAL (HERO SECTION) === */
+  #halamanAwal {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 75vh; text-align: center; padding: 20px;
+    background: radial-gradient(circle at top right, #e0f2fe, #f8f9fc);
+  }
+  .hero-title { font-size: 2.2rem; font-weight: 800; color:#0f172a; margin-bottom: 10px; line-height:1.2; }
+  .hero-title span { color:#0ea5e9; }
+  .hero-sub { font-size: 1rem; color:#64748b; margin-bottom: 24px; max-width: 400px; }
+  
+  /* Gambar Ilustrasi Animasi */
+  .hero-img {
+    width: 100%; max-width: 320px; height: 200px;
+    background: linear-gradient(135deg, #0ea5e9, #2563eb);
+    border-radius: 24px; margin-bottom: 30px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 10px 30px rgba(14,165,233,.3);
+    animation: float 3s ease-in-out infinite;
+  }
+  .hero-img span { font-size: 5rem; }
+  @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0); } }
+
+  .btn-mulai {
+    background: #0ea5e9; color: #fff; border: none;
+    padding: 16px 40px; border-radius: 30px; font-size: 1.1rem; font-weight: 700;
+    cursor: pointer; transition: .3s; box-shadow: 0 4px 15px rgba(14,165,233,.4);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .btn-mulai:hover { background: #0284c7; transform: scale(1.05); }
+
+  /* === HALAMAN PRODUK (SEMBUNYI AWALNYA) === */
+  #halamanProduk {
+    display: none; /* Sembunyikan dulu */
+    padding: 20px; max-width: 1200px; margin: 0 auto;
+    animation: fadeIn .5s ease-out;
+  }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+  .section-title { font-size: 1.3rem; font-weight: 800; margin-bottom: 20px; color:#0f172a; }
+  .section-title span { color:#0ea5e9; }
+
+  .product-grid {
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
+    gap:16px;
+  }
+  .card {
+    background:#fff; border-radius:16px; padding:20px;
+    box-shadow:0 1px 4px rgba(0,0,0,.04); border:1px solid #f1f5f9;
+    display:flex; flex-direction:column; transition:.2s;
+  }
+  .card:hover { box-shadow:0 4px 12px rgba(0,0,0,.08); transform:translateY(-2px); }
   .card-top { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
   .icon-box { width:44px; height:44px; background:#f0f9ff; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.2rem; }
-  .card h3 { font-size:1rem; font-weight:700; }
+  .card h3 { font-size:1rem; font-weight:700; color:#0f172a; }
   .card .type { font-size:.8rem; color:#94a3b8; }
   .card-bottom { display:flex; justify-content:space-between; align-items:center; margin-top:auto; }
   .price { font-size:1.3rem; font-weight:800; color:#16a34a; }
-  .btn-pilih { background:#e0f2fe; color:#0284c7; border:none; padding:8px 18px; border-radius:8px; font-weight:600; cursor:pointer; }
-  
-  .modal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15,23,42,.6); display:none; align-items:center; justify-content:center; z-index:1000; padding:20px; }
+  .btn-pilih {
+    background:#e0f2fe; color:#0284c7; border:none; padding:8px 18px;
+    border-radius:8px; font-weight:600; font-size:.85rem; cursor:pointer; transition:.2s;
+  }
+  .btn-pilih:hover { background:#bae6fd; }
+
+  /* Tombol Kembali ke Awal */
+  .btn-kembali {
+    display: inline-block; margin-bottom: 20px; background: #fff; border: 1px solid #cbd5e1;
+    padding: 8px 16px; border-radius: 20px; font-size: .85rem; font-weight: 600;
+    color: #64748b; cursor: pointer;
+  }
+
+  /* === MODAL / POP-UP === */
+  .modal {
+    position:fixed; top:0; left:0; width:100%; height:100%;
+    background:rgba(15,23,42,.6); backdrop-filter:blur(2px);
+    display:none; align-items:center; justify-content:center; z-index:1000;
+    padding:20px;
+  }
   .modal.active { display:flex; }
-  .modal-box { background:#fff; width:100%; max-width:450px; border-radius:20px; padding:24px; max-height:90vh; overflow-y:auto; }
+  .modal-box {
+    background:#fff; width:100%; max-width:450px; border-radius:20px;
+    padding:24px; max-height:90vh; overflow-y:auto;
+  }
   .modal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
   .close-btn { background:none; border:none; font-size:1.5rem; color:#94a3b8; cursor:pointer; }
   
@@ -33,19 +109,17 @@
   .form-group label { display:block; font-size:.85rem; font-weight:600; color:#475569; margin-bottom:6px; }
   .form-group input { width:100%; padding:14px; border:1px solid #cbd5e1; border-radius:10px; font-size:.95rem; outline:none; }
   .btn-primary { width:100%; background:#0ea5e9; color:#fff; border:none; padding:14px; border-radius:12px; font-size:1rem; font-weight:700; cursor:pointer; margin-top:10px; }
-  
+
   .cart-item { display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px dashed #e2e8f0; }
   .cart-item-info h4 { font-size:.9rem; }
   .cart-item-info .tujuan { font-size:.75rem; color:#0ea5e9; font-weight:600; }
   .cart-item-info p { font-size:.85rem; color:#16a34a; font-weight:700; }
   .btn-hapus { background:#fee2e2; color:#ef4444; border:none; padding:6px 10px; border-radius:6px; cursor:pointer; }
   .cart-total { display:flex; justify-content:space-between; font-weight:800; font-size:1.2rem; margin:16px 0; padding-top:16px; border-top:2px dashed #e2e8f0; }
-  
-  .payment-title { font-size:.85rem; font-weight:600; margin-bottom:10px; }
+
   .pay-option { display:flex; align-items:center; gap:10px; padding:12px; border:1px solid #e2e8f0; border-radius:10px; margin-bottom:8px; cursor:pointer; }
   .pay-option.active { border-color:#0ea5e9; background:#f0f9ff; }
-  
-  /* KOTAK QRIS */
+
   .qris-box { text-align:center; margin:16px 0; padding:16px; border:1px dashed #cbd5e1; border-radius:12px; background:#f8fafc; }
   .qris-box img { width:100%; max-width:250px; border-radius:8px; margin-bottom:10px; display:block; margin-left:auto; margin-right:auto; }
   .qris-box p { font-size:.8rem; color:#64748b; }
@@ -53,14 +127,36 @@
 </head>
 <body>
 
+<!-- HEADER -->
 <div class="header">
   <div class="logo-area"><h1>PULSA<span>KULA</span></h1></div>
   <button class="cart-btn" onclick="bukaKeranjang()">🛒 <span id="cartCount">0</span></button>
 </div>
 
-<div class="product-grid" id="grid"></div>
+<!-- ========================================== -->
+<!-- HALAMAN 1: TAMPILAN AWAL (LANDING PAGE) -->
+<!-- ========================================== -->
+<div id="halamanAwal">
+  <div class="hero-img"><span>🚀</span></div>
+  <h1 class="hero-title">Top Up & Bayar Tagihan <br><span>Lebih Cepat</span></h1>
+  <p class="hero-sub">Pulsa, Kuota Internet, Token PLN, hingga Voucher Game. Semua ada di PulsaKula!</p>
+  
+  <button class="btn-mulai" onclick="bukaHalamanProduk()">
+    Mulai Belanja <span>→</span>
+  </button>
+</div>
 
-<!-- MODAL INPUT -->
+<!-- ========================================== -->
+<!-- HALAMAN 2: DAFTAR PRODUK (MUNCUL SETELAH DIKLIK) -->
+<!-- ========================================== -->
+<div id="halamanProduk">
+  <button class="btn-kembali" onclick="kembaliKeAwal()">← Kembali ke Awal</button>
+  
+  <h2 class="section-title">Pilih Produk <span>Favoritmu</span></h2>
+  <div class="product-grid" id="grid"></div>
+</div>
+
+<!-- MODAL INPUT TUJUAN -->
 <div class="modal" id="modalInput">
   <div class="modal-box">
     <div class="modal-header">
@@ -88,7 +184,7 @@
       <span id="totalHarga" style="color:#16a34a;">Rp 0</span>
     </div>
 
-    <div class="payment-title">Pilih Pembayaran:</div>
+    <div style="font-size:.85rem; font-weight:600; margin-bottom:10px;">Pilih Pembayaran:</div>
     <div class="pay-option active" onclick="pilihPembayaran('qris')">
       <input type="radio" checked> <label>QRIS</label>
     </div>
@@ -96,19 +192,12 @@
       <input type="radio"> <label>Transfer Bank</label>
     </div>
 
-    <!-- ========================================== -->
-    <!-- BAGIAN GAMBAR QRIS KAMU -->
-    <!-- ========================================== -->
     <div id="boxQris" class="qris-box">
-      <!-- INSTRUKSI: GANTI "gambar-qris.jpg" DENGAN NAMA FILE FOTO QRIS KAMU -->
+      <!-- GANTI NAMA FILE "gambar-qris.jpg" DENGAN FOTO QRIS KAMU -->
       <img src="gambar-qris.jpg" alt="QRIS" onerror="this.style.display='none'; document.getElementById('qris-fallback').style.display='block';">
-      
-      <!-- Teks ini muncul kalau gambar belum dimasukkan -->
       <div id="qris-fallback" style="display:none; padding:30px; background:#e2e8f0; border-radius:8px; margin-bottom:10px;">
         <p style="font-weight:bold; color:#ef4444;">⚠️ Gambar QRIS Belum Dimasukkan</p>
-        <p style="font-size:0.8rem; margin-top:5px;">Baca instruksi di bawah kode untuk memasukkan gambar.</p>
       </div>
-
       <p>Scan QRIS di atas menggunakan M-Banking / E-Wallet.</p>
     </div>
 
@@ -125,10 +214,29 @@
 </div>
 
 <script>
+// ==========================================
+// LOGIKA PINDAH HALAMAN
+// ==========================================
+function bukaHalamanProduk() {
+  document.getElementById("halamanAwal").style.display = "none";
+  document.getElementById("halamanProduk").style.display = "block";
+  window.scrollTo(0, 0); // Gulir ke atas
+}
+
+function kembaliKeAwal() {
+  document.getElementById("halamanProduk").style.display = "none";
+  document.getElementById("halamanAwal").style.display = "flex";
+  window.scrollTo(0, 0);
+}
+
+// ==========================================
+// DATA PRODUK & LOGIKA UTAMA
+// ==========================================
 const dataProduk = [
   { id: 1, nama:"Telkomsel 5.000", harga:6500, tipe:"Pulsa", icon:"📱", label:"Nomor HP" },
   { id: 2, nama:"Data Telkomsel 3 GB", harga:25000, tipe:"Paket Data", icon:"🌐", label:"Nomor HP" },
-  { id: 3, nama:"Token Listrik 20.000", harga:21500, tipe:"Token PLN", icon:"⚡", label:"ID Meteran" }
+  { id: 3, nama:"Token Listrik 20.000", harga:21500, tipe:"Token PLN", icon:"⚡", label:"ID Meteran" },
+  { id: 4, nama:"ML 86 Diamond", harga:23000, tipe:"Voucher Game", icon:"🎮", label:"User ID" }
 ];
 
 const NOMOR_WA = "6281234567890"; // Ganti nomor WA kamu
@@ -136,7 +244,7 @@ let keranjang = [];
 let produkAktif = null;
 let metodeBayar = "qris";
 
-function render() {
+function renderProduk() {
   const grid = document.getElementById("grid");
   grid.innerHTML = "";
   dataProduk.forEach(p => {
@@ -230,7 +338,8 @@ function konfirmasiWA() {
   window.open(`https://wa.me/${NOMOR_WA}?text=${pesan}`, '_blank');
 }
 
-render();
+// Jalankan saat web dibuka
+renderProduk();
 </script>
 </body>
 </html>
