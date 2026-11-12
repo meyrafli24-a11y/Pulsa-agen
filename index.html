@@ -42,7 +42,7 @@
   <div class="service-grid" id="services"></div>
 </section>
 
-<section class="section">
+<section class="section" id="produk-section">
   <div class="heading">
     <span>KATALOG PRODUK</span>
     <h2>Produk Pilihan</h2>
@@ -51,7 +51,10 @@
 
   <input id="search" class="search" placeholder="🔍 Cari pulsa, game, e-wallet..." oninput="renderProducts()">
   <div id="filters" class="filters"></div>
+  
+  <!-- Wadah Produk -->
   <div id="products" class="product-grid"></div>
+  
   <p class="notice">Harga yang ditampilkan merupakan harga contoh dan dapat berubah setelah konfirmasi admin.</p>
 </section>
 
@@ -61,7 +64,7 @@
     <h2>Belanja digital lebih mudah!</h2>
     <p>Pilih produk favoritmu dan pesan langsung melalui admin.</p>
   </div>
-  <a href="#produk" onclick="document.getElementById('search').focus()">Lihat Produk →</a>
+  <a href="#produk-section" onclick="document.getElementById('search').focus()">Lihat Produk →</a>
 </section>
 
 <section class="section">
@@ -83,6 +86,7 @@
   <small>© 2026 PULSAKULA</small>
 </footer>
 
+<!-- MODAL PRODUK -->
 <div class="modal" id="productModal">
   <div class="modal-box">
     <button class="close" onclick="closeProduct()">✕</button>
@@ -96,6 +100,7 @@
   </div>
 </div>
 
+<!-- MODAL KERANJANG -->
 <div class="modal" id="cartModal">
   <div class="modal-box">
     <button class="close" onclick="closeCart()">✕</button>
@@ -108,7 +113,7 @@
   </div>
 </div>
 
-
+<!-- MODAL PEMBAYARAN (QRIS KAMU AMAN DI SINI) -->
 <div class="modal" id="paymentModal">
   <div class="modal-box">
     <button class="close" onclick="closePayment()">✕</button>
@@ -149,13 +154,13 @@
   </div>
 </div>
 
-
 <nav class="bottom-nav">
   <a href="#">⌂<small>Beranda</small></a>
   <a href="#layanan">▦<small>Layanan</small></a>
-  <a href="#produk">◈<small>Produk</small></a>
+  <a href="#produk-section">◈<small>Produk</small></a>
 </nav>
 
-<script src="script.js"></script>
+<!-- INI YANG BIKIN TOMBOL JALAN (ADA TITIKNYA) -->
+<script src="./script.js"></script>
 </body>
 </html>
