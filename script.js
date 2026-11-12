@@ -56,13 +56,11 @@ function normalizeCategory(category) {
   };
 
   const found = Object.keys(mapping).find(key => value === key);
-
   if (found) return mapping[found];
 
   const service = serviceList.find(
     item => item[0].toLowerCase() === value
   );
-
   return service ? service[0] : category;
 }
 
@@ -70,16 +68,14 @@ function getIcon(category) {
   const service = serviceList.find(
     item => item[0] === category
   );
-
   return service ? service[1] : "📦";
 }
 
 // ==================================
-// AMBIL PRODUK (LANGSUNG DARI KODE)
+// DATA PRODUK
 // ==================================
 
 function loadProducts() {
-  // Daftar produk kamu dari murah sampai mahal
   const dataProduk = [
     // PULSA
     { category: "Pulsa", name: "Telkomsel 5.000", price: 6500 },
@@ -113,7 +109,6 @@ function loadProducts() {
     { category: "E-Wallet", name: "DANA 50.000", price: 51000 }
   ];
 
-  // Proses datanya
   products = dataProduk.map((item, index) => {
     const category = normalizeCategory(item.category);
     return {
@@ -125,124 +120,93 @@ function loadProducts() {
     };
   });
 
-  // Tampilkan produk
   renderProducts();
 }
 
 // ==================================
-// TAMPILKAN LAYANAN
+// TAMPILKAN LAYANAN & FILTER
 // ==================================
 
 function renderServices() {
   const container = el("services");
+  if (!container) return;
   container.innerHTML = "";
 
   serviceList.forEach(service => {
     const [name, icon, description] = service;
-
     const button = document.createElement("button");
     button.className = "service-card";
-
     button.innerHTML = `
       <div class="service-icon">${icon}</div>
       <b>${name}</b>
       <small>${description}</small>
     `;
-
-    button.addEventListener("click", () => {
-      selectCategory(name);
-    });
-
+    button.addEventListener("click", () => selectCategory(name));
     container.appendChild(button);
   });
 }
 
-// ==================================
-// FILTER KATEGORI
-// ==================================
-
 function renderFilters() {
   const container = el("filters");
+  if (!container) return;
   container.innerHTML = "";
 
   const categories = ["Semua", ...serviceList.map(s => s[0])];
 
   categories.forEach(name => {
     const button = document.createElement("button");
-
     button.className = "filter-btn";
     button.textContent = name;
-
-    if (name === activeCategory) {
-      button.classList.add("active");
-    }
-
-    button.addEventListener("click", () => {
-      selectCategory(name);
-    });
-
+    if (name === activeCategory) button.classList.add("active");
+    button.addEventListener("click", () => selectCategory(name));
     container.appendChild(button);
   });
 }
 
 function selectCategory(name) {
   activeCategory = name;
-
   renderFilters();
   renderProducts();
-
-  const section = el("products").closest(".section");
-
+  const section = el("products")?.closest(".section");
   if (section) {
-    section.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
+    section.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 }
 
 // ==================================
-// TAMPILKAN PRODUK
+// TAMPILKAN PRODUK & HARGA
 // ==================================
 
 function renderProducts() {
   const container = el("products");
+  if (!container) return;
+  
   const search = (el("search")?.value || "").toLowerCase().trim();
-
   container.innerHTML = "";
 
   const filtered = products.filter(product => {
-    const matchCategory =
-      activeCategory === "Semua" ||
-      product.category === activeCategory;
-
-    const matchSearch =
-      product.name.toLowerCase().includes(search) ||
-      product.category.toLowerCase().includes(search);
-
+    const matchCategory = activeCategory === "Semua" || product.category === activeCategory;
+    const matchSearch = product.name.toLowerCase().includes(search) || product.category.toLowerCase().includes(search);
     return matchCategory && matchSearch;
   });
 
   filtered.forEach(product => {
     const card = document.createElement("div");
-
     card.className = "product-card";
 
+    // HARGA DIPAKSA MUNCUL HIJAU & TEBAL DI SINI
     card.innerHTML = `
       <div class="product-symbol">${product.icon}</div>
       <h3>${product.name}</h3>
       <p>${product.category}</p>
 
       <div class="product-bottom">
-        <b class="product-price">${rupiah(product.price)}</b>
+        <b class="product-price" style="color: #16a34a; font-size: 16px; display: block; margin: 8px 0;">${rupiah(product.price)}</b>
         <button class="choose-btn">Pilih</button>
       </div>
     `;
 
-    card.querySelector(".choose-btn").addEventListener("click", () => {
-      openProduct(product);
-    });
-
+    card.querySelector(".choose-btn").addEventListener("click", () => openProduct(product));
     container.appendChild(card);
   });
 
@@ -252,68 +216,45 @@ function renderProducts() {
 }
 
 // ==================================
-// MODAL PRODUK
+// MODAL PRODUK & KERANJANG
 // ==================================
 
 function openProduct(product) {
   selectedProduct = product;
-
-  el("productIcon").textContent = product.icon;
-  el("productName").textContent = product.name;
-  el("productCategory").textContent = product.category;
-  el("productPrice").textContent = rupiah(product.price);
-  el("target").value = "";
-
-  el("productModal").classList.add("show");
+  if(el("productIcon")) el("productIcon").textContent = product.icon;
+  if(el("productName")) el("productName").textContent = product.name;
+  if(el("productCategory")) el("productCategory").textContent = product.category;
+  if(el("productPrice")) el("productPrice").textContent = rupiah(product.price);
+  if(el("target")) el("target").value = "";
+  if(el("productModal")) el("productModal").classList.add("show");
 }
 
 function closeProduct() {
-  el("productModal").classList.remove("show");
+  if(el("productModal")) el("productModal").classList.remove("show");
   selectedProduct = null;
 }
 
-// ==================================
-// KERANJANG
-// ==================================
-
 function addToCart() {
   const target = el("target").value.trim();
+  if (!target) return alert("Masukkan nomor tujuan terlebih dahulu!");
+  if (!selectedProduct) return alert("Silakan pilih produk terlebih dahulu.");
 
-  if (!target) {
-    alert("Masukkan nomor tujuan terlebih dahulu!");
-    return;
-  }
-
-  if (!selectedProduct) {
-    alert("Silakan pilih produk terlebih dahulu.");
-    return;
-  }
-
-  cart.push({
-    ...selectedProduct,
-    target,
-    cartId: Date.now() + Math.random()
-  });
-
+  cart.push({ ...selectedProduct, target, cartId: Date.now() + Math.random() });
   closeProduct();
   renderCart();
-
   alert("Produk berhasil ditambahkan!");
 }
 
 function renderCart() {
   const container = el("cartItems");
+  if (!container) return;
   container.innerHTML = "";
 
-  if (cart.length === 0) {
-    container.innerHTML = "<p>Keranjang masih kosong.</p>";
-  }
+  if (cart.length === 0) container.innerHTML = "<p>Keranjang masih kosong.</p>";
 
   cart.forEach(item => {
     const row = document.createElement("div");
-
     row.className = "cart-item";
-
     row.innerHTML = `
       <div>
         <b>${item.name}</b>
@@ -322,121 +263,69 @@ function renderCart() {
       </div>
       <strong>${rupiah(item.price)}</strong>
     `;
-
     row.querySelector("button").addEventListener("click", () => {
       cart = cart.filter(p => p.cartId !== item.cartId);
       renderCart();
     });
-
     container.appendChild(row);
   });
 
-  const total = cart.reduce(
-    (sum, item) => sum + item.price,
-    0
-  );
-
-  el("total").textContent = "Total: " + rupiah(total);
-  el("cartCount").textContent = cart.length;
+  const total = cart.reduce((sum, item) => sum + item.price, 0);
+  if(el("total")) el("total").textContent = "Total: " + rupiah(total);
+  if(el("cartCount")) el("cartCount").textContent = cart.length;
 }
 
 function openCart() {
-  el("cartModal").classList.add("show");
+  if(el("cartModal")) el("cartModal").classList.add("show");
   renderCart();
 }
 
 function closeCart() {
-  el("cartModal").classList.remove("show");
+  if(el("cartModal")) el("cartModal").classList.remove("show");
 }
 
 // ==================================
-// CHECKOUT
+// CHECKOUT & WA
 // ==================================
 
 function checkout() {
-  if (cart.length === 0) {
-    alert("Keranjang masih kosong!");
-    return;
-  }
-
+  if (cart.length === 0) return alert("Keranjang masih kosong!");
   const customer = el("customer").value.trim();
+  if (!customer) return alert("Masukkan nama pemesan!");
 
-  if (!customer) {
-    alert("Masukkan nama pemesan!");
-    return;
-  }
-
-  const total = cart.reduce(
-    (sum, item) => sum + item.price,
-    0
-  );
-
-  el("paymentTotal").textContent = rupiah(total);
+  const total = cart.reduce((sum, item) => sum + item.price, 0);
+  if(el("paymentTotal")) el("paymentTotal").textContent = rupiah(total);
 
   closeCart();
-  el("paymentModal").classList.add("show");
+  if(el("paymentModal")) el("paymentModal").classList.add("show");
 }
 
 function closePayment() {
-  el("paymentModal").classList.remove("show");
+  if(el("paymentModal")) el("paymentModal").classList.remove("show");
 }
-
-// ==================================
-// KONFIRMASI WHATSAPP
-// ==================================
 
 function sendOrder() {
   const customer = el("customer").value.trim();
-
-  if (!customer || cart.length === 0) {
-    alert("Data pesanan belum lengkap.");
-    return;
-  }
+  if (!customer || cart.length === 0) return alert("Data pesanan belum lengkap.");
 
   const detail = cart.map((item, index) => {
-    return (
-      `${index + 1}. ${item.name}\n` +
-      `Tujuan: ${item.target}\n` +
-      `Harga: ${rupiah(item.price)}`
-    );
+    return `${index + 1}. ${item.name}\nTujuan: ${item.target}\nHarga: ${rupiah(item.price)}`;
   }).join("\n\n");
 
-  const total = cart.reduce(
-    (sum, item) => sum + item.price,
-    0
-  );
-
-  const message =
-    `PESANAN PULSAKULA\n\n` +
-    `Nama: ${customer}\n\n` +
-    `${detail}\n\n` +
-    `Total: ${rupiah(total)}\n\n` +
-    `Mohon konfirmasi pesanan.`;
-
-  const url =
-    "https://wa.me/" + ADMIN_WA +
-    "?text=" + encodeURIComponent(message);
+  const total = cart.reduce((sum, item) => sum + item.price, 0);
+  const message = `PESANAN PULSAKULA\n\nNama: ${customer}\n\n${detail}\n\nTotal: ${rupiah(total)}\n\nMohon konfirmasi pesanan.`;
+  const url = "https://wa.me/" + ADMIN_WA + "?text=" + encodeURIComponent(message);
 
   window.open(url, "_blank");
 }
 
 // ==================================
-// MULAI WEBSITE
+// MULAI
 // ==================================
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Tambahkan ID produk karena HTML belum memilikinya.
-  const productContainer = el("products");
-  if (productContainer) {
-    const productSection = productContainer.closest(".section");
-    if (productSection) {
-      productSection.id = "produk";
-    }
-  }
-
   renderServices();
   renderFilters();
   renderCart();
-
   loadProducts();
 });
