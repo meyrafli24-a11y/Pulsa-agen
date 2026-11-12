@@ -385,3 +385,62 @@ footer small {
 [hidden] {
   display: none !important;
 }
+
+/* PEMBAYARAN QRIS PULSAKULA */
+
+.qris-modal {
+  max-height: 90vh;
+  overflow-y: auto;
+  text-align: center;
+}
+
+.qris-owner {
+  background: #eef7ff;
+  border-radius: 12px;
+  padding: 13px;
+  margin: 15px 0;
+  color: #087bd0;
+}
+
+.qris-owner b,
+.qris-owner small {
+  display: block;
+}
+
+.qris-owner small {
+  font-size: 10px;
+  margin-top: 5px;
+}
+
+.qris-image {
+  width: 100%;
+  max-width: 290px;
+  display: block;
+  margin: 15px auto;
+  border-radius: 10px;
+  border: 1px solid #e5e5e5;
+}
+
+.qris-total {
+  background: #f1f8ff;
+  padding: 15px;
+  border-radius: 12px;
+  margin: 15px 0;
+}
+
+.qris-total small {
+  color: #718096;
+}
+
+.qris-total h2 {
+  color: #0788e8;
+  margin-top: 7px;
+}
+
+.qris-instruction {
+  text-align: left;
+  line-height: 1.9;
+  font-size: 11px;
+  color: #526477;
+  margin: 15px 0;
+}
