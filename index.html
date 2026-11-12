@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -9,137 +10,175 @@
 </head>
 <body>
 
-  <header class="header">
-    <a href="#" class="brand">
-      <span class="brand-icon">⚡</span>
-      <span>PULSA<span>KULA</span></span>
-    </a>
-    <button class="cart-button" onclick="openCart()">
-      🛒 Keranjang <span id="cartCount">0</span>
+<header class="header">
+  <a href="#" class="brand">
+    <span class="brand-icon">⚡</span>
+    <span>PULSA<span>KULA</span></span>
+  </a>
+  <button class="cart-button" onclick="openCart()">
+    🛒 Keranjang <span id="cartCount">0</span>
+  </button>
+</header>
+
+<main>
+
+<section class="hero">
+  <div class="hero-content">
+    <span class="hero-label">TOKO DIGITAL ONLINE</span>
+    <h1>Isi kebutuhan<br>digitalmu di <span>PULSAKULA</span></h1>
+    <p>Pilih produk digital, masukkan nomor tujuan, lalu lanjutkan pesanan dengan mudah.</p>
+    <button onclick="document.getElementById('catalog').scrollIntoView({behavior:'smooth'})">
+      Mulai Belanja →
     </button>
-  </header>
+  </div>
+  <div class="hero-art">📱</div>
+</section>
 
-  <main>
-    <section class="hero">
-      <div class="hero-content">
-        <span class="hero-label">TOKO DIGITAL ONLINE</span>
-        <h1>Isi kebutuhan<br>digitalmu di <span>PULSAKULA</span></h1>
-        <p>Pilih produk digital, masukkan nomor tujuan, lalu lanjutkan pesanan dengan mudah.</p>
-        <button onclick="document.getElementById('catalog').scrollIntoView({behavior:'smooth'})">
-          Mulai Belanja →
-        </button>
-      </div>
-      <div class="hero-art">📱</div>
-    </section>
+<section class="features">
+  <div>⚡ <span>Praktis</span></div>
+  <div>🔒 <span>Pemesanan mudah</span></div>
+  <div>💬 <span>Layanan bantuan</span></div>
+</section>
 
-    <section class="features">
-      <div>⚡ <span>Praktis</span></div>
-      <div>🔒 <span>Pemesanan mudah</span></div>
-      <div>💬 <span>Layanan bantuan</span></div>
-    </section>
-
-    <section class="catalog" id="catalog">
-      <div class="section-heading">
-        <div>
-          <span class="eyebrow">KATALOG</span>
-          <h2>Pilih kebutuhanmu</h2>
-        </div>
-      </div>
-
-      <input
-        type="search"
-        id="searchInput"
-        class="search-input"
-        placeholder="Cari pulsa, paket data, token..."
-        oninput="renderProducts()"
-      >
-
-      <div class="categories" id="categories">
-        <button class="category active" data-category="Semua" onclick="selectCategory('Semua', this)">Semua</button>
-        <button class="category" data-category="Pulsa" onclick="selectCategory('Pulsa', this)">📱 Pulsa</button>
-        <button class="category" data-category="Paket Data" onclick="selectCategory('Paket Data', this)">🌐 Paket Data</button>
-        <button class="category" data-category="Token Listrik" onclick="selectCategory('Token Listrik', this)">⚡ Token</button>
-        <button class="category" data-category="E-Wallet" onclick="selectCategory('E-Wallet', this)">💳 E-Wallet</button>
-        <button class="category" data-category="Game" onclick="selectCategory('Game', this)">🎮 Game</button>
-      </div>
-
-      <div class="product-grid" id="productList"></div>
-      <p class="catalog-note">Harga dan produk di bawah adalah contoh tampilan, bukan harga transaksi langsung.</p>
-    </section>
-
-    <section class="steps">
-      <span class="eyebrow">CARA PEMESANAN</span>
-      <h2>Belanja jadi lebih mudah</h2>
-      <div class="step-grid">
-        <div class="step-card"><b>01</b><h3>Pilih produk</h3><p>Pilih layanan digital yang dibutuhkan.</p></div>
-        <div class="step-card"><b>02</b><h3>Masukkan tujuan</h3><p>Isi nomor HP atau ID pelanggan dengan benar.</p></div>
-        <div class="step-card"><b>03</b><h3>Kirim pesanan</h3><p>Lanjutkan pesanan melalui WhatsApp admin.</p></div>
-      </div>
-    </section>
-
-    <section class="help">
-      <div>
-        <span class="eyebrow">BUTUH BANTUAN?</span>
-        <h2>Ada pertanyaan tentang pesanan?</h2>
-        <p>Hubungi admin PULSAKULA melalui WhatsApp.</p>
-      </div>
-      <a href="https://wa.me/6283894053143" target="_blank" rel="noopener">Hubungi Admin ↗</a>
-    </section>
-  </main>
-
-  <footer>
-    <a href="#" class="brand footer-brand">⚡ PULSAKULA</a>
-    <p>© 2026 PULSAKULA. Toko digital.</p>
-  </footer>
-
-  <!-- MODAL DETAIL PRODUK -->
-  <div class="modal" id="productModal">
-    <div class="modal-box">
-      <button class="close-button" onclick="closeProduct()">✕</button>
-      <div class="modal-icon" id="modalIcon">📱</div>
-      <h2 id="modalName">Nama Produk</h2>
-      <p id="modalCategory" class="muted"></p>
-      <p class="modal-price" id="modalPrice"></p>
-      <label for="targetInput">Nomor HP / ID pelanggan</label>
-      <input id="targetInput" type="text" placeholder="Masukkan nomor atau ID tujuan">
-      <button class="primary-button" onclick="addToCart()">Tambah ke Keranjang</button>
+<section class="catalog" id="catalog">
+  <div class="section-heading">
+    <div>
+      <span class="eyebrow">KATALOG</span>
+      <h2>Pilih kebutuhanmu</h2>
     </div>
   </div>
 
-  <!-- MODAL KERANJANG -->
-  <div class="modal" id="cartModal">
-    <div class="modal-box wide">
-      <button class="close-button" onclick="closeCart()">✕</button>
-      <h2>Keranjang Belanja 🛒</h2>
-      <div id="cartItems" class="cart-items"></div>
-      <div class="cart-total">
-        <span>Total</span>
-        <strong id="cartTotal">Rp0</strong>
-      </div>
-      <button class="primary-button" onclick="checkout()">Lanjutkan Pesanan</button>
-    </div>
+  <input
+    type="search"
+    id="searchInput"
+    class="search-input"
+    placeholder="Cari pulsa, paket data, token..."
+  >
+
+  <div class="categories" id="categories">
+    <button class="category active" onclick="selectCategory('Semua',this)">Semua</button>
+    <button class="category" onclick="selectCategory('Pulsa',this)">📱 Pulsa</button>
+    <button class="category" onclick="selectCategory('Paket Data',this)">🌐 Paket Data</button>
+    <button class="category" onclick="selectCategory('Token Listrik',this)">⚡ Token</button>
+    <button class="category" onclick="selectCategory('E-Wallet',this)">💳 E-Wallet</button>
+    <button class="category" onclick="selectCategory('Game',this)">🎮 Game</button>
   </div>
 
-  <!-- MODAL PEMBAYARAN -->
-  <div class="modal" id="paymentModal">
-    <div class="modal-box">
-      <button class="close-button" onclick="closePayment()">✕</button>
-      <h2>Informasi Pembayaran</h2>
-      <p class="muted">Total pesanan</p>
-      <h2 class="payment-total" id="paymentTotal">Rp0</h2>
-      <img
-        id="qrisImage"
-        class="qris-image"
-        src="https://raw.githubusercontent.com/meyrafli24-a11y/Pulsa-agen/main/qr_ID1025376713323_07.01.26_176777048_1767770502053.jpeg"
-        alt="QRIS PULSAKULA"
-      >
-      <p class="payment-warning">
-        Pastikan nama merchant dan nominal pembayaran benar. Konfirmasi pembayaran harus diperiksa admin.
-      </p>
-      <button class="primary-button" onclick="sendOrder()">Kirim Pesanan ke WhatsApp</button>
-    </div>
+  <div class="product-grid" id="productList">
+    <p>Memuat produk...</p>
   </div>
 
-  <script src="script.js"></script>
+  <p class="catalog-note">
+    Harga jual ditampilkan pada setiap produk.
+  </p>
+</section>
+
+<section class="steps">
+  <span class="eyebrow">CARA PEMESANAN</span>
+  <h2>Belanja jadi lebih mudah</h2>
+  <div class="step-grid">
+    <div class="step-card">
+      <b>01</b>
+      <h3>Pilih produk</h3>
+      <p>Pilih layanan digital yang dibutuhkan.</p>
+    </div>
+    <div class="step-card">
+      <b>02</b>
+      <h3>Masukkan tujuan</h3>
+      <p>Isi nomor HP atau ID pelanggan dengan benar.</p>
+    </div>
+    <div class="step-card">
+      <b>03</b>
+      <h3>Kirim pesanan</h3>
+      <p>Lanjutkan pesanan melalui WhatsApp admin.</p>
+    </div>
+  </div>
+</section>
+
+<section class="help">
+  <div>
+    <span class="eyebrow">BUTUH BANTUAN?</span>
+    <h2>Ada pertanyaan tentang pesanan?</h2>
+    <p>Hubungi admin PULSAKULA melalui WhatsApp.</p>
+  </div>
+  <a href="https://wa.me/6283894053143" target="_blank" rel="noopener">
+    Hubungi Admin ↗
+  </a>
+</section>
+
+</main>
+
+<footer>
+  <a href="#" class="brand footer-brand">⚡ PULSAKULA</a>
+  <p>© 2026 PULSAKULA. Toko digital.</p>
+</footer>
+
+<!-- MODAL PRODUK -->
+<div class="modal" id="productModal">
+  <div class="modal-box">
+    <button class="close-button" onclick="closeProduct()">✕</button>
+    <div class="modal-icon" id="modalIcon">📱</div>
+    <h2 id="modalName">Nama Produk</h2>
+    <p id="modalCategory" class="muted"></p>
+    <p class="modal-price" id="modalPrice"></p>
+    <label for="targetInput">Nomor HP / ID pelanggan</label>
+    <input id="targetInput" type="text" placeholder="Masukkan nomor atau ID tujuan">
+    <button class="primary-button" onclick="addToCart()">Tambah ke Keranjang</button>
+  </div>
+</div>
+
+<!-- MODAL KERANJANG -->
+<div class="modal" id="cartModal">
+  <div class="modal-box wide">
+    <button class="close-button" onclick="closeCart()">✕</button>
+    <h2>Keranjang Belanja 🛒</h2>
+    <div id="cartItems" class="cart-items"></div>
+    <div class="cart-total">
+      <span>Total</span>
+      <strong id="cartTotal">Rp0</strong>
+    </div>
+    <button class="primary-button" onclick="checkout()">Lanjutkan Pesanan</button>
+  </div>
+</div>
+
+<!-- MODAL PEMBAYARAN -->
+<div class="modal" id="paymentModal">
+  <div class="modal-box">
+    <button class="close-button" onclick="closePayment()">✕</button>
+    <h2>Informasi Pembayaran</h2>
+    <p class="muted">Total pesanan</p>
+    <h2 class="payment-total" id="paymentTotal">Rp0</h2>
+
+    <img
+      id="qrisImage"
+      class="qris-image"
+      src="https://raw.githubusercontent.com/meyrafli24-a11y/Pulsa-agen/main/qr_ID1025376713323_07.01.26_176777048_1767770502053.jpeg"
+      alt="QRIS PULSAKULA"
+    >
+
+    <p class="payment-warning">
+      Pastikan nama merchant dan nominal pembayaran benar.
+      Konfirmasi pembayaran harus diperiksa admin.
+    </p>
+
+    <button class="primary-button" onclick="sendOrder()">
+      Kirim Pesanan ke WhatsApp
+    </button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  if (typeof renderProducts === "function") {
+    renderProducts();
+  }
+  if (typeof updateCartCount === "function") {
+    updateCartCount();
+  }
+});
+</script>
+
 </body>
 </html>
