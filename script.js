@@ -1,7 +1,7 @@
 
- // ==================================
- // PULSAKULA - SISTEM PELANGGAN
- // ==================================
+// ==================================
+// PULSAKULA - SISTEM PELANGGAN
+// ==================================
 
 const ADMIN_WA = "6283894053143";
 
@@ -11,18 +11,18 @@ let cart = [];
 let activeCategory = "Semua";
 
 const serviceList = [
-  ["Pulsa","📱","Isi ulang pulsa"],
-  ["Paket Data","🌐","Paket internet"],
-  ["Masa Aktif","⏳","Perpanjang masa aktif"],
-  ["Token PLN","⚡","Token listrik"],
-  ["E-Wallet","💳","Isi saldo e-wallet"],
-  ["Voucher Game","🎮","Top up permainan"],
-  ["Telepon & SMS","☎️","Paket komunikasi"],
-  ["TV & Hiburan","📺","Voucher hiburan"],
-  ["Tagihan","🧾","Bayar tagihan"],
-  ["PDAM","💧","Tagihan air"],
-  ["BPJS","🏥","Iuran BPJS"],
-  ["Internet & WiFi","📡","Pembayaran internet"]
+  ["Pulsa", "📱", "Isi ulang pulsa"],
+  ["Paket Data", "🌐", "Paket internet"],
+  ["Masa Aktif", "⏳", "Perpanjang masa aktif"],
+  ["Token PLN", "⚡", "Token listrik"],
+  ["E-Wallet", "💳", "Isi saldo e-wallet"],
+  ["Voucher Game", "🎮", "Top up permainan"],
+  ["Telepon & SMS", "☎️", "Paket komunikasi"],
+  ["TV & Hiburan", "📺", "Voucher hiburan"],
+  ["Tagihan", "🧾", "Bayar tagihan"],
+  ["PDAM", "💧", "Tagihan air"],
+  ["BPJS", "🏥", "Iuran BPJS"],
+  ["Internet & WiFi", "📡", "Pembayaran internet"]
 ];
 
 const rupiah = value =>
@@ -30,10 +30,49 @@ const rupiah = value =>
     style: "currency",
     currency: "IDR",
     maximumFractionDigits: 0
-  }).format(value);
+  }).format(Number(value) || 0);
 
 function el(id) {
   return document.getElementById(id);
+}
+
+// ==================================
+// NORMALISASI KATEGORI
+// ==================================
+
+function normalizeCategory(category) {
+  const value = String(category || "").toLowerCase().trim();
+
+  const mapping = {
+    "token listrik": "Token PLN",
+    "pln": "Token PLN",
+    "top up game": "Voucher Game",
+    "game": "Voucher Game",
+    "e wallet": "E-Wallet",
+    "ewallet": "E-Wallet",
+    "masa aktif": "Masa Aktif",
+    "telepon dan sms": "Telepon & SMS",
+    "tv": "TV & Hiburan",
+    "internet": "Internet & WiFi"
+  };
+
+  const found = Object.keys(mapping).find(key => value === key);
+
+  if (found) return mapping[found];
+
+  const service = serviceList.find(
+    item => item[0].toLowerCase() === value
+  );
+
+  return service ? service[0] : category;
+}
+
+function getIcon(category) {
+  const service = serviceList.find(
+    item => item[0] === category
+  );
+
+  return service ? service[1] : "📦";
 }
 
 // ==================================
@@ -41,47 +80,50 @@ function el(id) {
 // ==================================
 
 async function loadProducts() {
+  const container = el("products");
+
+  container.innerHTML = "<p>Memuat produk...</p>";
+
   try {
     const response = await fetch("/api/products");
 
     if (!response.ok) {
-      throw new Error("Gagal mengambil produk");
+      throw new Error("HTTP " + response.status);
     }
 
     const data = await response.json();
 
-    if (!data.success || !Array.isArray(data.products)) {
-      throw new Error("Data produk tidak sesuai");
+    const list = Array.isArray(data)
+      ? data
+      : data.products;
+
+    if (!Array.isArray(list)) {
+      throw new Error("Format data produk salah");
     }
 
-    products = data.products.map(item => {
-      let category = item.category;
-      let icon = "📱";
+    products = list.map(item => {
+      const category = normalizeCategory(item.category);
 
-      if (category === "Paket Data") icon = "🌐";
-      if (category === "Token Listrik") icon = "⚡";
-
-      if (category === "Top Up Game") {
-        category = "Voucher Game";
-        icon = "🎮";
-      }
-
-      return [
+      return {
         category,
-        item.name,
-        item.price,
-        icon,
-        item.id
-      ];
+        name: String(item.name || item.product_name || "Produk"),
+        price: Number(item.price || 0),
+        icon: getIcon(category),
+        productId: item.id || item.product_id || ""
+      };
     });
 
     renderProducts();
 
-  } catch (error) {
-    console.error(error);
+    if (products.length === 0) {
+      container.innerHTML = "<p>Belum ada produk tersedia.</p>";
+    }
 
-    el("products").innerHTML =
-      "<p>Produk gagal dimuat. Silakan coba lagi.</p>";
+  } catch (error) {
+    console.error("Kesalahan produk:", error);
+
+    container.innerHTML =
+      "<p>Produk gagal dimuat. Periksa koneksi backend.</p>";
   }
 }
 
@@ -114,7 +156,7 @@ function renderServices() {
 }
 
 // ==================================
-// FILTER PRODUK
+// FILTER KATEGORI
 // ==================================
 
 function renderFilters() {
@@ -125,6 +167,7 @@ function renderFilters() {
 
   categories.forEach(name => {
     const button = document.createElement("button");
+
     button.className = "filter-btn";
     button.textContent = name;
 
@@ -142,11 +185,15 @@ function renderFilters() {
 
 function selectCategory(name) {
   activeCategory = name;
+
   renderFilters();
   renderProducts();
 
-  document.getElementById("produk")?.scrollIntoView({
-    behavior: "smooth"
+  const section = el("products").closest(".section");
+
+  section.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
   });
 }
 
@@ -156,49 +203,41 @@ function selectCategory(name) {
 
 function renderProducts() {
   const container = el("products");
-  const search = el("search").value.toLowerCase().trim();
+  const search = (el("search")?.value || "").toLowerCase().trim();
 
   container.innerHTML = "";
 
-  const filtered = products
-    .map((product, index) => ({
-      category: product[0],
-      name: product[1],
-      price: product[2],
-      icon: product[3],
-      productId: product[4],
-      index
-    }))
-    .filter(product => {
-      const matchCategory =
-        activeCategory === "Semua" ||
-        product.category === activeCategory;
+  const filtered = products.filter(product => {
+    const matchCategory =
+      activeCategory === "Semua" ||
+      product.category === activeCategory;
 
-      const matchSearch =
-        product.name.toLowerCase().includes(search) ||
-        product.category.toLowerCase().includes(search);
+    const matchSearch =
+      product.name.toLowerCase().includes(search) ||
+      product.category.toLowerCase().includes(search);
 
-      return matchCategory && matchSearch;
-    });
+    return matchCategory && matchSearch;
+  });
 
   filtered.forEach(product => {
     const card = document.createElement("div");
+
     card.className = "product-card";
 
     card.innerHTML = `
       <div class="product-symbol">${product.icon}</div>
       <h3>${product.name}</h3>
       <p>${product.category}</p>
+
       <div class="product-bottom">
         <b class="product-price">${rupiah(product.price)}</b>
         <button class="choose-btn">Pilih</button>
       </div>
     `;
 
-    card.querySelector(".choose-btn")
-      .addEventListener("click", () => {
-        openProduct(product);
-      });
+    card.querySelector(".choose-btn").addEventListener("click", () => {
+      openProduct(product);
+    });
 
     container.appendChild(card);
   });
@@ -226,6 +265,7 @@ function openProduct(product) {
 
 function closeProduct() {
   el("productModal").classList.remove("show");
+  selectedProduct = null;
 }
 
 // ==================================
@@ -248,7 +288,7 @@ function addToCart() {
   cart.push({
     ...selectedProduct,
     target,
-    id: Date.now() + Math.random()
+    cartId: Date.now() + Math.random()
   });
 
   closeProduct();
@@ -267,6 +307,7 @@ function renderCart() {
 
   cart.forEach(item => {
     const row = document.createElement("div");
+
     row.className = "cart-item";
 
     row.innerHTML = `
@@ -275,11 +316,11 @@ function renderCart() {
         <p>${item.target}</p>
         <button>Hapus</button>
       </div>
-      <strong>${rupiah(item[2])}</strong>
+      <strong>${rupiah(item.price)}</strong>
     `;
 
     row.querySelector("button").addEventListener("click", () => {
-      cart = cart.filter(p => p.id !== item.id);
+      cart = cart.filter(p => p.cartId !== item.cartId);
       renderCart();
     });
 
@@ -287,7 +328,8 @@ function renderCart() {
   });
 
   const total = cart.reduce(
-    (sum, item) => sum + item[2], 0
+    (sum, item) => sum + item.price,
+    0
   );
 
   el("total").textContent = "Total: " + rupiah(total);
@@ -321,7 +363,8 @@ function checkout() {
   }
 
   const total = cart.reduce(
-    (sum, item) => sum + item[2], 0
+    (sum, item) => sum + item.price,
+    0
   );
 
   el("paymentTotal").textContent = rupiah(total);
@@ -335,7 +378,7 @@ function closePayment() {
 }
 
 // ==================================
-// KIRIM PESANAN WHATSAPP
+// KONFIRMASI WHATSAPP
 // ==================================
 
 function sendOrder() {
@@ -348,21 +391,22 @@ function sendOrder() {
 
   const detail = cart.map((item, index) => {
     return (
-      `${index + 1}. ${item[1]}\n` +
+      `${index + 1}. ${item.name}\n` +
       `Tujuan: ${item.target}\n` +
-      `Harga simulasi: ${rupiah(item[2])}`
+      `Harga: ${rupiah(item.price)}`
     );
   }).join("\n\n");
 
   const total = cart.reduce(
-    (sum, item) => sum + item[2], 0
+    (sum, item) => sum + item.price,
+    0
   );
 
   const message =
     `PESANAN PULSAKULA\n\n` +
     `Nama: ${customer}\n\n` +
     `${detail}\n\n` +
-    `Total simulasi: ${rupiah(total)}\n\n` +
+    `Total: ${rupiah(total)}\n\n` +
     `Mohon konfirmasi pesanan.`;
 
   const url =
@@ -377,14 +421,13 @@ function sendOrder() {
 // ==================================
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Tambahkan ID produk karena HTML belum memilikinya.
+  const productSection = el("products").closest(".section");
+  productSection.id = "produk";
+
   renderServices();
   renderFilters();
   renderCart();
-
-  const search = el("search");
-  if (search) {
-    search.addEventListener("input", renderProducts);
-  }
 
   loadProducts();
 });
