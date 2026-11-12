@@ -3,270 +3,252 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PulsaKula - Top Up & Paket Data</title>
+<title>PulsaKula - Top Up & QRIS</title>
 <style>
-  /* Reset & Base */
-  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', system-ui, -apple-system, sans-serif; }
+  /* === CSS DASAR & RESET === */
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', system-ui, sans-serif; }
   body { background:#f8f9fc; color:#1e293b; padding-bottom:40px; }
   
-  /* Header */
+  /* === HEADER === */
   .header {
     background:#fff; padding:16px 20px;
     display:flex; justify-content:space-between; align-items:center;
     box-shadow:0 2px 10px rgba(0,0,0,.02);
     position:sticky; top:0; z-index:100;
   }
-  .logo-area { display:flex; align-items:center; gap:6px; }
   .logo-area h1 { font-size:1.4rem; font-weight:800; color:#0ea5e9; letter-spacing:-.5px; }
   .logo-area h1 span { color:#0284c7; }
-  .logo-icon { font-size:1.5rem; }
   
   .cart-btn {
     background:#f0f9ff; color:#0284c7; border:none;
     padding:8px 16px; border-radius:12px; font-weight:600; font-size:.9rem;
-    display:flex; align-items:center; gap:6px; cursor:pointer;
-    transition: .2s;
+    cursor:pointer; transition:.2s;
   }
   .cart-btn:hover { background:#e0f2fe; }
 
-  /* Kategori Pills */
-  .categories {
-    display:flex; flex-wrap:wrap; gap:10px;
-    padding:16px 20px; max-width:1200px; margin:0 auto;
-  }
+  /* === KATEGORI === */
+  .categories { display:flex; gap:10px; padding:16px 20px; max-width:1200px; margin:0 auto; overflow-x:auto; }
   .categories button {
     padding:8px 16px; border-radius:20px; border:1px solid #e2e8f0;
     background:#fff; color:#64748b; font-size:.85rem; font-weight:500;
-    cursor:pointer; transition:.2s; white-space:nowrap;
+    cursor:pointer; white-space:nowrap; transition:.2s;
   }
-  .categories button:hover { background:#f1f5f9; }
   .categories button.active { background:#0ea5e9; color:#fff; border-color:#0ea5e9; }
 
-  /* Grid Produk */
+  /* === GRID & CARD PRODUK === */
   .product-grid {
-    display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
     gap:16px; padding:0 20px; max-width:1200px; margin:0 auto;
   }
-
-  /* Card Produk */
   .card {
     background:#fff; border-radius:16px; padding:20px;
     box-shadow:0 1px 4px rgba(0,0,0,.04); border:1px solid #f1f5f9;
     display:flex; flex-direction:column; transition:.2s;
   }
-  .card:hover { box-shadow:0 4px 12px rgba(0,0,0,.08); }
-  
+  .card:hover { box-shadow:0 4px 12px rgba(0,0,0,.08); transform:translateY(-2px); }
   .card-top { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
-  .icon-box {
-    width:44px; height:44px; background:#f0f9ff; border-radius:12px;
-    display:flex; align-items:center; justify-content:center; font-size:1.2rem;
-  }
-  
-  .card h3 { font-size:1rem; font-weight:700; color:#0f172a; margin-bottom:4px; }
-  .card .type { font-size:.8rem; color:#94a3b8; margin-bottom:20px; }
-  
-  .card-bottom { 
-    display:flex; justify-content:space-between; align-items:center; margin-top:auto;
-  }
+  .icon-box { width:44px; height:44px; background:#f0f9ff; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.2rem; }
+  .card h3 { font-size:1rem; font-weight:700; color:#0f172a; }
+  .card .type { font-size:.8rem; color:#94a3b8; }
+  .card-bottom { display:flex; justify-content:space-between; align-items:center; margin-top:auto; }
   .price { font-size:1.3rem; font-weight:800; color:#16a34a; }
   .btn-pilih {
-    background:#e0f2fe; color:#0284c7; border:none;
-    padding:8px 18px; border-radius:8px; font-weight:600; font-size:.85rem;
-    cursor:pointer; transition:.2s;
+    background:#e0f2fe; color:#0284c7; border:none; padding:8px 18px;
+    border-radius:8px; font-weight:600; font-size:.85rem; cursor:pointer; transition:.2s;
   }
   .btn-pilih:hover { background:#bae6fd; }
 
-  /* Note */
-  .note { text-align:center; font-size:.8rem; color:#94a3b8; margin:30px 20px; padding:0 20px; }
-
-  /* Banner */
-  .banner {
-    background:linear-gradient(135deg, #0ea5e9, #2563eb);
-    margin:30px 20px; border-radius:16px; padding:24px;
-    color:#fff; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center;
-    max-width:1160px; margin-left:auto; margin-right:auto;
-  }
-  .banner-text h4 { font-size:.8rem; letter-spacing:1px; opacity:.9; margin-bottom:8px; }
-  .banner-text h2 { font-size:1.3rem; margin-bottom:6px; }
-  .banner-text p { font-size:.85rem; opacity:.9; }
-
-  /* Modal Global */
-  .modal-overlay {
+  /* === MODAL / POP-UP === */
+  .modal {
     position:fixed; top:0; left:0; width:100%; height:100%;
-    background:rgba(0,0,0,.5); display:none; align-items:center; justify-content:center; z-index:1000;
-    backdrop-filter: blur(2px);
+    background:rgba(15,23,42,.6); backdrop-filter:blur(2px);
+    display:none; align-items:center; justify-content:center; z-index:1000;
+    padding:20px;
   }
-  .modal-overlay.active { display:flex; }
-  .modal-content {
-    background:#fff; width:90%; max-width:450px; border-radius:20px; padding:24px;
-    max-height:85vh; display:flex; flex-direction:column;
+  .modal.active { display:flex; }
+  .modal-box {
+    background:#fff; width:100%; max-width:450px; border-radius:20px;
+    padding:24px; max-height:90vh; overflow-y:auto;
     animation: slideUp .3s ease-out;
   }
-  @keyframes slideUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
   
-  .modal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
-  .modal-header h2 { font-size:1.2rem; }
-  .close-btn { background:none; border:none; font-size:1.5rem; cursor:pointer; color:#94a3b8; padding:0 5px; }
-  
-  /* Form Input */
+  .modal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+  .modal-header h2 { font-size:1.2rem; color:#0f172a; }
+  .close-btn { background:none; border:none; font-size:1.5rem; color:#94a3b8; cursor:pointer; }
+
+  /* === FORM INPUT === */
   .form-group { margin-bottom:16px; }
   .form-group label { display:block; font-size:.85rem; font-weight:600; color:#475569; margin-bottom:6px; }
   .form-group input {
     width:100%; padding:14px; border:1px solid #cbd5e1; border-radius:10px;
-    font-size:.95rem; outline:none; transition:.2s; background:#f8fafc;
+    font-size:.95rem; outline:none; background:#f8fafc; transition:.2s;
   }
   .form-group input:focus { border-color:#0ea5e9; box-shadow:0 0 0 3px rgba(14,165,233,.15); background:#fff; }
   
-  .btn-simpan {
+  .btn-primary {
     width:100%; background:#0ea5e9; color:#fff; border:none; padding:14px;
-    border-radius:12px; font-size:1rem; font-weight:700; cursor:pointer;
-    margin-top:10px; transition:.2s;
+    border-radius:12px; font-size:1rem; font-weight:700; cursor:pointer; margin-top:10px;
   }
-  .btn-simpan:hover { background:#0284c7; }
+  .btn-primary:hover { background:#0284c7; }
 
-  /* Keranjang List */
-  .cart-list { flex:1; overflow-y:auto; margin-bottom:16px; }
-  .cart-item { display:flex; justify-content:space-between; align-items:flex-start; padding:12px 0; border-bottom:1px dashed #e2e8f0; }
-  .cart-item-info h4 { font-size:.9rem; color:#1e293b; margin-bottom:2px; }
-  .cart-item-info p { font-size:.8rem; color:#16a34a; font-weight:600; }
-  .cart-item-info .tujuan { font-size:.75rem; color:#64748b; background:#f1f5f9; padding:3px 8px; border-radius:6px; display:inline-block; margin-top:6px; font-weight:600; }
+  /* === KERANJANG === */
+  .cart-item { display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px dashed #e2e8f0; }
+  .cart-item-info h4 { font-size:.9rem; color:#1e293b; }
+  .cart-item-info .tujuan { font-size:.75rem; color:#0ea5e9; font-weight:600; margin-top:2px; display:block; }
+  .cart-item-info p { font-size:.85rem; color:#16a34a; font-weight:700; margin-top:4px; }
   .btn-hapus { background:#fee2e2; color:#ef4444; border:none; padding:6px 10px; border-radius:6px; font-size:.75rem; cursor:pointer; font-weight:600; }
   
-  .cart-total { display:flex; justify-content:space-between; font-weight:800; font-size:1.1rem; margin-bottom:16px; padding-top:16px; border-top:2px dashed #e2e8f0; }
-  .btn-checkout {
-    width:100%; background:#25d366; color:#fff; border:none; padding:14px;
-    border-radius:12px; font-size:1rem; font-weight:700; cursor:pointer;
-    display:flex; justify-content:center; align-items:center; gap:8px; transition:.2s;
+  .cart-total { display:flex; justify-content:space-between; font-weight:800; font-size:1.2rem; margin:16px 0; padding-top:16px; border-top:2px dashed #e2e8f0; }
+
+  /* === METODE PEMBAYARAN === */
+  .payment-methods { margin-bottom:16px; }
+  .payment-title { font-size:.85rem; font-weight:600; color:#475569; margin-bottom:10px; }
+  .pay-option {
+    display:flex; align-items:center; gap:10px; padding:12px;
+    border:1px solid #e2e8f0; border-radius:10px; margin-bottom:8px; cursor:pointer;
   }
-  .btn-checkout:hover { background:#1da851; }
-  .cart-empty { text-align:center; color:#94a3b8; padding:40px 0; font-size:.9rem; }
+  .pay-option.active { border-color:#0ea5e9; background:#f0f9ff; }
+  .pay-option input { accent-color:#0ea5e9; width:18px; height:18px; }
+  .pay-option label { font-size:.9rem; font-weight:600; color:#1e293b; cursor:pointer; flex:1; }
+  
+  /* === QRIS BOX === */
+  .qris-box { text-align:center; margin:16px 0; padding:16px; border:1px dashed #cbd5e1; border-radius:12px; background:#f8fafc; }
+  .qris-box img { width:100%; max-width:250px; border-radius:8px; margin-bottom:10px; }
+  .qris-box p { font-size:.8rem; color:#64748b; }
 </style>
 </head>
 <body>
 
-<!-- Header -->
+<!-- HEADER -->
 <div class="header">
-  <div class="logo-area">
-    <span class="logo-icon">⚡</span>
-    <h1>PULSA<span>KULA</span></h1>
-  </div>
+  <div class="logo-area"><h1>PULSA<span>KULA</span></h1></div>
   <button class="cart-btn" onclick="bukaKeranjang()">🛒 <span id="cartCount">0</span></button>
 </div>
 
-<!-- Kategori -->
+<!-- KATEGORI -->
 <div class="categories">
   <button class="active">Semua</button>
   <button>Pulsa</button>
   <button>Paket Data</button>
   <button>Token PLN</button>
   <button>E-Wallet</button>
-  <button>Voucher Game</button>
 </div>
 
-<!-- Produk -->
+<!-- PRODUK -->
 <div class="product-grid" id="grid"></div>
 
-<p class="note">Harga yang ditampilkan merupakan harga contoh dan dapat berubah setelah konfirmasi admin.</p>
-
-<!-- Banner Bawah -->
-<div class="banner">
-  <div class="banner-text">
-    <h4>PULSAKULA DIGITAL STORE</h4>
-    <h2>Belanja digital lebih mudah!</h2>
-    <p>Pilih produk favoritmu dan pesan langsung melalui WhatsApp.</p>
-  </div>
-</div>
-
+<!-- ========================================== -->
 <!-- MODAL 1: INPUT TUJUAN -->
-<div class="modal-overlay" id="modalInput">
-  <div class="modal-content">
+<!-- ========================================== -->
+<div class="modal" id="modalInput">
+  <div class="modal-box">
     <div class="modal-header">
-      <h2 id="judulModal">Masukkan Data</h2>
-      <button class="close-btn" onclick="tutupModalInput()">&times;</button>
+      <h2 id="judulInput">Masukkan Data</h2>
+      <button class="close-btn" onclick="tutupInput()">&times;</button>
     </div>
     <div class="form-group">
-      <label id="labelTujuan">Nomor HP</label>
+      <label id="labelInput">Nomor HP</label>
       <input type="text" id="inputTujuan" placeholder="Contoh: 08123456789">
     </div>
-    <button class="btn-simpan" onclick="prosesTambah()">Tambahkan ke Keranjang</button>
+    <button class="btn-primary" onclick="simpanKeKeranjang()">Tambahkan ke Keranjang</button>
   </div>
 </div>
 
-<!-- MODAL 2: KERANJANG -->
-<div class="modal-overlay" id="modalKeranjang">
-  <div class="modal-content">
+<!-- ========================================== -->
+<!-- MODAL 2: KERANJANG & PEMBAYARAN -->
+<!-- ========================================== -->
+<div class="modal" id="modalKeranjang">
+  <div class="modal-box">
     <div class="modal-header">
-      <h2>Keranjang Pesanan</h2>
-      <button class="close-btn" onclick="tutupModalKeranjang()">&times;</button>
+      <h2>Keranjang & Pembayaran</h2>
+      <button class="close-btn" onclick="tutupKeranjang()">&times;</button>
     </div>
-    <div class="cart-list" id="listKeranjang"></div>
+    
+    <!-- List Belanjaan -->
+    <div id="listKeranjang"></div>
+    
+    <!-- Total -->
     <div class="cart-total">
       <span>Total:</span>
       <span id="totalHarga" style="color:#16a34a;">Rp 0</span>
     </div>
-    <button class="btn-checkout" onclick="checkoutWA()">
-      💬 Checkout via WhatsApp
+
+    <!-- Pilihan Pembayaran -->
+    <div class="payment-methods">
+      <div class="payment-title">Pilih Metode Pembayaran:</div>
+      <div class="pay-option active" onclick="pilihPembayaran('qris')">
+        <input type="radio" name="bayar" id="pay-qris" checked>
+        <label for="pay-qris">QRIS (Semua E-Wallet & M-Banking)</label>
+      </div>
+      <div class="pay-option" onclick="pilihPembayaran('transfer')">
+        <input type="radio" name="bayar" id="pay-transfer">
+        <label for="pay-transfer">Transfer Bank (BCA / BRI / Mandiri)</label>
+      </div>
+    </div>
+
+    <!-- Tampilan QRIS -->
+    <div id="boxQris" class="qris-box">
+      <!-- GANTI URL GAMBAR DI BAWAH DENGAN GAMBAR QRIS KAMU -->
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/1200px-QR_code_for_mobile_English_Wikipedia.svg.png" alt="QRIS Code">
+      <p>Scan QRIS di atas menggunakan M-Banking / E-Wallet (GoPay, OVO, DANA, dll).</p>
+    </div>
+
+    <!-- Tampilan Transfer (Sembunyikan dulu) -->
+    <div id="boxTransfer" class="qris-box" style="display:none;">
+      <p style="font-weight:700; font-size:1rem; color:#0f172a; margin-bottom:5px;">Bank BCA</p>
+      <p style="font-size:1.1rem; font-weight:800; color:#0ea5e9; letter-spacing:1px;">1234567890</p>
+      <p style="margin-bottom:10px;">a.n. Nama Kamu / PulsaKula</p>
+      <p style="font-size:.75rem; color:#ef4444;">*Mohon transfer sesuai total tagihan.</p>
+    </div>
+
+    <!-- Tombol Konfirmasi WA -->
+    <button class="btn-primary" style="background:#25d366; margin-top:16px;" onclick="konfirmasiWA()">
+      💬 Konfirmasi Pembayaran via WA
     </button>
   </div>
 </div>
 
 <script>
 // ==========================================
-// DATA PRODUK (Bisa kamu tambah/edit sendiri)
+// DATA PRODUK
 // ==========================================
 const dataProduk = [
-  // PULSA
-  { id: 1, nama:"Telkomsel 5.000", harga:6500, tipe:"Pulsa", icon:"📱", labelInput:"Nomor HP Telkomsel", placeholder:"0812xxxx" },
-  { id: 2, nama:"Indosat 5.000", harga:6000, tipe:"Pulsa", icon:"📱", labelInput:"Nomor HP Indosat", placeholder:"0857xxxx" },
-  { id: 3, nama:"Tri 5.000", harga:5500, tipe:"Pulsa", icon:"📱", labelInput:"Nomor HP Tri", placeholder:"0895xxxx" },
-  { id: 4, nama:"XL 5.000", harga:6000, tipe:"Pulsa", icon:"📱", labelInput:"Nomor HP XL", placeholder:"0817xxxx" },
-  
-  // PAKET DATA
-  { id: 5, nama:"Data Telkomsel 3 GB", harga:25000, tipe:"Paket Data", icon:"🌐", labelInput:"Nomor HP Telkomsel", placeholder:"0812xxxx" },
-  { id: 6, nama:"Data Indosat 5 GB", harga:26000, tipe:"Paket Data", icon:"🌐", labelInput:"Nomor HP Indosat", placeholder:"0857xxxx" },
-  
-  // TOKEN PLN
-  { id: 7, nama:"Token Listrik 20.000", harga:21500, tipe:"Token PLN", icon:"⚡", labelInput:"ID Meteran / No Pelanggan", placeholder:"Contoh: 140xxxxxxx" },
-  { id: 8, nama:"Token Listrik 50.000", harga:51500, tipe:"Token PLN", icon:"⚡", labelInput:"ID Meteran / No Pelanggan", placeholder:"Contoh: 140xxxxxxx" },
-
-  // E-WALLET
-  { id: 9, nama:"Saldo DANA 10.000", harga:11000, tipe:"E-Wallet", icon:"💳", labelInput:"Nomor HP DANA", placeholder:"08xxxx" },
-  { id: 10, nama:"Saldo GoPay 20.000", harga:22000, tipe:"E-Wallet", icon:"💳", labelInput:"Nomor HP GoPay", placeholder:"08xxxx" },
-
-  // VOUCHER GAME
-  { id: 11, nama:"ML 86 Diamond", harga:23000, tipe:"Voucher Game", icon:"🎮", labelInput:"User ID Mobile Legends", placeholder:"Contoh: 12345678 (1234)" },
-  { id: 12, nama:"FF 70 Diamond", harga:10000, tipe:"Voucher Game", icon:"🎮", labelInput:"User ID Free Fire", placeholder:"Contoh: 987654321" }
+  { id: 1, nama:"Telkomsel 5.000", harga:6500, tipe:"Pulsa", icon:"📱", label:"Nomor HP Telkomsel" },
+  { id: 2, nama:"Indosat 5.000", harga:6000, tipe:"Pulsa", icon:"📱", label:"Nomor HP Indosat" },
+  { id: 3, nama:"Tri 5.000", harga:5500, tipe:"Pulsa", icon:"📱", label:"Nomor HP Tri" },
+  { id: 4, nama:"Data Telkomsel 3 GB", harga:25000, tipe:"Paket Data", icon:"🌐", label:"Nomor HP Telkomsel" },
+  { id: 5, nama:"Token Listrik 20.000", harga:21500, tipe:"Token PLN", icon:"⚡", label:"ID Meteran PLN" },
+  { id: 6, nama:"Saldo DANA 10.000", harga:11000, tipe:"E-Wallet", icon:"💳", label:"Nomor HP DANA" },
+  { id: 7, nama:"ML 86 Diamond", harga:23000, tipe:"Voucher Game", icon:"🎮", label:"User ID ML" }
 ];
 
-const NOMOR_WA_ADMIN = "6281234567890"; // <-- GANTI NOMOR WA KAMU DI SINI
+const NOMOR_WA = "6281234567890"; // Ganti nomor WA kamu
 let keranjang = [];
-let produkDipilih = null;
+let produkAktif = null;
+let metodeBayar = "qris";
 
 // ==========================================
-// 1. FUNGSI RENDER PRODUK KE LAYAR
+// FUNGSI RENDER PRODUK
 // ==========================================
-function renderProduk() {
+function render() {
   const grid = document.getElementById("grid");
   grid.innerHTML = "";
-
-  dataProduk.forEach(produk => {
+  
+  dataProduk.forEach(p => {
     const card = document.createElement("div");
     card.className = "card";
-    
-    // Format Rupiah
-    const hargaFormat = "Rp " + produk.harga.toLocaleString("id-ID");
-
     card.innerHTML = `
       <div class="card-top">
-        <div class="icon-box">${produk.icon}</div>
+        <div class="icon-box">${p.icon}</div>
         <div>
-          <h3>${produk.nama}</h3>
-          <div class="type">${produk.tipe}</div>
+          <h3>${p.nama}</h3>
+          <div class="type">${p.tipe}</div>
         </div>
       </div>
       <div class="card-bottom">
-        <div class="price">${hargaFormat}</div>
-        <button class="btn-pilih" onclick="bukaModalInput(${produk.id})">Pilih</button>
+        <div class="price">Rp ${p.harga.toLocaleString("id-ID")}</div>
+        <button class="btn-pilih" onclick="bukaInput(${p.id})">Pilih</button>
       </div>
     `;
     grid.appendChild(card);
@@ -274,146 +256,136 @@ function renderProduk() {
 }
 
 // ==========================================
-// 2. FUNGSI MODAL INPUT
+// LOGIKA MODAL INPUT
 // ==========================================
-function bukaModalInput(id) {
-  // Cari produk berdasarkan ID
-  produkDipilih = dataProduk.find(p => p.id === id);
-  if (!produkDipilih) return;
+function bukaInput(id) {
+  produkAktif = dataProduk.find(p => p.id === id);
+  if (!produkAktif) return;
 
-  // Ubah teks di dalam modal
-  document.getElementById("judulModal").innerText = produkDipilih.nama;
-  document.getElementById("labelTujuan").innerText = produkDipilih.labelInput;
-  document.getElementById("inputTujuan").placeholder = produkDipilih.placeholder;
-  document.getElementById("inputTujuan").value = ""; // Kosongkan input
-
-  // Tampilkan modal
-  document.getElementById("modalInput").classList.add("active");
+  document.getElementById("judulInput").innerText = produkAktif.nama;
+  document.getElementById("labelInput").innerText = produkAktif.label;
+  document.getElementById("inputTujuan").value = "";
   
-  // Fokus ke input
-  setTimeout(() => {
-    document.getElementById("inputTujuan").focus();
-  }, 100);
+  document.getElementById("modalInput").classList.add("active");
 }
 
-function tutupModalInput() {
+function tutupInput() {
   document.getElementById("modalInput").classList.remove("active");
-  produkDipilih = null;
+  produkAktif = null;
 }
 
-// ==========================================
-// 3. FUNGSI TAMBAH KE KERANJANG
-// ==========================================
-function prosesTambah() {
+function simpanKeKeranjang() {
   const tujuan = document.getElementById("inputTujuan").value.trim();
-
   if (!tujuan) {
-    alert(`Ups! Mohon isi ${produkDipilih.labelInput} terlebih dahulu.`);
+    alert(`Mohon isi ${produkAktif.label} terlebih dahulu!`);
     return;
   }
 
-  // Masukkan ke array keranjang
   keranjang.push({
-    id: produkDipilih.id,
-    nama: produkDipilih.nama,
-    harga: produkDipilih.harga,
+    nama: produkAktif.nama,
+    harga: produkAktif.harga,
     tujuan: tujuan
   });
 
-  // Tutup modal input & bersihkan
-  tutupModalInput();
-  
-  // Update angka keranjang
-  updateKeranjangUI();
-  
-  // Buka keranjang otomatis
-  bukaKeranjang();
-}
-
-// ==========================================
-// 4. FUNGSI KERANJANG
-// ==========================================
-function updateKeranjangUI() {
+  tutupInput();
   document.getElementById("cartCount").innerText = keranjang.length;
+  bukaKeranjang(); // Langsung buka keranjang
 }
 
+// ==========================================
+// LOGIKA KERANJANG
+// ==========================================
 function bukaKeranjang() {
   renderKeranjang();
   document.getElementById("modalKeranjang").classList.add("active");
 }
 
-function tutupModalKeranjang() {
+function tutupKeranjang() {
   document.getElementById("modalKeranjang").classList.remove("active");
 }
 
 function renderKeranjang() {
   const list = document.getElementById("listKeranjang");
-  const elTotal = document.getElementById("totalHarga");
-  
+  const totalEl = document.getElementById("totalHarga");
   list.innerHTML = "";
   let total = 0;
 
   if (keranjang.length === 0) {
-    list.innerHTML = `<div class="cart-empty">Keranjang masih kosong. Yuk pilih produk dulu!</div>`;
-    elTotal.innerText = "Rp 0";
+    list.innerHTML = `<p style="text-align:center; color:#94a3b8; padding:20px 0;">Keranjang kosong.</p>`;
+    totalEl.innerText = "Rp 0";
     return;
   }
 
   keranjang.forEach((item, index) => {
     total += item.harga;
-    const div = document.createElement("div");
-    div.className = "cart-item";
-    div.innerHTML = `
-      <div class="cart-item-info">
-        <h4>${item.nama}</h4>
-        <p>Rp ${item.harga.toLocaleString("id-ID")}</p>
-        <span class="tujuan">🎯 ${item.tujuan}</span>
+    list.innerHTML += `
+      <div class="cart-item">
+        <div class="cart-item-info">
+          <h4>${item.nama}</h4>
+          <span class="tujuan">Tujuan: ${item.tujuan}</span>
+          <p>Rp ${item.harga.toLocaleString("id-ID")}</p>
+        </div>
+        <button class="btn-hapus" onclick="hapusItem(${index})">Hapus</button>
       </div>
-      <button class="btn-hapus" onclick="hapusItem(${index})">Hapus</button>
     `;
-    list.appendChild(div);
   });
 
-  elTotal.innerText = "Rp " + total.toLocaleString("id-ID");
+  totalEl.innerText = "Rp " + total.toLocaleString("id-ID");
 }
 
 function hapusItem(index) {
-  keranjang.splice(index, 1); // Hapus 1 data dari array
-  updateKeranjangUI();
+  keranjang.splice(index, 1);
+  document.getElementById("cartCount").innerText = keranjang.length;
   renderKeranjang();
 }
 
 // ==========================================
-// 5. FUNGSI CHECKOUT WHATSAPP
+// LOGIKA PEMBAYARAN & QRIS
 // ==========================================
-function checkoutWA() {
-  if (keranjang.length === 0) {
-    alert("Keranjang masih kosong, pilih produk dulu ya!");
-    return;
+function pilihPembayaran(metode) {
+  metodeBayar = metode;
+  
+  // Reset class active
+  document.querySelectorAll(".pay-option").forEach(el => el.classList.remove("active"));
+  
+  if (metode === "qris") {
+    document.getElementById("pay-qris").checked = true;
+    document.querySelectorAll(".pay-option")[0].classList.add("active");
+    document.getElementById("boxQris").style.display = "block";
+    document.getElementById("boxTransfer").style.display = "none";
+  } else {
+    document.getElementById("pay-transfer").checked = true;
+    document.querySelectorAll(".pay-option")[1].classList.add("active");
+    document.getElementById("boxQris").style.display = "none";
+    document.getElementById("boxTransfer").style.display = "block";
   }
-
-  let pesan = "Halo Admin, saya mau pesan:%0A%0A";
-  let total = 0;
-
-  keranjang.forEach((item, index) => {
-    pesan += `${index + 1}. *${item.nama}*%0A`;
-    pesan += `   Tujuan: ${item.tujuan}%0A`;
-    pesan += `   Harga: Rp ${item.harga.toLocaleString("id-ID")}%0A%0A`;
-    total += item.harga;
-  });
-
-  pesan += `*TOTAL BAYAR: Rp ${total.toLocaleString("id-ID")}*%0A%0A`;
-  pesan += "Mohon info metode pembayarannya ya. Terima kasih!";
-
-  // Buka tab WhatsApp baru
-  window.open(`https://wa.me/${NOMOR_WA_ADMIN}?text=${pesan}`, '_blank');
 }
 
 // ==========================================
-// JALANKAN SAAT HALAMAN DIBUKA
+// KONFIRMASI KE WHATSAPP
 // ==========================================
-renderProduk();
-</script>
+function konfirmasiWA() {
+  if (keranjang.length === 0) {
+    alert("Keranjang masih kosong!");
+    return;
+  }
 
+  let total = keranjang.reduce((sum, item) => sum + item.harga, 0);
+  let pesan = "Halo Admin, saya sudah melakukan pembayaran via *" + (metodeBayar === 'qris' ? 'QRIS' : 'Transfer Bank') + "*.%0A%0A";
+  
+  pesan += "Rincian Pesanan:%0A";
+  keranjang.forEach((item, i) => {
+    pesan += `${i+1}. ${item.nama} (Tujuan: ${item.tujuan}) - Rp ${item.harga.toLocaleString("id-ID")}%0A`;
+  });
+  
+  pesan += `%0A*Total: Rp ${total.toLocaleString("id-ID")}*%0A%0A`;
+  pesan += "Berikut saya lampirkan bukti pembayarannya ya. Mohon segera diproses. Terima kasih!";
+
+  window.open(`https://wa.me/${NOMOR_WA}?text=${pesan}`, '_blank');
+}
+
+// Inisialisasi awal
+render();
+</script>
 </body>
 </html>
