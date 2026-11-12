@@ -350,3 +350,85 @@ document.addEventListener("DOMContentLoaded", function () {
   renderProducts();
   updateCartCount();
 });
+
+
+/* =====================================
+   PULSAKULA - TOKEN PLN & DIAMOND
+   KEUNTUNGAN Rp1.000
+===================================== */
+
+const KEUNTUNGAN_KATALOG = 1000;
+
+// TOKEN PLN
+const tokenPLN = [
+  ["Token PLN 5.000", 6995],
+  ["Token PLN 10.000", 11995],
+  ["Token PLN 15.000", 16995],
+  ["Token PLN 20.000", 22195],
+  ["Token PLN 25.000", 27995],
+  ["Token PLN 50.000", 52195],
+  ["Token PLN 100.000", 102195],
+  ["Token PLN 200.000", 202195],
+  ["Token PLN 500.000", 502195],
+  ["Token PLN 1.000.000", 1002195]
+];
+
+// DIAMOND FREE FIRE
+const diamondFF = [
+  ["10 Diamond", 1491],
+  ["12 Diamond", 1636],
+  ["15 Diamond", 2239],
+  ["20 Diamond", 2957],
+  ["24 Diamond", 3280],
+  ["25 Diamond", 3675],
+  ["30 Diamond", 4393],
+  ["40 Diamond", 5566],
+  ["50 Diamond", 5843],
+  ["55 Diamond", 6561],
+  ["60 Diamond", 7279],
+  ["70 Diamond", 7999],
+  ["75 Diamond", 8701],
+  ["80 Diamond", 9419],
+  ["90 Diamond", 10870],
+  ["95 Diamond", 11588],
+  ["100 Diamond", 12299],
+  ["105 Diamond", 12314],
+  ["120 Diamond", 13736],
+  ["125 Diamond", 14454],
+  ["130 Diamond", 15212],
+  ["140 Diamond", 15760],
+  ["145 Diamond", 16634]
+];
+
+// HITUNG HARGA JUAL
+function hargaJualKatalog(modal) {
+  return modal + KEUNTUNGAN_KATALOG;
+}
+
+// FORMAT RUPIAH
+function formatRupiahKatalog(angka) {
+  return "Rp" + angka.toLocaleString("id-ID");
+}
+
+// TAMPILKAN HARGA PRODUK
+function tampilkanHargaKatalog() {
+  console.log("TOKEN PLN");
+
+  tokenPLN.forEach(item => {
+    console.log(
+      item[0],
+      formatRupiahKatalog(hargaJualKatalog(item[1]))
+    );
+  });
+
+  console.log("DIAMOND FREE FIRE");
+
+  diamondFF.forEach(item => {
+    console.log(
+      item[0],
+      formatRupiahKatalog(hargaJualKatalog(item[1]))
+    );
+  });
+}
+
+tampilkanHargaKatalog();
