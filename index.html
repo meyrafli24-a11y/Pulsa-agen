@@ -1,128 +1,131 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PULSAKULA - Agen Digital</title>
+<title>PULSAKULA - Digital Store</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header class="navbar">
-  <div class="logo">PULSA<span>KULA</span></div>
-  <button id="cartOpen">🛒 <b id="cartCount">0</b></button>
+  <div class="logo">⚡ PULSA<span>KULA</span></div>
+  <button class="cart-btn" onclick="openCart()">🛒 <b id="cartCount">0</b></button>
 </header>
 
 <section class="hero">
-  <div>
-    <small>AGEN DIGITAL TERPERCAYA</small>
-    <h1>Semua Kebutuhan Digital Dalam Satu Tempat</h1>
-    <p>Pulsa, paket data, token listrik, e-wallet, game dan pembayaran tagihan.</p>
-    <a href="#layanan" class="hero-btn">Jelajahi Layanan →</a>
+  <div class="hero-content">
+    <span class="badge">TOKO DIGITAL TERPERCAYA</span>
+    <h1>Semua Kebutuhan Digitalmu Ada di Sini!</h1>
+    <p>Isi pulsa, beli paket data, top up game, token listrik dan berbagai pembayaran dengan mudah.</p>
+    <a href="#layanan" class="hero-button">Jelajahi Sekarang →</a>
   </div>
-  <div class="hero-icon">📱</div>
+  <div class="hero-art">
+    <div class="art-circle">📱</div>
+    <div class="art-card">⚡ Cepat & Praktis</div>
+  </div>
 </section>
 
-<section class="balance">
-  <small>Saldo Demo</small>
-  <h2>Rp 250.000</h2>
-  <p>Selamat datang di PULSAKULA</p>
+<section class="features">
+  <div>🔒<b>Aman</b><small>Pemesanan terarah</small></div>
+  <div>⚡<b>Praktis</b><small>Mudah digunakan</small></div>
+  <div>💬<b>Admin</b><small>Bantuan pesanan</small></div>
 </section>
 
 <main>
-<section id="layanan">
-  <h2>Semua Layanan</h2>
-  <p class="sub">Pilih layanan yang kamu butuhkan</p>
-  <div class="service-grid" id="serviceGrid"></div>
+<section class="section" id="layanan">
+  <div class="heading">
+    <span>JELAJAHI</span>
+    <h2>Pilih Layanan</h2>
+    <p>Berbagai kebutuhan digital tersedia.</p>
+  </div>
+  <div class="service-grid" id="services"></div>
 </section>
 
-<section id="produk">
-  <h2>Daftar Produk</h2>
-  <p class="sub">Pilih produk digital favoritmu</p>
+<section class="section">
+  <div class="heading">
+    <span>KATALOG PRODUK</span>
+    <h2>Produk Pilihan</h2>
+    <p>Pilih produk sesuai kebutuhanmu.</p>
+  </div>
 
-  <input type="search" id="searchInput" placeholder="Cari produk...">
-
-  <div id="filterRow" class="filters"></div>
-  <div id="productGrid" class="product-grid"></div>
-  <p id="emptyState" hidden>Produk tidak ditemukan.</p>
+  <input id="search" class="search" placeholder="🔍 Cari pulsa, game, e-wallet..." oninput="renderProducts()">
+  <div id="filters" class="filters"></div>
+  <div id="products" class="product-grid"></div>
+  <p class="notice">Harga yang ditampilkan merupakan harga contoh dan dapat berubah setelah konfirmasi admin.</p>
 </section>
 
-<section class="banner">
-  <h2>Transaksi Digital Lebih Mudah!</h2>
-  <p>Semua kebutuhanmu tersedia di PULSAKULA.</p>
+<section class="promo">
+  <div>
+    <span>PULSAKULA DIGITAL STORE</span>
+    <h2>Belanja digital lebih mudah!</h2>
+    <p>Pilih produk favoritmu dan pesan langsung melalui admin.</p>
+  </div>
+  <a href="#produk" onclick="document.getElementById('search').focus()">Lihat Produk →</a>
+</section>
+
+<section class="section">
+  <div class="heading">
+    <span>MUDAH DAN PRAKTIS</span>
+    <h2>Bagaimana Cara Memesan?</h2>
+  </div>
+  <div class="steps">
+    <div><b>01</b><h3>Pilih Produk</h3><p>Tentukan layanan dan nominal.</p></div>
+    <div><b>02</b><h3>Isi Data</h3><p>Masukkan nomor tujuan dengan benar.</p></div>
+    <div><b>03</b><h3>Konfirmasi</h3><p>Kirim pesanan kepada admin.</p></div>
+  </div>
 </section>
 </main>
 
 <footer>
-  <h2>PULSAKULA</h2>
-  <p>Agen Pulsa & Layanan Digital</p>
+  <h2>⚡ PULSAKULA</h2>
+  <p>Solusi kebutuhan digitalmu.</p>
   <small>© 2026 PULSAKULA</small>
 </footer>
 
-<div id="productModal" class="overlay" hidden>
-  <div class="modal">
-    <button class="close" data-close="productModal">×</button>
-    <div id="modalIcon" class="modal-icon">📱</div>
-    <h2 id="modalName"></h2>
-    <p id="modalInfo"></p>
+<div class="modal" id="productModal">
+  <div class="modal-box">
+    <button class="close" onclick="closeProduct()">✕</button>
+    <div id="productIcon" class="big-icon">📱</div>
+    <h2 id="productName">Nama Produk</h2>
+    <p id="productCategory"></p>
     <label>Nomor HP / ID Pelanggan</label>
-    <input id="targetInput" placeholder="Masukkan nomor tujuan">
-    <h3 id="modalPrice"></h3>
-    <button id="addToCart" class="primary">Tambah Keranjang</button>
+    <input id="target" placeholder="Masukkan nomor tujuan">
+    <h3 id="productPrice"></h3>
+    <button class="main-btn" onclick="addToCart()">Tambah Keranjang</button>
   </div>
 </div>
 
-<div id="cartDrawer" class="overlay" hidden>
-  <div class="modal cart-modal">
-    <button id="cartClose" class="close">×</button>
-    <h2>Keranjang Belanja</h2>
+<div class="modal" id="cartModal">
+  <div class="modal-box">
+    <button class="close" onclick="closeCart()">✕</button>
+    <h2>🛒 Keranjang Pesanan</h2>
     <div id="cartItems"></div>
-    <h3>Total: <span id="cartTotal">Rp0</span></h3>
+    <h3 id="total">Total: Rp0</h3>
     <label>Nama Pemesan</label>
-    <input id="customerName" placeholder="Nama kamu">
-    <button id="checkoutBtn" class="primary">Pesan Melalui WhatsApp</button>
+    <input id="customer" placeholder="Masukkan nama">
+    <button class="main-btn" onclick="checkout()">Lanjutkan Pesanan</button>
+  </div>
+</div>
+
+<div class="modal" id="paymentModal">
+  <div class="modal-box">
+    <button class="close" onclick="closePayment()">✕</button>
+    <h2>Pembayaran QRIS</h2>
+    <p>Silakan periksa detail pembayaran dan ikuti instruksi admin.</p>
+    <img src="qris.jpeg" class="qris" alt="QRIS">
+    <h3 id="paymentTotal"></h3>
+    <p class="notice">QRIS statis. Pembayaran perlu diperiksa secara manual oleh admin.</p>
+    <button class="main-btn" onclick="sendOrder()">Konfirmasi ke WhatsApp</button>
   </div>
 </div>
 
 <nav class="bottom-nav">
-  <a href="#">🏠<small>Home</small></a>
+  <a href="#">⌂<small>Beranda</small></a>
   <a href="#layanan">▦<small>Layanan</small></a>
-  <a href="#produk">🛍️<small>Produk</small></a>
-  <a href="#produk" id="navCart">🛒<small>Keranjang</small></a>
+  <a href="#produk">◈<small>Produk</small></a>
 </nav>
-
-<!-- PEMBAYARAN QRIS -->
-<div id="qrisModal" class="overlay" hidden>
-  <div class="modal qris-modal">
-    <button class="close" id="closeQris">×</button>
-
-    <h2>Pembayaran QRIS</h2>
-    <p>Scan QRIS di bawah untuk membayar pesananmu.</p>
-
-    <div class="qris-owner">
-      <b>TOKO RAFZEL</b>
-      <small>QRIS Pembayaran Nasional</small>
-    </div>
-
-    <img src="qris.jpeg" alt="QRIS Toko Rafzel" class="qris-image">
-
-    <div class="qris-total">
-      <small>Total pembayaran</small>
-      <h2 id="qrisTotal">Rp0</h2>
-    </div>
-
-    <p class="qris-instruction">
-      1. Buka aplikasi pembayaran yang mendukung QRIS.<br>
-      2. Scan kode QR di atas.<br>
-      3. Periksa nama penerima sebelum membayar.<br>
-      4. Simpan bukti pembayaran.
-    </p>
-
-    <button id="confirmPayment" class="primary">
-      Saya Sudah Membayar
-    </button>
-  </div>
-</div>
 
 <script src="script.js"></script>
 </body>
