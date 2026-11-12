@@ -5,142 +5,62 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PulsaKula - Top Up & QRIS</title>
 <style>
-  /* === CSS DASAR & RESET === */
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', system-ui, sans-serif; }
   body { background:#f8f9fc; color:#1e293b; padding-bottom:40px; }
   
-  /* === HEADER === */
-  .header {
-    background:#fff; padding:16px 20px;
-    display:flex; justify-content:space-between; align-items:center;
-    box-shadow:0 2px 10px rgba(0,0,0,.02);
-    position:sticky; top:0; z-index:100;
-  }
-  .logo-area h1 { font-size:1.4rem; font-weight:800; color:#0ea5e9; letter-spacing:-.5px; }
+  .header { background:#fff; padding:16px 20px; display:flex; justify-content:space-between; align-items:center; box-shadow:0 2px 10px rgba(0,0,0,.02); position:sticky; top:0; z-index:100; }
+  .logo-area h1 { font-size:1.4rem; font-weight:800; color:#0ea5e9; }
   .logo-area h1 span { color:#0284c7; }
+  .cart-btn { background:#f0f9ff; color:#0284c7; border:none; padding:8px 16px; border-radius:12px; font-weight:600; font-size:.9rem; cursor:pointer; }
   
-  .cart-btn {
-    background:#f0f9ff; color:#0284c7; border:none;
-    padding:8px 16px; border-radius:12px; font-weight:600; font-size:.9rem;
-    cursor:pointer; transition:.2s;
-  }
-  .cart-btn:hover { background:#e0f2fe; }
-
-  /* === KATEGORI === */
-  .categories { display:flex; gap:10px; padding:16px 20px; max-width:1200px; margin:0 auto; overflow-x:auto; }
-  .categories button {
-    padding:8px 16px; border-radius:20px; border:1px solid #e2e8f0;
-    background:#fff; color:#64748b; font-size:.85rem; font-weight:500;
-    cursor:pointer; white-space:nowrap; transition:.2s;
-  }
-  .categories button.active { background:#0ea5e9; color:#fff; border-color:#0ea5e9; }
-
-  /* === GRID & CARD PRODUK === */
-  .product-grid {
-    display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
-    gap:16px; padding:0 20px; max-width:1200px; margin:0 auto;
-  }
-  .card {
-    background:#fff; border-radius:16px; padding:20px;
-    box-shadow:0 1px 4px rgba(0,0,0,.04); border:1px solid #f1f5f9;
-    display:flex; flex-direction:column; transition:.2s;
-  }
-  .card:hover { box-shadow:0 4px 12px rgba(0,0,0,.08); transform:translateY(-2px); }
+  .product-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:16px; padding:20px; max-width:1200px; margin:0 auto; }
+  .card { background:#fff; border-radius:16px; padding:20px; box-shadow:0 1px 4px rgba(0,0,0,.04); border:1px solid #f1f5f9; display:flex; flex-direction:column; }
   .card-top { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
   .icon-box { width:44px; height:44px; background:#f0f9ff; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.2rem; }
-  .card h3 { font-size:1rem; font-weight:700; color:#0f172a; }
+  .card h3 { font-size:1rem; font-weight:700; }
   .card .type { font-size:.8rem; color:#94a3b8; }
   .card-bottom { display:flex; justify-content:space-between; align-items:center; margin-top:auto; }
   .price { font-size:1.3rem; font-weight:800; color:#16a34a; }
-  .btn-pilih {
-    background:#e0f2fe; color:#0284c7; border:none; padding:8px 18px;
-    border-radius:8px; font-weight:600; font-size:.85rem; cursor:pointer; transition:.2s;
-  }
-  .btn-pilih:hover { background:#bae6fd; }
-
-  /* === MODAL / POP-UP === */
-  .modal {
-    position:fixed; top:0; left:0; width:100%; height:100%;
-    background:rgba(15,23,42,.6); backdrop-filter:blur(2px);
-    display:none; align-items:center; justify-content:center; z-index:1000;
-    padding:20px;
-  }
-  .modal.active { display:flex; }
-  .modal-box {
-    background:#fff; width:100%; max-width:450px; border-radius:20px;
-    padding:24px; max-height:90vh; overflow-y:auto;
-    animation: slideUp .3s ease-out;
-  }
-  @keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+  .btn-pilih { background:#e0f2fe; color:#0284c7; border:none; padding:8px 18px; border-radius:8px; font-weight:600; cursor:pointer; }
   
+  .modal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15,23,42,.6); display:none; align-items:center; justify-content:center; z-index:1000; padding:20px; }
+  .modal.active { display:flex; }
+  .modal-box { background:#fff; width:100%; max-width:450px; border-radius:20px; padding:24px; max-height:90vh; overflow-y:auto; }
   .modal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
-  .modal-header h2 { font-size:1.2rem; color:#0f172a; }
   .close-btn { background:none; border:none; font-size:1.5rem; color:#94a3b8; cursor:pointer; }
-
-  /* === FORM INPUT === */
+  
   .form-group { margin-bottom:16px; }
   .form-group label { display:block; font-size:.85rem; font-weight:600; color:#475569; margin-bottom:6px; }
-  .form-group input {
-    width:100%; padding:14px; border:1px solid #cbd5e1; border-radius:10px;
-    font-size:.95rem; outline:none; background:#f8fafc; transition:.2s;
-  }
-  .form-group input:focus { border-color:#0ea5e9; box-shadow:0 0 0 3px rgba(14,165,233,.15); background:#fff; }
+  .form-group input { width:100%; padding:14px; border:1px solid #cbd5e1; border-radius:10px; font-size:.95rem; outline:none; }
+  .btn-primary { width:100%; background:#0ea5e9; color:#fff; border:none; padding:14px; border-radius:12px; font-size:1rem; font-weight:700; cursor:pointer; margin-top:10px; }
   
-  .btn-primary {
-    width:100%; background:#0ea5e9; color:#fff; border:none; padding:14px;
-    border-radius:12px; font-size:1rem; font-weight:700; cursor:pointer; margin-top:10px;
-  }
-  .btn-primary:hover { background:#0284c7; }
-
-  /* === KERANJANG === */
-  .cart-item { display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px dashed #e2e8f0; }
-  .cart-item-info h4 { font-size:.9rem; color:#1e293b; }
-  .cart-item-info .tujuan { font-size:.75rem; color:#0ea5e9; font-weight:600; margin-top:2px; display:block; }
-  .cart-item-info p { font-size:.85rem; color:#16a34a; font-weight:700; margin-top:4px; }
-  .btn-hapus { background:#fee2e2; color:#ef4444; border:none; padding:6px 10px; border-radius:6px; font-size:.75rem; cursor:pointer; font-weight:600; }
-  
+  .cart-item { display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px dashed #e2e8f0; }
+  .cart-item-info h4 { font-size:.9rem; }
+  .cart-item-info .tujuan { font-size:.75rem; color:#0ea5e9; font-weight:600; }
+  .cart-item-info p { font-size:.85rem; color:#16a34a; font-weight:700; }
+  .btn-hapus { background:#fee2e2; color:#ef4444; border:none; padding:6px 10px; border-radius:6px; cursor:pointer; }
   .cart-total { display:flex; justify-content:space-between; font-weight:800; font-size:1.2rem; margin:16px 0; padding-top:16px; border-top:2px dashed #e2e8f0; }
-
-  /* === METODE PEMBAYARAN === */
-  .payment-methods { margin-bottom:16px; }
-  .payment-title { font-size:.85rem; font-weight:600; color:#475569; margin-bottom:10px; }
-  .pay-option {
-    display:flex; align-items:center; gap:10px; padding:12px;
-    border:1px solid #e2e8f0; border-radius:10px; margin-bottom:8px; cursor:pointer;
-  }
-  .pay-option.active { border-color:#0ea5e9; background:#f0f9ff; }
-  .pay-option input { accent-color:#0ea5e9; width:18px; height:18px; }
-  .pay-option label { font-size:.9rem; font-weight:600; color:#1e293b; cursor:pointer; flex:1; }
   
-  /* === QRIS BOX === */
+  .payment-title { font-size:.85rem; font-weight:600; margin-bottom:10px; }
+  .pay-option { display:flex; align-items:center; gap:10px; padding:12px; border:1px solid #e2e8f0; border-radius:10px; margin-bottom:8px; cursor:pointer; }
+  .pay-option.active { border-color:#0ea5e9; background:#f0f9ff; }
+  
+  /* KOTAK QRIS */
   .qris-box { text-align:center; margin:16px 0; padding:16px; border:1px dashed #cbd5e1; border-radius:12px; background:#f8fafc; }
-  .qris-box img { width:100%; max-width:250px; border-radius:8px; margin-bottom:10px; }
+  .qris-box img { width:100%; max-width:250px; border-radius:8px; margin-bottom:10px; display:block; margin-left:auto; margin-right:auto; }
   .qris-box p { font-size:.8rem; color:#64748b; }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <div class="header">
   <div class="logo-area"><h1>PULSA<span>KULA</span></h1></div>
   <button class="cart-btn" onclick="bukaKeranjang()">🛒 <span id="cartCount">0</span></button>
 </div>
 
-<!-- KATEGORI -->
-<div class="categories">
-  <button class="active">Semua</button>
-  <button>Pulsa</button>
-  <button>Paket Data</button>
-  <button>Token PLN</button>
-  <button>E-Wallet</button>
-</div>
-
-<!-- PRODUK -->
 <div class="product-grid" id="grid"></div>
 
-<!-- ========================================== -->
-<!-- MODAL 1: INPUT TUJUAN -->
-<!-- ========================================== -->
+<!-- MODAL INPUT -->
 <div class="modal" id="modalInput">
   <div class="modal-box">
     <div class="modal-header">
@@ -155,72 +75,60 @@
   </div>
 </div>
 
-<!-- ========================================== -->
-<!-- MODAL 2: KERANJANG & PEMBAYARAN -->
-<!-- ========================================== -->
+<!-- MODAL KERANJANG -->
 <div class="modal" id="modalKeranjang">
   <div class="modal-box">
     <div class="modal-header">
-      <h2>Keranjang & Pembayaran</h2>
+      <h2>Keranjang</h2>
       <button class="close-btn" onclick="tutupKeranjang()">&times;</button>
     </div>
-    
-    <!-- List Belanjaan -->
     <div id="listKeranjang"></div>
-    
-    <!-- Total -->
     <div class="cart-total">
       <span>Total:</span>
       <span id="totalHarga" style="color:#16a34a;">Rp 0</span>
     </div>
 
-    <!-- Pilihan Pembayaran -->
-    <div class="payment-methods">
-      <div class="payment-title">Pilih Metode Pembayaran:</div>
-      <div class="pay-option active" onclick="pilihPembayaran('qris')">
-        <input type="radio" name="bayar" id="pay-qris" checked>
-        <label for="pay-qris">QRIS (Semua E-Wallet & M-Banking)</label>
-      </div>
-      <div class="pay-option" onclick="pilihPembayaran('transfer')">
-        <input type="radio" name="bayar" id="pay-transfer">
-        <label for="pay-transfer">Transfer Bank (BCA / BRI / Mandiri)</label>
-      </div>
+    <div class="payment-title">Pilih Pembayaran:</div>
+    <div class="pay-option active" onclick="pilihPembayaran('qris')">
+      <input type="radio" checked> <label>QRIS</label>
+    </div>
+    <div class="pay-option" onclick="pilihPembayaran('transfer')">
+      <input type="radio"> <label>Transfer Bank</label>
     </div>
 
-    <!-- Tampilan QRIS -->
+    <!-- ========================================== -->
+    <!-- BAGIAN GAMBAR QRIS KAMU -->
+    <!-- ========================================== -->
     <div id="boxQris" class="qris-box">
-      <!-- GANTI URL GAMBAR DI BAWAH DENGAN GAMBAR QRIS KAMU -->
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/1200px-QR_code_for_mobile_English_Wikipedia.svg.png" alt="QRIS Code">
-      <p>Scan QRIS di atas menggunakan M-Banking / E-Wallet (GoPay, OVO, DANA, dll).</p>
+      <!-- INSTRUKSI: GANTI "gambar-qris.jpg" DENGAN NAMA FILE FOTO QRIS KAMU -->
+      <img src="gambar-qris.jpg" alt="QRIS" onerror="this.style.display='none'; document.getElementById('qris-fallback').style.display='block';">
+      
+      <!-- Teks ini muncul kalau gambar belum dimasukkan -->
+      <div id="qris-fallback" style="display:none; padding:30px; background:#e2e8f0; border-radius:8px; margin-bottom:10px;">
+        <p style="font-weight:bold; color:#ef4444;">⚠️ Gambar QRIS Belum Dimasukkan</p>
+        <p style="font-size:0.8rem; margin-top:5px;">Baca instruksi di bawah kode untuk memasukkan gambar.</p>
+      </div>
+
+      <p>Scan QRIS di atas menggunakan M-Banking / E-Wallet.</p>
     </div>
 
-    <!-- Tampilan Transfer (Sembunyikan dulu) -->
     <div id="boxTransfer" class="qris-box" style="display:none;">
-      <p style="font-weight:700; font-size:1rem; color:#0f172a; margin-bottom:5px;">Bank BCA</p>
-      <p style="font-size:1.1rem; font-weight:800; color:#0ea5e9; letter-spacing:1px;">1234567890</p>
-      <p style="margin-bottom:10px;">a.n. Nama Kamu / PulsaKula</p>
-      <p style="font-size:.75rem; color:#ef4444;">*Mohon transfer sesuai total tagihan.</p>
+      <p style="font-weight:700; font-size:1rem;">Bank BCA</p>
+      <p style="font-size:1.1rem; font-weight:800; color:#0ea5e9;">1234567890</p>
+      <p>a.n. Nama Kamu</p>
     </div>
 
-    <!-- Tombol Konfirmasi WA -->
-    <button class="btn-primary" style="background:#25d366; margin-top:16px;" onclick="konfirmasiWA()">
-      💬 Konfirmasi Pembayaran via WA
+    <button class="btn-primary" style="background:#25d366;" onclick="konfirmasiWA()">
+      💬 Konfirmasi via WA
     </button>
   </div>
 </div>
 
 <script>
-// ==========================================
-// DATA PRODUK
-// ==========================================
 const dataProduk = [
-  { id: 1, nama:"Telkomsel 5.000", harga:6500, tipe:"Pulsa", icon:"📱", label:"Nomor HP Telkomsel" },
-  { id: 2, nama:"Indosat 5.000", harga:6000, tipe:"Pulsa", icon:"📱", label:"Nomor HP Indosat" },
-  { id: 3, nama:"Tri 5.000", harga:5500, tipe:"Pulsa", icon:"📱", label:"Nomor HP Tri" },
-  { id: 4, nama:"Data Telkomsel 3 GB", harga:25000, tipe:"Paket Data", icon:"🌐", label:"Nomor HP Telkomsel" },
-  { id: 5, nama:"Token Listrik 20.000", harga:21500, tipe:"Token PLN", icon:"⚡", label:"ID Meteran PLN" },
-  { id: 6, nama:"Saldo DANA 10.000", harga:11000, tipe:"E-Wallet", icon:"💳", label:"Nomor HP DANA" },
-  { id: 7, nama:"ML 86 Diamond", harga:23000, tipe:"Voucher Game", icon:"🎮", label:"User ID ML" }
+  { id: 1, nama:"Telkomsel 5.000", harga:6500, tipe:"Pulsa", icon:"📱", label:"Nomor HP" },
+  { id: 2, nama:"Data Telkomsel 3 GB", harga:25000, tipe:"Paket Data", icon:"🌐", label:"Nomor HP" },
+  { id: 3, nama:"Token Listrik 20.000", harga:21500, tipe:"Token PLN", icon:"⚡", label:"ID Meteran" }
 ];
 
 const NOMOR_WA = "6281234567890"; // Ganti nomor WA kamu
@@ -228,109 +136,69 @@ let keranjang = [];
 let produkAktif = null;
 let metodeBayar = "qris";
 
-// ==========================================
-// FUNGSI RENDER PRODUK
-// ==========================================
 function render() {
   const grid = document.getElementById("grid");
   grid.innerHTML = "";
-  
   dataProduk.forEach(p => {
-    const card = document.createElement("div");
-    card.className = "card";
-    card.innerHTML = `
-      <div class="card-top">
-        <div class="icon-box">${p.icon}</div>
-        <div>
-          <h3>${p.nama}</h3>
-          <div class="type">${p.tipe}</div>
+    grid.innerHTML += `
+      <div class="card">
+        <div class="card-top">
+          <div class="icon-box">${p.icon}</div>
+          <div><h3>${p.nama}</h3><div class="type">${p.tipe}</div></div>
+        </div>
+        <div class="card-bottom">
+          <div class="price">Rp ${p.harga.toLocaleString("id-ID")}</div>
+          <button class="btn-pilih" onclick="bukaInput(${p.id})">Pilih</button>
         </div>
       </div>
-      <div class="card-bottom">
-        <div class="price">Rp ${p.harga.toLocaleString("id-ID")}</div>
-        <button class="btn-pilih" onclick="bukaInput(${p.id})">Pilih</button>
-      </div>
     `;
-    grid.appendChild(card);
   });
 }
 
-// ==========================================
-// LOGIKA MODAL INPUT
-// ==========================================
 function bukaInput(id) {
   produkAktif = dataProduk.find(p => p.id === id);
-  if (!produkAktif) return;
-
   document.getElementById("judulInput").innerText = produkAktif.nama;
   document.getElementById("labelInput").innerText = produkAktif.label;
   document.getElementById("inputTujuan").value = "";
-  
   document.getElementById("modalInput").classList.add("active");
 }
 
-function tutupInput() {
-  document.getElementById("modalInput").classList.remove("active");
-  produkAktif = null;
-}
+function tutupInput() { document.getElementById("modalInput").classList.remove("active"); }
 
 function simpanKeKeranjang() {
   const tujuan = document.getElementById("inputTujuan").value.trim();
-  if (!tujuan) {
-    alert(`Mohon isi ${produkAktif.label} terlebih dahulu!`);
-    return;
-  }
-
-  keranjang.push({
-    nama: produkAktif.nama,
-    harga: produkAktif.harga,
-    tujuan: tujuan
-  });
-
+  if (!tujuan) { alert("Mohon isi data!"); return; }
+  keranjang.push({ nama: produkAktif.nama, harga: produkAktif.harga, tujuan: tujuan });
   tutupInput();
   document.getElementById("cartCount").innerText = keranjang.length;
-  bukaKeranjang(); // Langsung buka keranjang
+  bukaKeranjang();
 }
 
-// ==========================================
-// LOGIKA KERANJANG
-// ==========================================
-function bukaKeranjang() {
-  renderKeranjang();
-  document.getElementById("modalKeranjang").classList.add("active");
-}
-
-function tutupKeranjang() {
-  document.getElementById("modalKeranjang").classList.remove("active");
-}
+function bukaKeranjang() { renderKeranjang(); document.getElementById("modalKeranjang").classList.add("active"); }
+function tutupKeranjang() { document.getElementById("modalKeranjang").classList.remove("active"); }
 
 function renderKeranjang() {
   const list = document.getElementById("listKeranjang");
-  const totalEl = document.getElementById("totalHarga");
-  list.innerHTML = "";
   let total = 0;
-
+  list.innerHTML = "";
   if (keranjang.length === 0) {
-    list.innerHTML = `<p style="text-align:center; color:#94a3b8; padding:20px 0;">Keranjang kosong.</p>`;
-    totalEl.innerText = "Rp 0";
-    return;
-  }
-
-  keranjang.forEach((item, index) => {
-    total += item.harga;
-    list.innerHTML += `
-      <div class="cart-item">
-        <div class="cart-item-info">
-          <h4>${item.nama}</h4>
-          <span class="tujuan">Tujuan: ${item.tujuan}</span>
-          <p>Rp ${item.harga.toLocaleString("id-ID")}</p>
+    list.innerHTML = `<p style="text-align:center; color:#94a3b8;">Keranjang kosong.</p>`;
+  } else {
+    keranjang.forEach((item, index) => {
+      total += item.harga;
+      list.innerHTML += `
+        <div class="cart-item">
+          <div class="cart-item-info">
+            <h4>${item.nama}</h4>
+            <span class="tujuan">Tujuan: ${item.tujuan}</span>
+            <p>Rp ${item.harga.toLocaleString("id-ID")}</p>
+          </div>
+          <button class="btn-hapus" onclick="hapusItem(${index})">Hapus</button>
         </div>
-        <button class="btn-hapus" onclick="hapusItem(${index})">Hapus</button>
-      </div>
-    `;
-  });
-
-  totalEl.innerText = "Rp " + total.toLocaleString("id-ID");
+      `;
+    });
+  }
+  document.getElementById("totalHarga").innerText = "Rp " + total.toLocaleString("id-ID");
 }
 
 function hapusItem(index) {
@@ -339,52 +207,29 @@ function hapusItem(index) {
   renderKeranjang();
 }
 
-// ==========================================
-// LOGIKA PEMBAYARAN & QRIS
-// ==========================================
 function pilihPembayaran(metode) {
   metodeBayar = metode;
-  
-  // Reset class active
   document.querySelectorAll(".pay-option").forEach(el => el.classList.remove("active"));
-  
   if (metode === "qris") {
-    document.getElementById("pay-qris").checked = true;
     document.querySelectorAll(".pay-option")[0].classList.add("active");
     document.getElementById("boxQris").style.display = "block";
     document.getElementById("boxTransfer").style.display = "none";
   } else {
-    document.getElementById("pay-transfer").checked = true;
     document.querySelectorAll(".pay-option")[1].classList.add("active");
     document.getElementById("boxQris").style.display = "none";
     document.getElementById("boxTransfer").style.display = "block";
   }
 }
 
-// ==========================================
-// KONFIRMASI KE WHATSAPP
-// ==========================================
 function konfirmasiWA() {
-  if (keranjang.length === 0) {
-    alert("Keranjang masih kosong!");
-    return;
-  }
-
+  if (keranjang.length === 0) { alert("Keranjang kosong!"); return; }
   let total = keranjang.reduce((sum, item) => sum + item.harga, 0);
-  let pesan = "Halo Admin, saya sudah melakukan pembayaran via *" + (metodeBayar === 'qris' ? 'QRIS' : 'Transfer Bank') + "*.%0A%0A";
-  
-  pesan += "Rincian Pesanan:%0A";
-  keranjang.forEach((item, i) => {
-    pesan += `${i+1}. ${item.nama} (Tujuan: ${item.tujuan}) - Rp ${item.harga.toLocaleString("id-ID")}%0A`;
-  });
-  
-  pesan += `%0A*Total: Rp ${total.toLocaleString("id-ID")}*%0A%0A`;
-  pesan += "Berikut saya lampirkan bukti pembayarannya ya. Mohon segera diproses. Terima kasih!";
-
+  let pesan = `Halo Admin, saya mau konfirmasi pembayaran via *${metodeBayar.toUpperCase()}*.%0A%0A`;
+  keranjang.forEach((item, i) => { pesan += `${i+1}. ${item.nama} (${item.tujuan}) - Rp ${item.harga}%0A`; });
+  pesan += `%0A*Total: Rp ${total}*%0A%0AMohon diproses ya.`;
   window.open(`https://wa.me/${NOMOR_WA}?text=${pesan}`, '_blank');
 }
 
-// Inisialisasi awal
 render();
 </script>
 </body>
