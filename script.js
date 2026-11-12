@@ -213,6 +213,7 @@ document.getElementById("navCart").onclick = e => {
   document.getElementById("cartDrawer").hidden = false;
 };
 
+
 document.getElementById("checkoutBtn").onclick = () => {
   if (cart.length === 0) {
     alert("Keranjang masih kosong!");
@@ -226,12 +227,28 @@ document.getElementById("checkoutBtn").onclick = () => {
     return;
   }
 
+  const total = cart.reduce(
+    (sum, item) => sum + item.product[2], 0
+  );
+
+  document.getElementById("qrisTotal").textContent = rupiah(total);
+  document.getElementById("cartDrawer").hidden = true;
+  document.getElementById("qrisModal").hidden = false;
+};
+
+document.getElementById("closeQris").onclick = () => {
+  document.getElementById("qrisModal").hidden = true;
+};
+
+document.getElementById("confirmPayment").onclick = () => {
+  const name = document.getElementById("customerName").value.trim();
+
   if (!ADMIN_WA) {
-    alert("Nomor WhatsApp admin belum diisi di script.js");
+    alert("Isi nomor WhatsApp admin di ADMIN_WA!");
     return;
   }
 
-  let message = `Pesanan PULSAKULA\nNama: ${name}\n\n`;
+  let message = `KONFIRMASI PEMBAYARAN PULSAKULA\nNama: ${name}\n\n`;
 
   cart.forEach((item, i) => {
     message += `${i + 1}. ${item.product[1]}\n`;
@@ -243,7 +260,9 @@ document.getElementById("checkoutBtn").onclick = () => {
     (sum, item) => sum + item.product[2], 0
   );
 
-  message += `Total: ${rupiah(total)}`;
+  message += `Total: ${rupiah(total)}\n`;
+  message += "Pembayaran: QRIS TOKO RAFZEL\n";
+  message += "Mohon cek pembayaran saya.";
 
   window.open(
     "https://wa.me/" + ADMIN_WA +
@@ -251,8 +270,3 @@ document.getElementById("checkoutBtn").onclick = () => {
     "_blank"
   );
 };
-
-search.addEventListener("input", renderProducts);
-
-renderProducts();
-renderCart();
