@@ -8,12 +8,12 @@ const ADMIN_WA = "6283894053143";
 // Daftar produk contoh.
 // Ganti dengan katalog dari API provider setelah backend siap.
 const products = [
-  { id: 1, name: "Pulsa Telkomsel 5.000", category: "Pulsa", price: 7000, icon: "📱" },
-  { id: 2, name: "Pulsa Telkomsel 10.000", category: "Pulsa", price: 12000, icon: "📱" },
-  { id: 3, name: "Pulsa Telkomsel 20.000", category: "Pulsa", price: 22000, icon: "📱" },
-  { id: 4, name: "Pulsa Indosat 10.000", category: "Pulsa", price: 12000, icon: "📱" },
-  { id: 5, name: "Pulsa XL 10.000", category: "Pulsa", price: 12000, icon: "📱" },
-  { id: 6, name: "Pulsa Tri 10.000", category: "Pulsa", price: 12000, icon: "📱" },
+  { id: 1, name: "Pulsa Telkomsel 5.000", category: "Pulsa", price: 6000, icon: "📱" },
+  { id: 2, name: "Pulsa Telkomsel 10.000", category: "Pulsa", price: 11000, icon: "📱" },
+  { id: 3, name: "Pulsa Telkomsel 20.000", category: "Pulsa", price: 21000, icon: "📱" },
+  { id: 4, name: "Pulsa Indosat 10.000", category: "Pulsa", price: 11000, icon: "📱" },
+  { id: 5, name: "Pulsa XL 10.000", category: "Pulsa", price: 11000, icon: "📱" },
+  { id: 6, name: "Pulsa Tri 10.000", category: "Pulsa", price: 11000, icon: "📱" },
 
   { id: 7, name: "Paket Data Telkomsel 5GB", category: "Paket Data", price: 25000, icon: "🌐" },
   { id: 8, name: "Paket Data Telkomsel 10GB", category: "Paket Data", price: 45000, icon: "🌐" },
