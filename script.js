@@ -1,52 +1,69 @@
 
 // ========================================
 // PULSAKULA - JAVASCRIPT
-// SISTEM KATALOG + KERANJANG + QRIS + WA
+// KATALOG + KERANJANG + PEMBAYARAN + WA
 // ========================================
 
-// WHATSAPP ADMIN
 const ADMIN_WA = "6283894053143";
 
-// KEUNTUNGAN PER PRODUK
-const KEUNTUNGAN = 500;
+// KEUNTUNGAN PER TRANSAKSI
+const KEUNTUNGAN = 1000;
 
 // ========================================
 // DAFTAR PRODUK
-// price = HARGA MODAL CONTOH
 // ========================================
 
 const products = [
-  // PULSA
-  { id: 1, name: "Pulsa Telkomsel 5.000", category: "Pulsa", price: 5000, icon: "📱" },
-  { id: 2, name: "Pulsa Telkomsel 10.000", category: "Pulsa", price: 10000, icon: "📱" },
-  { id: 3, name: "Pulsa Telkomsel 20.000", category: "Pulsa", price: 20000, icon: "📱" },
-  { id: 4, name: "Pulsa Indosat 10.000", category: "Pulsa", price: 10000, icon: "📱" },
-  { id: 5, name: "Pulsa XL 10.000", category: "Pulsa", price: 10000, icon: "📱" },
-  { id: 6, name: "Pulsa Tri 10.000", category: "Pulsa", price: 10000, icon: "📱" },
+  // PULSA - HARGA MODAL
+
+  { id: 1, name: "Pulsa 5.000", category: "Pulsa", price: 5200, icon: "📱" },
+  { id: 2, name: "Pulsa Promo 5.000", category: "Pulsa", price: 5228, icon: "📱" },
+  { id: 3, name: "Pulsa Promo 10.000", category: "Pulsa", price: 10042, icon: "📱" },
+  { id: 4, name: "Pulsa 10.000", category: "Pulsa", price: 10335, icon: "📱" },
+  { id: 5, name: "Pulsa 15.000", category: "Pulsa", price: 14750, icon: "📱" },
+  { id: 6, name: "Pulsa Promo 20.000", category: "Pulsa", price: 19845, icon: "📱" },
+  { id: 7, name: "Pulsa 20.000", category: "Pulsa", price: 19950, icon: "📱" },
+  { id: 8, name: "Pulsa 25.000", category: "Pulsa", price: 24745, icon: "📱" },
+  { id: 9, name: "Pulsa 30.000", category: "Pulsa", price: 29655, icon: "📱" },
+  { id: 10, name: "Pulsa 40.000", category: "Pulsa", price: 39845, icon: "📱" },
+  { id: 11, name: "Pulsa 50.000", category: "Pulsa", price: 49350, icon: "📱" },
+  { id: 12, name: "Pulsa 60.000", category: "Pulsa", price: 59256, icon: "📱" },
+  { id: 13, name: "Pulsa 70.000", category: "Pulsa", price: 68925, icon: "📱" },
+  { id: 14, name: "Pulsa 75.000", category: "Pulsa", price: 74523, icon: "📱" },
+  { id: 15, name: "Pulsa 80.000", category: "Pulsa", price: 79786, icon: "📱" },
+  { id: 16, name: "Pulsa 90.000", category: "Pulsa", price: 89250, icon: "📱" },
+  { id: 17, name: "Pulsa Promo 100.000", category: "Pulsa", price: 96788, icon: "📱" },
+  { id: 18, name: "Pulsa 100.000", category: "Pulsa", price: 99000, icon: "📱" },
+  { id: 19, name: "Pulsa 150.000", category: "Pulsa", price: 148372, icon: "📱" },
+  { id: 20, name: "Pulsa 200.000", category: "Pulsa", price: 198622, icon: "📱" },
 
   // PAKET DATA
-  { id: 7, name: "Paket Data Telkomsel 5GB", category: "Paket Data", price: 25000, icon: "🌐" },
-  { id: 8, name: "Paket Data Telkomsel 10GB", category: "Paket Data", price: 45000, icon: "🌐" },
-  { id: 9, name: "Paket Data Indosat 5GB", category: "Paket Data", price: 22000, icon: "🌐" },
-  { id: 10, name: "Paket Data XL 8GB", category: "Paket Data", price: 30000, icon: "🌐" },
+
+  { id: 21, name: "Paket Data Telkomsel 5GB", category: "Paket Data", price: 25000, icon: "🌐" },
+  { id: 22, name: "Paket Data Telkomsel 10GB", category: "Paket Data", price: 45000, icon: "🌐" },
+  { id: 23, name: "Paket Data Indosat 5GB", category: "Paket Data", price: 22000, icon: "🌐" },
+  { id: 24, name: "Paket Data XL 8GB", category: "Paket Data", price: 30000, icon: "🌐" },
 
   // TOKEN LISTRIK
-  { id: 11, name: "Token Listrik 20.000", category: "Token Listrik", price: 20000, icon: "⚡" },
-  { id: 12, name: "Token Listrik 50.000", category: "Token Listrik", price: 50000, icon: "⚡" },
-  { id: 13, name: "Token Listrik 100.000", category: "Token Listrik", price: 100000, icon: "⚡" },
+
+  { id: 25, name: "Token Listrik 20.000", category: "Token Listrik", price: 20000, icon: "⚡" },
+  { id: 26, name: "Token Listrik 50.000", category: "Token Listrik", price: 50000, icon: "⚡" },
+  { id: 27, name: "Token Listrik 100.000", category: "Token Listrik", price: 100000, icon: "⚡" },
 
   // E-WALLET
-  { id: 14, name: "Top Up DANA 10.000", category: "E-Wallet", price: 10000, icon: "💳" },
-  { id: 15, name: "Top Up DANA 20.000", category: "E-Wallet", price: 20000, icon: "💳" },
-  { id: 16, name: "Top Up OVO 20.000", category: "E-Wallet", price: 20000, icon: "💳" },
+
+  { id: 28, name: "Top Up DANA 10.000", category: "E-Wallet", price: 10000, icon: "💳" },
+  { id: 29, name: "Top Up DANA 20.000", category: "E-Wallet", price: 20000, icon: "💳" },
+  { id: 30, name: "Top Up OVO 20.000", category: "E-Wallet", price: 20000, icon: "💳" },
 
   // GAME
-  { id: 17, name: "Diamond Game 50", category: "Game", price: 15000, icon: "🎮" },
-  { id: 18, name: "Diamond Game 100", category: "Game", price: 28000, icon: "🎮" }
+
+  { id: 31, name: "Diamond Game 50", category: "Game", price: 15000, icon: "🎮" },
+  { id: 32, name: "Diamond Game 100", category: "Game", price: 28000, icon: "🎮" }
 ];
 
 // ========================================
-// SISTEM HARGA JUAL OTOMATIS
+// HARGA JUAL
 // ========================================
 
 function hargaJual(hargaModal) {
@@ -54,14 +71,13 @@ function hargaJual(hargaModal) {
 }
 
 // ========================================
-// DATA KERANJANG
+// KERANJANG
 // ========================================
 
 let selectedCategory = "Semua";
 let selectedProduct = null;
 let cart = [];
 
-// FORMAT RUPIAH
 function rupiah(number) {
   return new Intl.NumberFormat("id-ID", {
     style: "currency",
@@ -80,7 +96,7 @@ function renderProducts() {
 
   if (!container || !searchInput) return;
 
-  const search = searchInput.value.toLowerCase();
+  const search = searchInput.value.toLowerCase().trim();
 
   const filtered = products.filter(product => {
     const matchCategory =
@@ -88,15 +104,15 @@ function renderProducts() {
       product.category === selectedCategory;
 
     const matchSearch =
-      product.name.toLowerCase().includes(search);
+      product.name.toLowerCase().includes(search) ||
+      product.category.toLowerCase().includes(search);
 
     return matchCategory && matchSearch;
   });
 
   if (filtered.length === 0) {
-    container.innerHTML = `
-      <p class="empty-state">Produk tidak ditemukan.</p>
-    `;
+    container.innerHTML =
+      `<p class="empty-state">Produk tidak ditemukan.</p>`;
     return;
   }
 
@@ -116,7 +132,7 @@ function renderProducts() {
 }
 
 // ========================================
-// PILIH KATEGORI
+// KATEGORI
 // ========================================
 
 function selectCategory(category, button) {
@@ -162,13 +178,14 @@ function closeProduct() {
 }
 
 // ========================================
-// TAMBAH KE KERANJANG
+// TAMBAH KERANJANG
 // ========================================
 
 function addToCart() {
   if (!selectedProduct) return;
 
-  const target = document.getElementById("targetInput").value.trim();
+  const target =
+    document.getElementById("targetInput").value.trim();
 
   if (!target) {
     alert("Masukkan nomor HP atau ID pelanggan!");
@@ -196,10 +213,6 @@ function addToCart() {
   alert("Produk berhasil ditambahkan ke keranjang!");
 }
 
-// ========================================
-// HITUNG TOTAL
-// ========================================
-
 function getTotal() {
   return cart.reduce((total, item) => total + item.price, 0);
 }
@@ -225,9 +238,8 @@ function renderCart() {
   const container = document.getElementById("cartItems");
 
   if (cart.length === 0) {
-    container.innerHTML = `
-      <p class="empty-state">Keranjang masih kosong.</p>
-    `;
+    container.innerHTML =
+      `<p class="empty-state">Keranjang masih kosong.</p>`;
   } else {
     container.innerHTML = cart.map(item => `
       <div class="cart-item">
@@ -249,7 +261,9 @@ function renderCart() {
 }
 
 function removeCart(id) {
-  cart = cart.filter(item => String(item.cartId) !== String(id));
+  cart = cart.filter(item =>
+    String(item.cartId) !== String(id)
+  );
 
   updateCartCount();
   renderCart();
@@ -277,7 +291,7 @@ function closePayment() {
 }
 
 // ========================================
-// KIRIM PESANAN KE WHATSAPP
+// WHATSAPP ADMIN
 // ========================================
 
 function sendOrder() {
@@ -286,7 +300,8 @@ function sendOrder() {
     return;
   }
 
-  let message = "Halo Admin PULSAKULA, saya ingin memesan:\n\n";
+  let message =
+    "Halo Admin PULSAKULA, saya ingin memesan:\n\n";
 
   cart.forEach((item, index) => {
     message += `${index + 1}. ${item.name}\n`;
@@ -314,6 +329,15 @@ document.querySelectorAll(".modal").forEach(modal => {
     }
   });
 });
+
+// ========================================
+// PENCARIAN OTOMATIS
+// ========================================
+
+document.getElementById("searchInput")?.addEventListener(
+  "input",
+  renderProducts
+);
 
 // ========================================
 // JALANKAN WEBSITE
