@@ -1,3 +1,4 @@
+alert("JAVASCRIPT PULSAKULA BERHASIL BERJALAN!");
 
 // ========================================
 // PULSAKULA - JAVASCRIPT LENGKAP
