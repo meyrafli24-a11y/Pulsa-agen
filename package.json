@@ -1,0 +1,11 @@
+{
+  "name": "pulsakula",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "dependencies": {
+    "@vercel/blob": "^2.0.0"
+  }
+}
