@@ -1,32 +1,75 @@
 
-import { get, put } from "@vercel/blob";
+// =====================================
+// PULSAKULA - DATABASE PENYIMPANAN
+// =====================================
 
-const ACCESS = "private";
-
-export async function readJson(pathname, fallback = []) {
-  const blob = await get(pathname, {
-    access: ACCESS
-  });
-
-  if (!blob || blob.statusCode !== 200 || !blob.stream) {
-    return fallback;
+const products = [
+  {
+    id: "PLN20",
+    name: "Token PLN 20.000",
+    category: "Token Listrik",
+    price: 22000,
+    active: true
+  },
+  {
+    id: "PLN50",
+    name: "Token PLN 50.000",
+    category: "Token Listrik",
+    price: 52000,
+    active: true
+  },
+  {
+    id: "D10",
+    name: "Paket Data 10GB",
+    category: "Paket Data",
+    price: 35000,
+    active: true
+  },
+  {
+    id: "P10",
+    name: "Pulsa 10.000",
+    category: "Pulsa",
+    price: 12000,
+    active: true
   }
+];
 
-  const content = await new Response(blob.stream).text();
-  return JSON.parse(content);
-}
+const orders = [];
 
-export async function writeJson(pathname, data) {
-  await put(
-    pathname,
-    JSON.stringify(data),
-    {
-      access: ACCESS,
-      addRandomSuffix: false,
-      allowOverwrite: true,
-      contentType: "application/json"
-    }
+function getProducts(category = null) {
+  if (!category) return products;
+  return products.filter(
+    product => product.category === category
   );
-
-  return true;
 }
+
+function getProduct(id) {
+  return products.find(product => product.id === id);
+}
+
+function createOrder(data) {
+  const order = {
+    id: "PKL" + Date.now(),
+    productId: data.productId,
+    customer: data.customer,
+    amount: data.amount,
+    status: "PENDING",
+    createdAt: new Date().toISOString()
+  };
+
+  orders.push(order);
+  return order;
+}
+
+function getOrder(id) {
+  return orders.find(order => order.id === id);
+}
+
+module.exports = {
+  products,
+  orders,
+  getProducts,
+  getProduct,
+  createOrder,
+  getOrder
+};
