@@ -688,3 +688,124 @@ footer small {
     padding: 13px 5px;
   }
 }
+
+
+/* PEMBAYARAN PULSAKULA */
+.payment-box {
+  background: #f5f9ff;
+  border: 1px solid #dceaff;
+}
+
+.payment-header {
+  text-align: center;
+  padding: 12px 0;
+}
+
+.payment-icon {
+  width: 65px;
+  height: 65px;
+  background: linear-gradient(135deg,#087bd0,#0052a5);
+  border-radius: 20px;
+  display: grid;
+  place-items: center;
+  font-size: 30px;
+  margin: 0 auto 12px;
+}
+
+.payment-header h2 {
+  color: #075ca8;
+  margin: 5px 0;
+}
+
+.payment-header p {
+  color: #718096;
+  font-size: 13px;
+}
+
+.payment-amount {
+  background: #e5f2ff;
+  border: 1px solid #c9e3ff;
+  border-radius: 15px;
+  text-align: center;
+  padding: 15px;
+  margin: 15px 0;
+}
+
+.payment-amount span {
+  color: #54718f;
+  font-size: 13px;
+}
+
+.payment-amount h2 {
+  color: #075ca8;
+  font-size: 27px;
+  margin: 8px 0 0;
+}
+
+.qris-card {
+  background: #ffffff;
+  border: 1px solid #dce6f2;
+  border-radius: 20px;
+  padding: 18px;
+  text-align: center;
+  box-shadow: 0 5px 20px rgba(0,70,140,.08);
+}
+
+.qris-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #075ca8;
+  font-size: 12px;
+  font-weight: bold;
+  gap: 8px;
+}
+
+.qris-status {
+  color: #087bd0;
+  font-size: 10px;
+}
+
+.qris-image-box {
+  background: #ffffff;
+  border: 2px solid #e4edf7;
+  border-radius: 15px;
+  padding: 10px;
+  margin: 18px auto;
+  max-width: 290px;
+}
+
+.qris-image-box img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.qris-card h3 {
+  color: #075ca8;
+  margin: 10px 0 5px;
+}
+
+.qris-card p {
+  color: #718096;
+  font-size: 12px;
+}
+
+.payment-info {
+  background: #eaf4ff;
+  padding: 14px;
+  border-radius: 13px;
+  margin: 15px 0;
+  color: #24557f;
+  font-size: 12px;
+  line-height: 2.2;
+}
+
+.payment-note {
+  text-align: center;
+  color: #718096;
+  font-size: 11px;
+  margin-top: 12px;
+}
