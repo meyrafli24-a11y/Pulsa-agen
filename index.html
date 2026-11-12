@@ -108,17 +108,47 @@
   </div>
 </div>
 
+
 <div class="modal" id="paymentModal">
   <div class="modal-box">
     <button class="close" onclick="closePayment()">✕</button>
-    <h2>Pembayaran QRIS</h2>
-    <p>Silakan periksa detail pembayaran dan ikuti instruksi admin.</p>
-    <img src="https://raw.githubusercontent.com/meyrafli24-a11y/Pulsa-agen/main/qr_ID1025376713323_07.01.26_176777048_1767770502053.jpeg" class="qris" alt="QRIS">
-    <h3 id="paymentTotal"></h3>
-    <p class="notice">QRIS statis. Pembayaran perlu diperiksa secara manual oleh admin.</p>
-    <button class="main-btn" onclick="sendOrder()">Konfirmasi ke WhatsApp</button>
+
+    <h2 style="text-align:center;">
+      💳 Lakukan Pembayaran
+    </h2>
+
+    <p style="text-align:center;">
+      Silakan scan QRIS berikut untuk membayar pesanan.
+    </p>
+
+    <img
+      src="https://raw.githubusercontent.com/meyrafli24-a11y/Pulsa-agen/main/qr_ID1025376713323_07.01.26_176777048_1767770502053.jpeg"
+      class="qris"
+      alt="QRIS PULSAKULA"
+    >
+
+    <h3 style="text-align:center;">
+      Total Pembayaran
+    </h3>
+
+    <h2 id="paymentTotal"
+      style="text-align:center;color:#16a34a;">
+    </h2>
+
+    <div class="notice">
+      1. Buka aplikasi pembayaran.<br>
+      2. Scan QRIS di atas.<br>
+      3. Bayar sesuai nominal.<br>
+      4. Simpan bukti pembayaran.
+    </div>
+
+    <button class="main-btn" onclick="sendOrder()">
+      Konfirmasi ke WhatsApp
+    </button>
+
   </div>
 </div>
+
 
 <nav class="bottom-nav">
   <a href="#">⌂<small>Beranda</small></a>
